@@ -3,7 +3,8 @@ import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useLocalStorage } from './utils'
 import Morph from './Morph'
 
-import './AnimationEditor.css'
+//import './AnimationEditor.css'
+import './index.css'
 // import localStorageData from './localStorage.json'
 
 type Selection = [number, number, number]

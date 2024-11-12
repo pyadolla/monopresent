@@ -15,7 +15,7 @@ import { SlideInfo } from '../../staticAnalysis'
 // import sedes from './kuleuvensedes.svg'
 /* import pointer from './pointer.png' */
 //
-import './styles.css'
+//import './styles.css'
 
 import step from '../../step.macro.js'
 import { range } from '../../utils.js'

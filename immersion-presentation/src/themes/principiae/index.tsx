@@ -12,7 +12,7 @@ import Show from '../../Show'
 
 import { SlideInfo } from '../../staticAnalysis'
 
-import './styles.css'
+//import './styles.css'
 
 import step from '../../step.macro.js'
 import { range } from '../../utils.js'
