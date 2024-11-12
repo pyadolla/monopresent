@@ -1,0 +1,10 @@
+{
+    "package": {
+        "dependencies": {
+            "immersion-presentation": "file:../immersion-presentation"
+        },
+        "scripts": {
+            "pdf": "node ./node_modules/immersion-presentation/make-pdf"
+        }
+    }
+}

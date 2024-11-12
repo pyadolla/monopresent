@@ -1,0 +1,26 @@
+{
+  "name": "cra-template-immersion",
+  "version": "1.0.3",
+  "keywords": [
+    "react",
+    "immersion",
+    "presentation"
+  ],
+  "description": "The base template for an Immersion presentation.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gillescastel/cra-template-immersion.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=10"
+  },
+  "bugs": {
+    "url": "https://github.com/gillescastel/cra-template-immersion/issues"
+  },
+  "main": "template.json",
+  "files": [
+    "template",
+    "template.json"
+  ]
+}
