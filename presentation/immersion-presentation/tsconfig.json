@@ -17,7 +17,8 @@
       "baseUrl": ".",                              // Base directory for resolving non-relative modules
       "paths": {
         "@/*": ["src/*"]                           // Path alias for easier imports (e.g., '@components' maps to 'src/components')
-      }
+      },
+      "sourceMap": true
     },
     "include": [
       "src/**/*.ts",                               // Include all TypeScript files in the 'src' directory

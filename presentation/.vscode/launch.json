@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "pwa-chrome",
+        "request": "launch",
+        "name": "Debug CRA with immersion-presentation",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}",
+        "runtimeExecutable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "preLaunchTask": "Clean Chrome User Data Dir",
+        "runtimeArgs": [
+          "--no-first-run",
+          "--disable-default-apps",
+          "--disable-popup-blocking",
+          "--disable-extensions",
+          "--disable-features=AccountConsistency,EnableAccountConsistency,ConsistencyNewTabPage",
+           "--enable-features=NetworkService,NetworkServiceInProcess"
+
+        ],
+        "userDataDir": "${workspaceFolder}/.vscode/chrome-user-data",
+        "outFiles": ["${workspaceFolder}/**/*.js"],
+        "sourceMaps": true,
+        "breakOnLoad": true,
+        "trace": true,
+        "sourceMapPathOverrides": {
+            // "webpack:///../immersion-presentation/src/*": "${workspaceFolder}/immersion-presentation/src/*",
+            // "webpack:///src/*": "${workspaceFolder}/example-presentation/src/*",
+            // "webpack:///./src/*": "${workspaceFolder}/example-presentation/src/*",
+            // "src/*": "${workspaceFolder}/immersion-presentation/src/*",
+            // "presentation/src/*": "${workspaceFolder}/immersion-presentation/src/*",
+            // "webpack:///../immersion-presentation/*": "${workspaceFolder}/immersion-presentation/src/*",
+            // "webpack:///./*": "${webRoot}/*",
+            "webpack:///src/*": "${webRoot}/*"
+            "/Users/yadollap/sandbox/presentation/src/*": "${workspaceFolder}/immersion-presentation/src/*",
+        },
+      }
+    ]
+}

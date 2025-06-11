@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug React (example-presentation)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/packages",
+      "runtimeExecutable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "preLaunchTask": "Clean Chrome User Data Dir",
+      "runtimeArgs": [
+        "--no-first-run",
+        "--disable-default-apps",
+        "--disable-popup-blocking",
+        "--disable-extensions",
+        "--disable-features=AccountConsistency,EnableAccountConsistency,ConsistencyNewTabPage",
+        "--enable-features=NetworkService,NetworkServiceInProcess"
+      ],
+      "userDataDir": "${workspaceFolder}/.vscode/chrome-user-data",
+      "sourceMaps": true,
+      "trace": true,
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${workspaceFolder}/packages/example-presentation/src/*",
+        "webpack:///../immersion-presentation/src/*": "${workspaceFolder}/packages/immersion-presentation/src/*"
+      }
+    }
+  ]
+}

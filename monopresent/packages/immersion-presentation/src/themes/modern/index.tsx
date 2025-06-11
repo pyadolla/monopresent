@@ -4,7 +4,7 @@ import {
   RenderSlide,
   RenderPresentation,
   PresentationContext,
-  PresentationProps
+  PresentationProps,
 } from '../../Presentation'
 import { RenderCite, RenderBibliography } from '../../Citations'
 
@@ -15,14 +15,14 @@ import { SlideInfo } from '../../staticAnalysis'
 // import sedes from './kuleuvensedes.svg'
 /* import pointer from './pointer.png' */
 //
-//import './styles.css'
+// import './styles.css'
 
-import step from '../../step.macro.js'
-import { range } from '../../utils.js'
-
+// import step from '../../step.macro'
+import { range } from '../../utils'
+export { RenderPresentation, PresentationContext, useIsCurrentlyVisible } from '../../Presentation'
 export function Presentation(props: PresentationProps): React.ReactElement {
-  const h = 900
-  const w = 1200
+  const h = 900 * 1.25
+  const w = 1200 * 1.25
   return (
     <RenderPresentation
       {...props}
@@ -478,9 +478,8 @@ export function Box({
       <div className='p-2'>
         {title && (
           <span
-            className={`pr-2 text-green font-semibold ${
-              smallTitle ? 'text-xs block' : ''
-            }`}
+            className={`pr-2 text-green font-semibold ${smallTitle ? 'text-xs block' : ''
+              }`}
           >
             {title}.
           </span>

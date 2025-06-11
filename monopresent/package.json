@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+   ],
+  "scripts": {
+    "start:example-presentation": "APP_CONFIG_PATH=./config-overrides.js yarn workspace example-presentation start"
+   },
+  "resolutions": {
+    "react" : "16.14.0",
+    "@types/react": "16.14.0",
+    "react-router-dom": "5.3.3",
+    "@types/react-router-dom" : "5.3.3"
+   }
+}

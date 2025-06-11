@@ -49,7 +49,8 @@ export const LaTeX = {
         cachebust: cacheBust,
         tex: tex,
         preamble: LaTeX.getPreamble()
-      })}`
+      })}`,
+      {mode: 'cors'}
     )
     if (result.ok) {
       return await result.text()
@@ -112,7 +113,7 @@ function elementToPath(child: SVGElement, transform = ''): string | null {
       const tr = element.getAttribute('transform') || ''
       return elementToPath(
         element,
-        `translate(${offsetX}, ${offsetY}) ${tr}`.trim()
+        `translate(${offsetX}, ${offsetY}) ${transform} ${tr}`.trim()
       )
     } else {
       console.error('Unrecognized use of element', element)
@@ -147,15 +148,16 @@ function svgToGroupedPaths(svg: SVGSVGElement) {
   const byGroupId: { [key: string]: string } = {}
 
   for (const child of Array.from(svg.getElementById('page1').children)) {
+    const tr = child.getAttribute('transform') || ''
     const id = groupIdFromElement(child as SVGElement)
     let path: string | null
     if (child.tagName === 'g') {
       path = Array.from(child.children)
-        .map((subchild) => elementToPath(subchild as SVGElement))
+        .map((subchild) => elementToPath(subchild as SVGElement, tr as string))
         .filter(Boolean)
         .join(' ')
     } else {
-      path = elementToPath(child as SVGElement)
+      path = elementToPath(child as SVGElement, tr as string)
     }
     if (!path) continue
 
