@@ -1,3 +1,7 @@
+// if (process.env.NODE_ENV === 'development') {
+//   require('react-devtools');
+// }
+
 import React, { Fragment, useState, useEffect, useRef, useContext } from 'react'
 
 import {
@@ -16,13 +20,12 @@ import { SlideInfo } from '../../staticAnalysis'
 /* import pointer from './pointer.png' */
 //
 // import './styles.css'
-
 // import step from '../../step.macro'
 import { range } from '../../utils'
 export { RenderPresentation, PresentationContext, useIsCurrentlyVisible } from '../../Presentation'
 export function Presentation(props: PresentationProps): React.ReactElement {
-  const h = 900 * 1.25
-  const w = 1200 * 1.25
+  const h = 1070 //900 * 1.25 //1200 
+  const w = 1710 //1200 * 1.25 //1920 
   return (
     <RenderPresentation
       {...props}
@@ -183,7 +186,7 @@ export function SectionSlide({
           className='mt-3'
           style={{
             background: 'rgba(255, 255, 255, 0.2)',
-            width: '16em',
+            width: '18em',
             height: '4px',
             borderRadius: '2px'
           }}
@@ -254,7 +257,7 @@ export function TitleSlide({
   return (
     <Slide
       className='flex flex-col items-stretch justify-between theme-font-open'
-      steps={[0, 1, 2]}
+      steps={[1, 2]}
       hideNavigation
     >
       {(step: number) => (
@@ -395,7 +398,7 @@ export function Item({
           listStyle: 'none'
         }}
       >
-        <b>{name + ' '}</b>
+        <b>{name}&nbsp;</b>
         {children}
       </li>
     )

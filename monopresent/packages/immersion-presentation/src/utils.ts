@@ -32,9 +32,8 @@ const queryParameters = (obj: { [key: string]: string }): string => {
 const cacheBust = '8'
 export const LaTeX = {
   _preamble: ``,
-  _host: `http://${
-    typeof window !== 'undefined' ? window.location.hostname : 'example.com'
-  }:3001`,
+  _host: `http://${typeof window !== 'undefined' ? window.location.hostname : 'example.com'
+    }:3001`,
   getHost: (): string => LaTeX._host,
   setHost: (h: string): void => {
     LaTeX._host = h
@@ -50,7 +49,7 @@ export const LaTeX = {
         tex: tex,
         preamble: LaTeX.getPreamble()
       })}`,
-      {mode: 'cors'}
+      { mode: 'cors' }
     )
     if (result.ok) {
       return await result.text()

@@ -1,4 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -17,6 +50,11 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const child_process_1 = require("child_process");
 const cors_1 = __importDefault(require("cors"));
+const xmldom_1 = require("xmldom");
+const crypto_1 = require("crypto");
+const path_1 = __importDefault(require("path"));
+const fs_1 = require("fs");
+const xpath = __importStar(require("xpath"));
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use((0, cors_1.default)());
@@ -50,18 +88,34 @@ app.use((0, cors_1.default)());
 //    });
 //  });
 //}
+//    \\setlength{\\topmargin}{0pt}
+//    \\setlength{\\headsep}{0pt}
+//    \\setlength{\\footskip}{0pt}
+//    \\setlength{\\oddsidemargin}{0pt}
+//    \\setlength{\\headheight}{0pt}
+//    \\setlength{\\textwidth}{\\paperwidth}
+//    \\setlength{\\textheight}{\\paperheight}
 function compileLaTeXToSVG(tex, preamble) {
     return __awaiter(this, void 0, void 0, function* () {
         const inputDir = "./tmp";
-        const inputFile = `${inputDir}/input.tex`;
-        const outputFile = `${inputDir}/output.svg`;
         yield fs_extra_1.default.ensureDir(inputDir);
+        const id = (0, crypto_1.randomUUID)();
+        const baseName = `latex-${id}`;
+        const texPath = path_1.default.join(inputDir, `${baseName}.tex`);
+        const dviPath = path_1.default.join(inputDir, `${baseName}.dvi`);
+        const svgPath = path_1.default.join(inputDir, `${baseName}.svg`);
         const fullTex = `
-    \\documentclass{standalone}
+    \\documentclass[border=0pt]{standalone}
     ${preamble}
+    \\usepackage[utf8]{inputenc}
+    \\usepackage[T1]{fontenc}
+    \\usepackage{textcomp}
+    \\usepackage{amsmath, amssymb}
+    \\usepackage[sfmath, uprightgreeks]{kpfonts}
+    \\usepackage{bm}
     \\usepackage{xcolor}
-
-    % Define the \\g command
+    \\setlength{\\hoffset}{0pt}
+    \\setlength{\\voffset}{0pt}
     \\newcommand{\\g}[2]{%
       \\begingroup
       \\color[HTML]{#1}%
@@ -69,41 +123,100 @@ function compileLaTeXToSVG(tex, preamble) {
       \\endgroup
     }
     \\begin{document}
-    ${tex}
+    \\makebox[0pt][l]{.}\\text{${tex}}
     \\end{document}
   `;
-        yield fs_extra_1.default.writeFile(inputFile, fullTex);
-        //      `pdflatex -interaction=nonstopmode  -output-directory=${inputDir} ${inputFile} && dvisvgm -n --pdf ${inputDir}/input.pdf -o ${outputFile}`,
+        yield fs_extra_1.default.writeFile(texPath, fullTex);
         return new Promise((resolve, reject) => {
-            (0, child_process_1.exec)(`pdflatex -interaction=nonstopmode -output-format dvi -output-directory=${inputDir} ${inputFile} && dvisvgm -n ${inputDir}/input.dvi -o ${outputFile}`, (error, stdout, stderr) => {
-                // Combine stdout and stderr
+            const command = `pdflatex -interaction=nonstopmode -output-format dvi -output-directory=${inputDir} ${texPath} && dvisvgm -n --bbox=preview ${dviPath} -o ${svgPath}`;
+            (0, child_process_1.exec)(command, (error, stdout, stderr) => __awaiter(this, void 0, void 0, function* () {
                 const combinedOutput = stdout + stderr;
+                const cleanupFiles = [
+                    ".aux", ".log", ".pdf", ".tex", ".dvi", ".svg"
+                ].map(ext => path_1.default.join(inputDir, `${baseName}${ext}`));
+                const cleanup = () => __awaiter(this, void 0, void 0, function* () {
+                    yield Promise.allSettled(cleanupFiles.map(file => fs_1.promises.rm(file, { force: true })));
+                });
                 if (error) {
-                    console.error("LaTeX compilation error:", combinedOutput || error.message);
-                    // Parse LaTeX error blocks
-                    const latexErrors = parseLatexErrors(combinedOutput);
-                    reject({
+                    yield cleanup();
+                    const latexErrors = parseLatexErrors(combinedOutput); // assumes this is defined elsewhere
+                    return reject({
                         name: "CompilationError",
                         message: "LaTeX compilation failed.",
                         details: combinedOutput || error.message,
-                        tex, // Include the provided LaTeX code
-                        latexErrors, // Provide detailed error messages
+                        tex,
+                        latexErrors,
                     });
                 }
-                else {
-                    fs_extra_1.default.readFile(outputFile, "utf8")
-                        .then(resolve)
-                        .catch((err) => reject({
+                try {
+                    const svg = yield fs_extra_1.default.readFile(svgPath, "utf8");
+                    yield cleanup();
+                    resolve(svg);
+                }
+                catch (err) {
+                    yield cleanup();
+                    reject({
                         name: "FileReadError",
                         message: "Error reading the generated SVG file.",
                         details: err.message,
                         tex,
                         latexErrors: ["Error reading the output SVG file."],
-                    }));
+                    });
                 }
-            });
+            }));
         });
     });
+}
+function fixAllSvgYOffset(svgContent) {
+    const parser = new xmldom_1.DOMParser();
+    const doc = parser.parseFromString(svgContent, 'image/svg+xml');
+    // Get all elements in the SVG document
+    const allElements = doc.getElementsByTagName('*');
+    for (let i = 0; i < allElements.length; i++) {
+        const el = allElements.item(i);
+        if (!el)
+            continue;
+        if (el.hasAttribute('y')) {
+            el.setAttribute('y', '0');
+            // Or to remove the y attribute instead:
+            // el.removeAttribute('y');
+        }
+    }
+    const serializer = new xmldom_1.XMLSerializer();
+    return serializer.serializeToString(doc);
+}
+function adjustSvgViewBox(svgString) {
+    var _a;
+    const parser = new xmldom_1.DOMParser();
+    const serializer = new xmldom_1.XMLSerializer();
+    const doc = parser.parseFromString(svgString, 'image/svg+xml');
+    const svg = doc.getElementsByTagName('svg')[0];
+    if (!svg)
+        throw new Error("No <svg> root element found.");
+    const viewBoxAttr = svg.getAttribute("viewBox");
+    if (!viewBoxAttr)
+        throw new Error("No viewBox attribute found.");
+    const [vx, vy, vw, vh] = viewBoxAttr.split(/\s+/).map(Number);
+    if ([vx, vy, vw, vh].some((v) => isNaN(v))) {
+        throw new Error(`Invalid viewBox format: ${viewBoxAttr}`);
+    }
+    // Use XPath to find the first element with x="0"
+    const nodes = xpath.select('//*[@x="0"]', doc);
+    const target = nodes[0];
+    if (!target)
+        throw new Error('No element with x="0" found.');
+    const yAttr = target.getAttribute("y");
+    if (!yAttr)
+        throw new Error('Target element does not have a "y" attribute.');
+    const y = parseFloat(yAttr);
+    if (isNaN(y))
+        throw new Error(`Invalid y attribute: ${yAttr}`);
+    // Update viewBox vy = y - vh
+    const newVy = y - vh;
+    svg.setAttribute("viewBox", [vx, newVy, vw, vh].join(" "));
+    // Remove target element
+    (_a = target.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(target);
+    return serializer.serializeToString(doc);
 }
 function parseLatexErrors(output) {
     if (!output)
@@ -172,7 +285,7 @@ app.get("/latex", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         const svg = yield compileLaTeXToSVG(tex, preamble);
-        res.type("image/svg+xml").send(svg);
+        res.type("image/svg+xml").send(adjustSvgViewBox(svg)); //fixAllSvgYOffset(svg));
     }
     catch (error) {
         console.error("Error during LaTeX compilation:", error);

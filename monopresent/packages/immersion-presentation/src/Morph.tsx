@@ -63,7 +63,7 @@ function Morph({
 
   const [transition, setTransition] = useState(false)
 
-  const FONT_SCALING_FACTOR = 2
+  const FONT_SCALING_FACTOR = 2.5 //2
 
   const updateSvgData = ({ viewBox, width, height }: SVGData) => {
     setSvgData({
@@ -152,7 +152,7 @@ function Morph({
           : {}),
         width: 0,
         height: 0,
-        marginTop: `${-vy * FONT_SCALING_FACTOR}pt`,
+        marginTop: `${vy * FONT_SCALING_FACTOR}pt`,
         marginRight: `${width}pt`,
         verticalAlign: 'baseline',
         position: 'relative',
@@ -174,8 +174,8 @@ function Morph({
         viewBox={[vx, vy, vw, vh].join(' ')}
         style={{
           display: 'inline-block',
-          position: 'absolute',
-          top: `${FONT_SCALING_FACTOR * vy}pt`,
+          position: 'relative',
+          // top: `${FONT_SCALING_FACTOR * vy}pt`,
           verticalAlign: 'baseline',
           ...(debug ? { outline: '1px solid yellow' } : {}),
           ...style
@@ -208,9 +208,10 @@ function Morph({
           style={{
             display: 'inline-block',
             width: 0,
+            // verticaAlign: height + vy + 'pt',
             verticalAlign: 'text-top',
             marginTop: '0.9em',
-            height: height + vy + 'pt',
+            height: height - ((vy + vh) * FONT_SCALING_FACTOR) + 'pt',
             ...(transition
               ? { transition: `${TIMING}s height, ${TIMING}s margin-bottom` }
               : {}),

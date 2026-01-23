@@ -1,32 +1,40 @@
 {
-    "compilerOptions": {
-      "target": "ES6",                             // The target JavaScript version (e.g., ES6/ES2015)
-      "module": "ESNext",                          // The module system (e.g., CommonJS, ESNext, etc.)
-      "moduleResolution": "node",                  // How modules get resolved (use "node" for Node.js projects)
-      "strict": true,                              // Enable strict mode for all type-checking options
-      "esModuleInterop": true,                     // Allow default imports from modules without default exports
-      "allowJs": true,                             // Allow JavaScript files
-      "skipLibCheck": true,                        // Skip type checking of declaration files
-      "allowSyntheticDefaultImports": true,        // Allows default imports from modules without a default export
-      "forceConsistentCasingInFileNames": true,    // Enforce consistent casing for file names
-      "resolveJsonModule": true,                   // Allows importing .json files
-      "isolatedModules": true,                     // Ensures that each file is treated as an isolated module (useful for React)
-      "jsx": "react",                              // Set the JSX factory to 'react' (for React 16)
-      "lib": ["dom", "esnext"],                    // Include libraries for DOM and ESNext features
-      "outDir": "./dist",                          // Output directory for compiled files
-      "baseUrl": ".",                              // Base directory for resolving non-relative modules
-      "paths": {
-        "@/*": ["src/*"]                           // Path alias for easier imports (e.g., '@components' maps to 'src/components')
-      },
-      "sourceMap": true
-    },
-    "include": [
-      "src/**/*.ts",                               // Include all TypeScript files in the 'src' directory
-      "src/**/*.tsx"                               // Include all TypeScript JSX files in the 'src' directory
-    ],
-    "exclude": [
-      "node_modules",                              // Exclude the 'node_modules' directory from compilation
-      "dist"                                       // Exclude the 'dist' directory (where compiled code is output)
+  "compilerOptions": {
+    "target": "ES6", // The target JavaScript version (e.g., ES6/ES2015)
+    "module": "ESNext", // The module system (e.g., CommonJS, ESNext, etc.)
+    "moduleResolution": "node", // How modules get resolved (use "node" for Node.js projects)
+    "strict": true, // Enable strict mode for all type-checking options
+    "esModuleInterop": true, // Allow default imports from modules without default exports
+    "allowJs": true, // Allow JavaScript files
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "allowSyntheticDefaultImports": true, // Allows default imports from modules without a default export
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing for file names
+    "resolveJsonModule": true, // Allows importing .json files
+    "isolatedModules": true, // Ensures that each file is treated as an isolated module (useful for React)
+    "jsx": "react", // Set the JSX factory to 'react' (for React 16)
+    "lib": [
+      "dom",
+      "esnext"
+    ], // Include libraries for DOM and ESNext features
+    "types": [
+      "react",
+      "react-dom"
     ]
-  }
-  
+      "outDir": "./dist", // Output directory for compiled files
+    "baseUrl": ".", // Base directory for resolving non-relative modules
+    "paths": {
+      "@/*": [
+        "src/*"
+      ] // Path alias for easier imports (e.g., '@components' maps to 'src/components')
+    },
+    "sourceMap": true
+  },
+  "include": [
+    "src/**/*.ts", // Include all TypeScript files in the 'src' directory
+    "src/**/*.tsx" // Include all TypeScript JSX files in the 'src' directory
+  ],
+  "exclude": [
+    "node_modules", // Exclude the 'node_modules' directory from compilation
+    "dist" // Exclude the 'dist' directory (where compiled code is output)
+  ]
+}

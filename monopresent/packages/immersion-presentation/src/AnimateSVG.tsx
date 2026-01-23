@@ -32,7 +32,7 @@ const positionSvg = (textSvg: SVGElement): void => {
     textY?: string
   } = textSvg.dataset
 
-  const FONT_SCALING_FACTOR = 2
+  const FONT_SCALING_FACTOR = 2.5 //2
   const scale = parseFloat(scaleString || '0')
   const textX = parseFloat(textXString || '0')
   const textY = parseFloat(textYString || '0')
@@ -47,7 +47,7 @@ const positionSvg = (textSvg: SVGElement): void => {
   textSvg.setAttribute('x', textX + 'px')
   textSvg.setAttribute(
     'y',
-    textY + FONT_SCALING_FACTOR * scale * vy * 1.3 + 'px'
+    textY + FONT_SCALING_FACTOR * scale * vy * 0 + 'px' //1.3
   )
   textSvg.setAttribute('width', FONT_SCALING_FACTOR * scale * width + 'pt')
   textSvg.setAttribute('height', FONT_SCALING_FACTOR * scale * height + 'pt')
@@ -90,7 +90,7 @@ const replaceText = async (textEle: SVGGraphicsElement) => {
   })
 }
 
-const TIMING = 0.4
+const TIMING = 0.1
 
 // make awaitable?
 function update(
@@ -147,9 +147,10 @@ function update(
 }
 
 // Cache the images
-const memoizedFetch = memoize(
-  (src: string): Promise<string> => fetch(src).then((r) => r.text())
-)
+// const memoizedFetch = memoize(
+//   (src: string): Promise<string> => fetch(src).then((r) => r.text())
+// )
+const memoizedFetch = (src: string): Promise<string> => fetch(src).then((r) => r.text())
 
 export type AnimateSVGStep = {
   css?: React.CSSProperties
@@ -175,7 +176,7 @@ function AnimateSVG({
 }: AnimateSVGProps): React.ReactElement {
   const element = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       // Load the svg
       const text = await memoizedFetch(src.startsWith('/') ? src : '/' + src)
       const div = element.current

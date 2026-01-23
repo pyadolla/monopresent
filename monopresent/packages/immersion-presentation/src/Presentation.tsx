@@ -141,7 +141,11 @@ function PresentationRouteWrapper({
   }
 
   const ws = useMemo(
-    () => new WebSocket(`ws://${window.location.hostname}:3003`),
+    () => {
+      const socket = new WebSocket(`ws://${window.location.hostname}:3003`);
+      socket.binaryType = "text";
+      return socket;
+    },
     []
   )
   /* const bc = useMemo(() => new BroadcastChannel('presentation'), []) */
@@ -150,12 +154,28 @@ function PresentationRouteWrapper({
   /*   setSlideAndStep(event.data.slideIndex, event.data.stepIndex, false) */
   /* }, []) */
 
-  ws.onmessage = (message) => {
+  // ws.onmessage = (message) => {
+  //   try {
+  //     const { slideIndex, stepIndex } = JSON.parse(message.data)
+  //     setSlideAndStep(slideIndex, stepIndex, false)
+  //   } catch (e) {
+  //     console.log('Could not parse', message.data, e)
+  //   }
+  // }
+  ws.onmessage = async (event) => {
     try {
-      const { slideIndex, stepIndex } = JSON.parse(message.data)
-      setSlideAndStep(slideIndex, stepIndex, false)
+      let data = event.data;
+
+      // If it's a Blob, convert to text first
+      if (data instanceof Blob) {
+        data = await data.text();
+      }
+
+      // Now parse as JSON
+      const { slideIndex, stepIndex } = JSON.parse(data);
+      setSlideAndStep(slideIndex, stepIndex, false);
     } catch (e) {
-      console.log('Could not parse', message.data, e)
+      console.error("Could not parse!", event.data, e);
     }
   }
 

@@ -13,17 +13,31 @@
         "--no-first-run",
         "--disable-default-apps",
         "--disable-popup-blocking",
-        "--disable-extensions",
+        // "--disable-extensions",
         "--disable-features=AccountConsistency,EnableAccountConsistency,ConsistencyNewTabPage",
-        "--enable-features=NetworkService,NetworkServiceInProcess"
+        "--enable-features=NetworkService,NetworkServiceInProcess",
+        "--load-extension=${workspaceFolder}/.vscode/chrome-user-data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/6.1.2_0"
       ],
       "userDataDir": "${workspaceFolder}/.vscode/chrome-user-data",
       "sourceMaps": true,
       "trace": true,
+      // "sourceMapPathOverrides": {
+      //   "webpack:///src/*": "${workspaceFolder}/packages/example-presentation/src/*",
+      //   "webpack:///../immersion-presentation/src/*": "${workspaceFolder}/packages/immersion-presentation/src/*"
+      // }
       "sourceMapPathOverrides": {
-        "webpack:///src/*": "${workspaceFolder}/packages/example-presentation/src/*",
-        "webpack:///../immersion-presentation/src/*": "${workspaceFolder}/packages/immersion-presentation/src/*"
+        "localhost:3000/Users/yadollap/sandbox/monopresent/packages/example-presentation/src/*": "${workspaceFolder}/packages/example-presentation/src/*",
+        "localhost:3000/Users/yadollap/sandbox/monopresent/packages/immersion-presentation/src/*": "${workspaceFolder}/packages/immersion-presentation/src/*"
       }
+      // "sourceMapPathOverrides": {
+      //   "webpack:///src/*": "${workspaceFolder}/packages/example-presentation/src/*",
+      //   "webpack:///../immersion-presentation/src/*": "${workspaceFolder}/packages/immersion-presentation/src/*",
+      //   "localhost:3000/static/js/src/*": "${workspaceFolder}/packages/example-presentation/src/*"
+      // }
+      // "sourceMapPathOverrides": {
+      //   "webpack:///src/*": "${workspaceFolder}/packages/example-presentation/src/*",
+      //   "webpack:///../immersion-presentation/src/*": "${workspaceFolder}/packages/immersion-presentation/src/*"
+      // }
     }
   ]
 }

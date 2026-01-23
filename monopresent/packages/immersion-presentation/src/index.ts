@@ -13,7 +13,7 @@ export { CitationContext } from './Citations'
 export { default as AnimateSVG } from './AnimateSVG'
 // export {default as Image} from './Image'
 export { default as Show } from './Show'
-export { InlineMath, DisplayMath, m, M } from './LaTeX'
+export { InlineMath, DisplayMath, m, mOffset, M } from './LaTeX'
 export { default as MObject } from './MObject'
 export { default as Portal } from './Portal'
 // Presentation.js
