@@ -24,8 +24,10 @@ import { SlideInfo } from '../../staticAnalysis'
 import { range } from '../../utils'
 export { RenderPresentation, PresentationContext, useIsCurrentlyVisible } from '../../Presentation'
 export function Presentation(props: PresentationProps): React.ReactElement {
-  const h = 1070 //900 * 1.25 //1200 
-  const w = 1710 //1200 * 1.25 //1920 
+  // const h = 1070 //900 * 1.25 //1200
+  // const w = 1710 //1200 * 1.25 //1920
+  const h = 1200 * 1.25
+  const w = 1920 * 1.25
   return (
     <RenderPresentation
       {...props}
