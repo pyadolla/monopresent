@@ -64,7 +64,7 @@ export function Slide({
   ...props
 }: {
   className?: string
-  children: React.ReactNode
+  children: React.ReactNode | ((step: any) => React.ReactNode)
   style?: React.CSSProperties
   [key: string]: any
 }): React.ReactElement {

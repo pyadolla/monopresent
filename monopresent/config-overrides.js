@@ -7,14 +7,18 @@ const {
 } = require('customize-cra');
 const rewireYarnWorkspaces = require('react-app-rewire-yarn-workspaces');
 
+const packageSrcDirs = fs
+  .readdirSync(path.join(__dirname, 'packages'), { withFileTypes: true })
+  .filter((d) => d.isDirectory())
+  .map((d) => path.join(__dirname, 'packages', d.name, 'src'))
+  .filter((p) => fs.existsSync(p))
+  .map((p) => fs.realpathSync(p));
+
 console.log("Running!!!!!!!!!!!!!!!!!");
 module.exports = override(
   removeModuleScopePlugin(),
   // Ensure the default babel-loader includes both source folders
-  babelInclude([
-    fs.realpathSync(__dirname + '/packages/example-presentation/src'),
-    fs.realpathSync(__dirname + '/packages/immersion-presentation/src'),
-  ]),
+  babelInclude(packageSrcDirs),
 
   // Patch babel-loader plugins and presets (optional if you're using macros in immersion-presentation)
   (config, env) => {
@@ -36,11 +40,7 @@ module.exports = override(
 
     console.log(babelRule)
     config.resolve.extensions = ['.ts', '.tsx', ...config.resolve.extensions];
-    config.resolve.modules = [
-      fs.realpathSync(__dirname + '/packages/example-presentation/src'),
-      fs.realpathSync(__dirname + '/packages/immersion-presentation/src'),
-      'node_modules',
-    ];
+    config.resolve.modules = [...packageSrcDirs, 'node_modules'];
     // ✅ 🔥 Key fix: rewrite source map paths to be relative
     config.devtool = 'source-map';
     // config.output.devtoolModuleFilenameTemplate = info =>
@@ -56,4 +56,3 @@ module.exports = override(
   }
 
 );
-
