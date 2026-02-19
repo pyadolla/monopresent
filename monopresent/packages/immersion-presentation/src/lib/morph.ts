@@ -31,7 +31,7 @@ export async function animate(
   TIMING: number = DEFAULT_TIMING,
   setSvgData: (data: SVGData) => void = () => undefined
 ): Promise<any[]> {
-  let data: LaTeXSVGData
+  let data: LaTeXSVGData | null
   if (text === '') {
     data = {
       groups: {},
@@ -228,4 +228,3 @@ export async function animate(
 //     resolveCurrent() // mark this animation as done
 //   }
 // }
-
