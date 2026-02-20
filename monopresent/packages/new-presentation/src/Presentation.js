@@ -69,6 +69,49 @@ const pipelineSteps = pipelineTimeline.map((s, i) => ({
   "text:right_label": i < 3 ? "$x_{t-1}$" : "$x_0$",
 }));
 
+const complexPipelineTimeline = timeline`
+left     a a p h h v ${{ a: { opacity: 1, scale: 1.08 }, p: { opacity: 0.35, scale: 1.02 } }}
+middle   h a a p h v ${{ a: { opacity: 1, scale: 1.08 }, p: { opacity: 0.35, scale: 1.02 } }}
+right    h h a a p v ${{ a: { opacity: 1, scale: 1.08 }, p: { opacity: 0.35, scale: 1.02 } }}
+arrow_lm d D D D d D
+arrow_mr d d d D D D
+`;
+
+const complexPipelineSteps = complexPipelineTimeline.map((s, i) => {
+  const { scale: leftScale = 1, ...leftRest } = s.left;
+  const { scale: middleScale = 1, ...middleRest } = s.middle;
+  const { scale: rightScale = 1, ...rightRest } = s.right;
+
+  return {
+    left: {
+      ...leftRest,
+      css: {
+        transform: `scale(${leftScale})`,
+        transformOrigin: "center",
+      },
+    },
+    middle: {
+      ...middleRest,
+      css: {
+        transform: `scale(${middleScale})`,
+        transformOrigin: "center",
+      },
+    },
+    right: {
+      ...rightRest,
+      css: {
+        transform: `scale(${rightScale})`,
+        transformOrigin: "center",
+      },
+    },
+    arrow_lm: s.arrow_lm,
+    arrow_mr: s.arrow_mr,
+    "text:left_label": ["$x_0$", "$x_0$", "$x_t$", "$x_t$", "$x_t$", "$x_0$"][i],
+    "text:middle_label": ["$x_t$", "$f_\\theta$", "$z_t$", "$z_t$", "$f_\\theta$", "$x_t$"][i],
+    "text:right_label": ["$x_0$", "$x_0$", "$x_0$", "$x_{t-1}$", "$x_{t-1}$", "$x_0$"][i],
+  };
+});
+
 function App() {
   return (
     <Presentation bibUrl="/references.bib">
@@ -136,6 +179,21 @@ function App() {
             />
             <div className="mt-6 text-sm text-gray-300">
               Step {step + 1}: timeline-driven state mapping for SVG ids and label text.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Complex Timeline (Custom Map + DrawSVG)" steps={range(complexPipelineSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/pipeline.svg"
+              step={complexPipelineSteps[step]}
+              style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}
+            />
+            <div className="mt-6 text-sm text-gray-300">
+              Step {step + 1}: custom tokens (a/p), multi-node sequencing, and connector draw animations (d/D).
             </div>
           </div>
         )}
