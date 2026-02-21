@@ -43,25 +43,25 @@ const pipelineSteps = pipelineTimeline.map((s, i) => ({
   left: {
     ...s.left,
     css: {
-      transform:
-        s.left.opacity === 1 ? "scale(1.08) translate(-6px, -6px)" : "scale(1)",
+      transform: s.left.opacity === 1 ? "scale(1.08)" : "scale(1)",
       transformOrigin: "center",
+      transformBox: "fill-box",
     },
   },
   middle: {
     ...s.middle,
     css: {
-      transform:
-        s.middle.opacity === 1 ? "scale(1.08) translate(-6px, -6px)" : "scale(1)",
+      transform: s.middle.opacity === 1 ? "scale(1.08)" : "scale(1)",
       transformOrigin: "center",
+      transformBox: "fill-box",
     },
   },
   right: {
     ...s.right,
     css: {
-      transform:
-        s.right.opacity === 1 ? "scale(1.08) translate(-6px, -6px)" : "scale(1)",
+      transform: s.right.opacity === 1 ? "scale(1.08)" : "scale(1)",
       transformOrigin: "center",
+      transformBox: "fill-box",
     },
   },
   "text:left_label": i < 2 ? "$x_0$" : "$x_t$",
@@ -88,6 +88,7 @@ const complexPipelineSteps = complexPipelineTimeline.map((s, i) => {
       css: {
         transform: `scale(${leftScale})`,
         transformOrigin: "center",
+        transformBox: "fill-box",
       },
     },
     middle: {
@@ -95,6 +96,7 @@ const complexPipelineSteps = complexPipelineTimeline.map((s, i) => {
       css: {
         transform: `scale(${middleScale})`,
         transformOrigin: "center",
+        transformBox: "fill-box",
       },
     },
     right: {
@@ -102,15 +104,32 @@ const complexPipelineSteps = complexPipelineTimeline.map((s, i) => {
       css: {
         transform: `scale(${rightScale})`,
         transformOrigin: "center",
+        transformBox: "fill-box",
       },
     },
-    arrow_lm: s.arrow_lm,
-    arrow_mr: s.arrow_mr,
+    arrow_lm: {
+      ...s.arrow_lm,
+      opacity: s.arrow_lm.drawSVG === 0 ? 0 : 1,
+    },
+    arrow_mr: {
+      ...s.arrow_mr,
+      opacity: s.arrow_mr.drawSVG === 0 ? 0 : 1,
+    },
     "text:left_label": ["$x_0$", "$x_0$", "$x_t$", "$x_t$", "$x_t$", "$x_0$"][i],
     "text:middle_label": ["$x_t$", "$f_\\theta$", "$z_t$", "$z_t$", "$f_\\theta$", "$x_t$"][i],
     "text:right_label": ["$x_0$", "$x_0$", "$x_0$", "$x_{t-1}$", "$x_{t-1}$", "$x_0$"][i],
   };
 });
+
+const textEdgeCasesSteps = [
+  { plain: "$x_0$", tspan: "$x_t$" },
+  { plain: "$x_{t-1}$", tspan: "$\\mu_t$" },
+  { plain: "$\\nabla_x \\log p_t$", tspan: "$s_t$" },
+  { plain: "$\\alpha_t x_0$", tspan: "$\\hat{x}_0$" },
+].map(({ plain, tspan }) => ({
+  "text:plain_label": plain,
+  "text:tspan_label": tspan,
+}));
 
 function App() {
   return (
@@ -169,7 +188,9 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="Timeline + AnimateSVG" steps={range(pipelineSteps.length)}>
+      <SectionSlide section="Sandbox / Debug Slides" />
+
+      <Slide header="Sandbox: Timeline + AnimateSVG" steps={range(pipelineSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center">
             <AnimateSVG
@@ -184,7 +205,7 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="Complex Timeline (Custom Map + DrawSVG)" steps={range(complexPipelineSteps.length)}>
+      <Slide header="Sandbox: Complex Timeline (Custom Map + DrawSVG)" steps={range(complexPipelineSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center">
             <AnimateSVG
@@ -194,6 +215,21 @@ function App() {
             />
             <div className="mt-6 text-sm text-gray-300">
               Step {step + 1}: custom tokens (a/p), multi-node sequencing, and connector draw animations (d/D).
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Text Edge Cases (Centered Labels + tspan)" steps={range(textEdgeCasesSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/text-edge-cases.svg"
+              step={textEdgeCasesSteps[step]}
+              style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}
+            />
+            <div className="mt-6 text-sm text-gray-300">
+              Step {step + 1}: validates plain text and tspan replacement paths with centered label anchors.
             </div>
           </div>
         )}
