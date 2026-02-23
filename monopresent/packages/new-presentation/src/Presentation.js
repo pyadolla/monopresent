@@ -340,16 +340,63 @@ function App() {
 
       <SectionSlide section="Equiformer Background" />
 
-      <Slide header="Equiformer in One Slide" steps={[1, 2, 3, 4]}>
+      <Slide header="Equiformer in One Slide" steps={[1, 2, 3]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>Equiformer is an equivariant graph Transformer for 3D atomistic graphs.</Item>
-              <Item>It uses irreps features and tensor-product-based equivariant operations.</Item>
-              <Item>Its graph attention uses MLP attention with non-linear messages.</Item>
-              <Item>Callout: Equiformer Figure 1 and Tables 6-7.</Item>
-            </List>
-            <Notes>Only set context here. Detailed Equiformer results are not the main story.</Notes>
+            <div className="flex flex-col gap-10">
+              <div className="grid grid-cols-2 gap-10">
+                <div className="flex flex-col items-center gap-4">
+                  <Show when={step >= 1}>
+                    <h3 className="text-[1.75rem] leading-tight text-green text-center">
+                      SE(3)-Equivariant Graph Transformer for 3D Atomistic Graphs
+                    </h3>
+                  </Show>
+                  <Show when={step >= 1}>
+                    <img
+                      src="/assets/equiformer/equi_arch.svg"
+                      alt="Equiformer architecture"
+                      className="h-auto"
+                      style={{ width: "35%" }}
+                    />
+                  </Show>
+                </div>
+                <div className="flex flex-col items-center gap-4">
+                  <Show when={step >= 2}>
+                    <h3 className="text-[1.75rem] leading-tight text-green text-center">
+                      Core attention change: MLP attention plus non-linear message passing.
+                    </h3>
+                  </Show>
+                  <Show when={step >= 2}>
+                    <img
+                      src="/assets/equiformer/equi_attn.svg"
+                      alt="Equiformer equivariant attention"
+                      className="h-auto"
+                      style={{ width: "35%" }}
+                    />
+                  </Show>
+                </div>
+              </div>
+            </div>
+            <Show when={step >= 3}>
+              <div className="mt-8">
+                <h3 className="text-[1.85rem] leading-tight text-center text-green">
+                  Equivariant Transformer blocks on irreps features.
+                </h3>
+              </div>
+            </Show>
+            <Notes>
+              <div>
+                <div><b>Purpose of this slide</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 10, paddingLeft: 20 }}>
+                  <li>Give only the minimum background needed for EquiFold architecture choices.</li>
+                </ul>
+                <div><b>Speaker emphasis</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 0, paddingLeft: 20 }}>
+                  <li>Equiformer contributes the equivariant Transformer block design.</li>
+                  <li>Do not spend long on benchmark details here.</li>
+                </ul>
+              </div>
+            </Notes>
           </>
         )}
       </Slide>
