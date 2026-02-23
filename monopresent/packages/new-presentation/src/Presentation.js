@@ -177,16 +177,91 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="Why This Problem Matters" steps={[1, 2, 3, 4]}>
+      <Slide header="Why This Problem Matters" steps={[1, 2, 3, 4, 5]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>Protein engineering pipelines need structure calls at high throughput.</Item>
-              <Item>Input preparation and large models can dominate runtime.</Item>
-              <Item>Hard regions like mini-proteins and CDR-H3 loops are high value.</Item>
-              <Item>Callout: EquiFold Section 1 (Introduction).</Item>
-            </List>
-            <Notes>Frame this as an operations problem: throughput, latency, and hard targets.</Notes>
+            <div className="h-full grid grid-cols-2 gap-8 items-center">
+              <ul>
+                <Show when={step >= 1}>
+                  <Item>Fast sequence-to-structure inference is the bottleneck for many real experimental loops.</Item>
+                </Show>
+                <Show when={step >= 2}>
+                  <Item>In practice this enables:</Item>
+                </Show>
+                <div className="ml-6 mt-1">
+                  <Show when={step >= 2}>
+                    <div>- Triage of large candidate libraries before synthesis or expression</div>
+                  </Show>
+                  <Show when={step >= 3}>
+                    <div>- Rapid prioritization of antibody variants during affinity-maturation rounds</div>
+                  </Show>
+                  <Show when={step >= 4}>
+                    <div>- Quick structural sanity checks before wet-lab handoff</div>
+                  </Show>
+                </div>
+                <Show when={step >= 5}>
+                  <Item>Callout: EquiFold Section 1 (Introduction).</Item>
+                </Show>
+              </ul>
+              <div className="h-full p-3 flex flex-col items-center justify-center">
+                <Show when={step >= 2}>
+                  <div className="w-56 -mt-8">
+                    <img
+                      src="/assets/custom/library-triage-biorender.png"
+                      alt="Library triage example"
+                      className="w-full h-[7.5rem] object-contain rounded"
+                    />
+                    <div className="mt-0 text-[11px] text-gray-300 text-center">Library triage</div>
+                  </div>
+                </Show>
+
+                <div className="w-full flex items-start justify-center gap-20 mt-8">
+                  <Show when={step >= 3}>
+                    <div className="w-56">
+                      <img
+                        src="/assets/custom/antibody-prioritization-biorender.png"
+                        alt="Antibody variant prioritization example"
+                        className="w-full h-[7.5rem] object-contain rounded"
+                      />
+                      <div className="mt-0 text-[11px] text-gray-300 text-center">Variant prioritization</div>
+                    </div>
+                  </Show>
+
+                  <Show when={step >= 4}>
+                    <div className="w-56">
+                      <img
+                        src="/assets/custom/pre-wetlab-checks-biorender.png"
+                        alt="Pre wet-lab sanity check example"
+                        className="w-full h-[7.5rem] object-contain rounded"
+                      />
+                      <div className="mt-0 text-[11px] text-gray-300 text-center">Pre-wet-lab sanity checks</div>
+                    </div>
+                  </Show>
+                </div>
+              </div>
+            </div>
+            <Notes>
+              <div>
+                <div><b>Library triage</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 10, paddingLeft: 20 }}>
+                  <li>Run fast structure prediction on a large candidate set.</li>
+                  <li>Keep a small top subset for expensive downstream experiments.</li>
+                </ul>
+
+                <div><b>How ML tools filter with EquiFold outputs</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 10, paddingLeft: 20 }}>
+                  <li>RFdiffusion: generate backbones; keep candidates where EquiFold preserves intended scaffold/motif geometry.</li>
+                  <li>ProteinMPNN: filter by sequence-backbone compatibility on EquiFold-predicted structures.</li>
+                  <li>AlphaFold/ESMFold: cross-model confirmation via agreement and confidence.</li>
+                  <li>Task-specific predictors: filter by binding and developability properties.</li>
+                </ul>
+
+                <div><b>Takeaway</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 0, paddingLeft: 20 }}>
+                  <li>EquiFold speed makes this multi-model filtering loop practical at scale.</li>
+                </ul>
+              </div>
+            </Notes>
           </>
         )}
       </Slide>
