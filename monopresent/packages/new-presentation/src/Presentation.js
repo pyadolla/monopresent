@@ -143,51 +143,6 @@ function App() {
 
       <TableOfContentsSlide header="Outline" />
 
-      <SectionSlide section="Core Authoring APIs" />
-
-      <Slide header="Step-Based Authoring" steps={[1, 2, 3, 4]}>
-        {(step) => (
-          <>
-            <List step={step}>
-              <Item>
-                Compose with theme components: {m`\texttt{Slide},\ \texttt{List},\ \texttt{Item}`}
-              </Item>
-              <Item>
-                Gate content by step using {m`\texttt{Show}`}: <Show when={step > 1}><b>now visible</b></Show>
-              </Item>
-              <Item>
-                Add presenter-only notes with {m`\texttt{Notes}`}
-              </Item>
-              <Item>
-                Add section/header metadata for navigation and progress
-              </Item>
-            </List>
-            <Notes>
-              This slide demonstrates the core authoring loop: define <b>steps</b>, reveal content progressively,
-              and keep speaker detail in notes.
-            </Notes>
-          </>
-        )}
-      </Slide>
-
-      <Slide header="Morphing Math" steps={[0, 1, 2]}>
-        {(step) => (
-          <div className="h-full flex flex-col justify-center gap-8">
-            <Box title="Morph">
-              <Morph display>{equationFrames[step]}</Morph>
-            </Box>
-            <div>
-              <Item>
-                Inline helpers still work during transitions: {m`\alpha_t x_0 + \sigma_t\epsilon`}
-              </Item>
-              <Item>
-                Display helper: {M`x_t \sim \mathcal{N}(\alpha_t x_0, \sigma_t^2 I)`}
-              </Item>
-            </div>
-          </div>
-        )}
-      </Slide>
-
       <SectionSlide section="Sandbox / Debug Slides" />
 
       <Slide header="Sandbox: Timeline + AnimateSVG" steps={range(pipelineSteps.length)}>
@@ -230,6 +185,51 @@ function App() {
             />
             <div className="mt-6 text-sm text-gray-300">
               Step {step + 1}: validates plain text and tspan replacement paths with centered label anchors.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <SectionSlide section="Core Authoring APIs" />
+
+      <Slide header="Step-Based Authoring" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <>
+            <List step={step}>
+              <Item>
+                Compose with theme components: {m`\texttt{Slide},\ \texttt{List},\ \texttt{Item}`}
+              </Item>
+              <Item>
+                Gate content by step using {m`\texttt{Show}`}: <Show when={step > 1}><b>now visible</b></Show>
+              </Item>
+              <Item>
+                Add presenter-only notes with {m`\texttt{Notes}`}
+              </Item>
+              <Item>
+                Add section/header metadata for navigation and progress
+              </Item>
+            </List>
+            <Notes>
+              This slide demonstrates the core authoring loop: define <b>steps</b>, reveal content progressively,
+              and keep speaker detail in notes.
+            </Notes>
+          </>
+        )}
+      </Slide>
+
+      <Slide header="Morphing Math" steps={[0, 1, 2]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <Box title="Morph">
+              <Morph display>{equationFrames[step]}</Morph>
+            </Box>
+            <div>
+              <Item>
+                Inline helpers still work during transitions: {m`\alpha_t x_0 + \sigma_t\epsilon`}
+              </Item>
+              <Item>
+                Display helper: {M`x_t \sim \mathcal{N}(\alpha_t x_0, \sigma_t^2 I)`}
+              </Item>
             </div>
           </div>
         )}
