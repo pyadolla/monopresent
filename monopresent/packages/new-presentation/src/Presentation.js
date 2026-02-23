@@ -591,10 +591,23 @@ function App() {
                     <div>- Each node encodes local orientation and side-chain geometry explicitly in 3D.</div>
                   </Show>
                   <Show when={step >= 3}>
-                    <div>- Example pair (LYS, GLU): both share backbone-overlap nodes {m`(C,CA,CB,N)`} and {m`(C,CA,O)`}.</div>
+                    <div>
+                      - Example pair (LYS, GLU): both share backbone-overlap nodes (
+                      <span style={{ color: "#49d65a" }}>C,CA,CB</span>,
+                      <span style={{ color: "#3f6bff" }}>N</span>) and (
+                      <span style={{ color: "#49d65a" }}>C,CA</span>,
+                      <span style={{ color: "#ff5a5a" }}>O</span>).
+                    </div>
                   </Show>
                   <Show when={step >= 3}>
-                    <div>- They then differ by side-chain nodes (e.g., LYS: {m`(CB,CG,CD)`}, {m`(CD,CE,NZ)`}; GLU: {m`(CG,CD,OE1,OE2)`}).</div>
+                    <div>
+                      - They then differ by side-chain nodes (e.g., LYS: (
+                      <span style={{ color: "#49d65a" }}>CB,CG,CD</span>), (
+                      <span style={{ color: "#49d65a" }}>CD,CE</span>,
+                      <span style={{ color: "#3f6bff" }}>NZ</span>); GLU: (
+                      <span style={{ color: "#49d65a" }}>CG,CD</span>,
+                      <span style={{ color: "#ff5a5a" }}>OE1,OE2</span>)).
+                    </div>
                   </Show>
                 </div>
 
@@ -632,7 +645,7 @@ function App() {
                       className="w-[30rem] max-w-full rounded"
                     />
                     <div className="mt-2 text-[0.9rem] text-gray-300">
-                      (a) Lysine, (b) Phenylalanine, (c) Isoleucine, (d) Glutamate
+                      (a) <span style={{ color: "#c792ea" }}>Lysine</span>, (b) <span style={{ color: "#f7b267" }}>Phenylalanine</span>, (c) <span style={{ color: "#5aa7ff" }}>Isoleucine</span>, (d) <span style={{ color: "#ff7a7a" }}>Glutamate</span>
                     </div>
                   </div>
                 </Show>
