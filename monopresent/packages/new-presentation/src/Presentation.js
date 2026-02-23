@@ -135,13 +135,202 @@ function App() {
   return (
     <Presentation bibUrl="/references.bib">
       <TitleSlide
-        title="New Immersion Deck"
-        names="Your Name"
-        names2="Team / Organization"
-        date="February 19, 2026"
+        title="EquiFold: Fast, Equivariant All-Atom Protein Structure Prediction"
+        names="Payman Yadollahpour"
+        names2="Genentech"
+        date="February 23, 2026"
       />
 
       <TableOfContentsSlide header="Outline" />
+
+      <SectionSlide section="Motivation and Context" />
+
+      <Slide header="EquiFold: Main Takeaway" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <>
+            <List step={step}>
+              <Item>
+                EquiFold predicts all-atom protein structures from sequence with an SE(3)-equivariant model.
+              </Item>
+              <Item>
+                It uses a novel coarse-grained representation with explicit side-chain geometry in 3D.
+              </Item>
+              <Item>
+                It avoids MSA and protein language model embeddings at inference.
+              </Item>
+              <Item>
+                Result: strong accuracy with much faster inference for targeted protein design use cases.
+              </Item>
+            </List>
+          </>
+        )}
+      </Slide>
+
+      <Slide header="Why This Problem Matters" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Protein design workflows need structure predictions at high throughput.</Item>
+            <Item>Many methods are slowed by expensive input preparation and large models.</Item>
+            <Item>Small designed proteins and flexible antibody loops remain difficult regions.</Item>
+            <Item>Practical systems need speed, atomic detail, and robust geometry.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Positioning vs Prior Pipelines" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>AlphaFold-style systems are highly accurate but often heavy for screening-scale use.</Item>
+            <Item>Language-model/MSA dependencies can complicate production workflows.</Item>
+            <Item>EquiFold aims to simplify the input stack while preserving all-atom fidelity.</Item>
+            <Item>This work focuses on difficult, high-value subsets: mini-proteins and antibodies.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <SectionSlide section="Equiformer Background" />
+
+      <Slide header="Equiformer in One Slide" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Equiformer is an equivariant graph attention Transformer for 3D atomistic graphs.</Item>
+            <Item>It represents features as irreducible representations (irreps) with equivariant operations.</Item>
+            <Item>It introduces equivariant graph attention with MLP attention + non-linear message passing.</Item>
+            <Item>It reports competitive performance across QM9, MD17, and OC20.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="What EquiFold Reuses from Equiformer" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>SE(3)-equivariant block design and geometric tensor processing.</Item>
+            <Item>Tensor-product-based message passing over 3D neighborhoods.</Item>
+            <Item>Transformer-style iterative refinement stack adapted for structure prediction.</Item>
+            <Item>EquiFold customizes this around a protein-specific coarse-grained representation.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <SectionSlide section="EquiFold Method" />
+
+      <Slide header="EquiFold Architecture Overview" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Input: amino acid sequence.</Item>
+            <Item>Initialize coarse-grained nodes with random transforms.</Item>
+            <Item>Apply multiple SE(3)-equivariant refinement blocks.</Item>
+            <Item>Reverse-map CG nodes to all-atom coordinates.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Novel Coarse-Grained Representation" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Each residue is decomposed into predefined CG nodes.</Item>
+            <Item>Node definitions cover all atoms and preserve local bonded structure.</Item>
+            <Item>Each node has enough atoms to define a rigid-body orientation in 3D.</Item>
+            <Item>This keeps all-atom resolution while reducing modeling complexity.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Forward and Reverse CG Mappings" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>
+              Forward map: atom coordinates to CG node identities + Euclidean transforms {m`(t, R)`}.
+            </Item>
+            <Item>Reverse map: reconstruct atom coordinates from transformed node templates.</Item>
+            <Item>Atoms represented by multiple nodes are aggregated by averaging.</Item>
+            <Item>This creates an end-to-end differentiable structure pipeline.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Geometric Features and Equivariant Updates" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Each node gets geometric tensor features across degrees {m`l=0...l_{max}`}. </Item>
+            <Item>Embeddings are rotated via Wigner-D matrices to preserve equivariance.</Item>
+            <Item>Each block predicts translation and rotation updates per node.</Item>
+            <Item>Iterative updates refine structure with symmetry-respecting dynamics.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Training Objective and Scale" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Losses: Frame Aligned Point Error (FAPE) + structure violation loss.</Item>
+            <Item>Loss terms are computed on outputs from each refinement block.</Item>
+            <Item>Mini-protein model: 2.30M parameters.</Item>
+            <Item>Antibody model: 7.38M parameters.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <SectionSlide section="Experiments and Results" />
+
+      <Slide header="Experiment 1: De Novo Mini-Proteins" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Dataset from four fold families: {m`\alpha\alpha\alpha,\ \alpha\beta\beta\alpha,\ \beta\alpha\beta\beta,\ \beta\beta\alpha\beta\beta`}.</Item>
+            <Item>Focuses on challenging compact designed proteins.</Item>
+            <Item>Reported per-fold all-atom RMSD and {m`C_\alpha`} RMSD.</Item>
+            <Item>Average inference speed reported as ~0.03 seconds per sequence.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Mini-Protein Results: Key Numbers" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Representative all-atom RMSD by fold: 1.00-2.20 A.</Item>
+            <Item>Representative {m`C_\alpha`} RMSD by fold: 0.43-1.76 A.</Item>
+            <Item>Examples show good performance even with moderate train-set sequence similarity.</Item>
+            <Item>Demonstrates learned topology + atomic placement at very high speed.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Experiment 2: Antibody Structures" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Training data curated from SAbDab/PDB; benchmarked on post-cutoff antibody test set.</Item>
+            <Item>Evaluation emphasizes framework + CDR regions including hard CDR-H3 loops.</Item>
+            <Item>Compared against AlphaFold-Multimer and IgFold backbone RMSD metrics.</Item>
+            <Item>Also reports all-atom RMSD and practical inference time.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <Slide header="Antibody Results: Accuracy + Throughput" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>Backbone RMSD is competitive across heavy/light chain framework and CDR regions.</Item>
+            <Item>All-atom RMSD reported as 1.52 A on the test set average.</Item>
+            <Item>Inference is ~1 second per antibody on a single A100 GPU.</Item>
+            <Item>Runtime comparison in paper table: ~1 second vs ~1 minute (IgFold) vs ~1 hour (AF-Multimer).</Item>
+          </List>
+        )}
+      </Slide>
+
+      <SectionSlide section="Conclusions and Next Steps" />
+
+      <Slide header="Conclusions and Open Directions" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <List step={step}>
+            <Item>EquiFold combines explicit 3D side-chain-aware CG modeling with equivariant refinement.</Item>
+            <Item>It achieves strong accuracy-speed tradeoffs on targeted protein design benchmarks.</Item>
+            <Item>Main technical limitation: quadratic complexity in message passing for larger proteins.</Item>
+            <Item>Future directions: broader protein coverage, stronger physical priors, and generative integration.</Item>
+          </List>
+        )}
+      </Slide>
+
+      <SectionSlide section="Appendix: Sandbox / Practice Slides" />
 
       <SectionSlide section="Sandbox / Debug Slides" />
 
