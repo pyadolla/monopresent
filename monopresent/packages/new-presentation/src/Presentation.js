@@ -69,6 +69,46 @@ const pipelineSteps = pipelineTimeline.map((s, i) => ({
   "text:right_label": i < 3 ? "$x_{t-1}$" : "$x_0$",
 }));
 
+const eqfOverview1SvgStep = {
+  txt_seq_title: { css: { fill: "#dce6f5" } },
+  txt_seq_sub1: { css: { fill: "#b7c7dc" } },
+  txt_seq_sub2: { css: { fill: "#b7c7dc" } },
+  txt_cg_title1: { css: { fill: "#dce6f5" } },
+  txt_cg_title2: { css: { fill: "#dce6f5" } },
+  txt_cg_sub: { css: { fill: "#b7c7dc" } },
+  txt_tpl_title: { css: { fill: "#dce6f5" } },
+  txt_tpl_math: { css: { fill: "#a8c8ff" } },
+  txt_tpl_atoms: { css: { fill: "#b7c7dc" } },
+  txt_tpl_sub: { css: { fill: "#b7c7dc" } },
+};
+
+const eqfOverview2SvgStep = {
+  eq2_math_init: { css: { fill: "#a8c8ff" } },
+  eq2_math_in: { css: { fill: "#a8c8ff" } },
+  eq2_math_update: { css: { fill: "#a8c8ff" } },
+  eq2_math_out: { css: { fill: "#a8c8ff" } },
+  eq2_math_iter: { css: { fill: "#a8c8ff" } },
+};
+
+const eqfOverview3SvgStep = {
+  eq3_math_in: { css: { fill: "#a8c8ff" } },
+  eq3_math_geom: { css: { fill: "#a8c8ff" } },
+  eq3_math_no_delta: { css: { fill: "#a8c8ff" } },
+  eq3_math_out: { css: { fill: "#a8c8ff" } },
+  eq3_math_delta: { css: { fill: "#a8c8ff" } },
+  eq3_math_s: { css: { fill: "#a8c8ff" } },
+  eq3_math_k: { css: { fill: "#a8c8ff" } },
+  eq3_outer_k: { css: { fill: "#a8c8ff" } },
+};
+
+const eqfOverview4SvgStep = {
+  eq4_math_rt: { css: { fill: "#a8c8ff" } },
+  eq4_math_xv: { css: { fill: "#a8c8ff" } },
+  eq4_math_merge: { css: { fill: "#a8c8ff" } },
+  text36: { css: { fontSize: "9px" } },
+  text37: { css: { fontSize: "9px" } },
+};
+
 const complexPipelineTimeline = timeline`
 left     a a p h h v ${{ a: { opacity: 1, scale: 1.08 }, p: { opacity: 0.35, scale: 1.02 } }}
 middle   h a a p h v ${{ a: { opacity: 1, scale: 1.08 }, p: { opacity: 0.35, scale: 1.02 } }}
@@ -434,7 +474,7 @@ function App() {
                   <ul className="list-none ml-8 mt-2 space-y-1">
                     <li>- Each block predicts transform updates that progressively improve all-atom structure.</li>
                   </ul>
-                  <div className="ml-8 mt-3">
+                  <div className="ml-8 mt-0">
                     <Box title="Refinement Update">
                       {M`(t_i^{(k+1)}, R_i^{(k+1)}) = (t_i^{(k)} + \Delta t_i^{(k)}, \Delta R_i^{(k)} R_i^{(k)})`}
                     </Box>
@@ -455,13 +495,82 @@ function App() {
       <Slide header="EquiFold Architecture Overview" steps={[1, 2, 3, 4]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>Sequence input is mapped to coarse-grained nodes.</Item>
-              <Item>Node transforms are initialized and iteratively refined.</Item>
-              <Item>Refinement blocks are SE(3)-equivariant.</Item>
-              <Item>Callout: EquiFold Section 3.3.</Item>
-            </List>
-            <Notes>Walk left-to-right through pipeline. Avoid implementation detail on this slide.</Notes>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-0">
+              <div>
+                <Show when={step >= 1}>
+                  <Item className="text-green">Input sequence is mapped to residue-specific coarse-grained node types, each with a fixed local atom template {m`x^0`}.</Item>
+                </Show>
+              </div>
+              <div className="-mt-4">
+                <Show when={step >= 1}>
+                  <AnimateSVG
+                    src="/assets/equifold/eqf-overview-1-cg-templates.svg"
+                    step={eqfOverview1SvgStep}
+                    width="100%"
+                    style={{ width: "100%" }}
+                  />
+                </Show>
+              </div>
+
+              <div className="-mt-6">
+                <Show when={step >= 2}>
+                  <Item className="text-green">Node transforms {m`(R_i, T_i)`} are initialized (identity/zero or random), then each refinement block takes {m`(R_i^{(k)},T_i^{(k)})`} and outputs updated transforms.</Item>
+                </Show>
+              </div>
+              <div className="-mt-10">
+                <Show when={step >= 2}>
+                  <AnimateSVG
+                    src="/assets/equifold/eqf-overview-2-init-refine.svg"
+                    step={eqfOverview2SvgStep}
+                    width="100%"
+                    style={{ width: "100%" }}
+                  />
+                </Show>
+              </div>
+
+              <div className="-mt-6">
+                <Show when={step >= 3}>
+                  <div>
+                    <Item className="text-green">Inside each block, stacked equivariant sub-blocks update node feature representations {m`h_i^{(k,s)} \rightarrow h_i^{(k,s+1)}`} using current geometry {m`(R^{(k)},T^{(k)})`}.</Item>
+                    <div className="ml-8 mt-0 text-[1.1rem] text-gray-300">No transform update is produced at intermediate sub-blocks; {m`(\Delta R_i,\Delta T_i)`} is predicted only once by the block head after the final sub-block.</div>
+                  </div>
+                </Show>
+              </div>
+              <div className="-mt-10">
+                <Show when={step >= 3}>
+                  <AnimateSVG
+                    src="/assets/equifold/eqf-overview-3-block-update.svg"
+                    step={eqfOverview3SvgStep}
+                    width="100%"
+                    style={{ width: "100%" }}
+                  />
+                </Show>
+              </div>
+
+              <div className="mt-4">
+                <Show when={step >= 4}>
+                  <div>
+                    <Item className="text-green">Final all-atom coordinates are decoded by transforming each node's local template into global space, then merging shared atoms across nodes.</Item>
+                    <div className="ml-8 mt-0 text-[1.2rem]">
+                      {m`x_a=\sum_{v\in\mathcal{V}(a)}w_{av}\left(R_vx^{0}_{av}+T_v\right)`}
+                    </div>
+                  </div>
+                </Show>
+              </div>
+              <div className="mt-2">
+                <Show when={step >= 4}>
+                  <AnimateSVG
+                    src="/assets/equifold/eqf-overview-4-reconstruct.svg"
+                    step={eqfOverview4SvgStep}
+                    width="100%"
+                    style={{ width: "100%" }}
+                  />
+                </Show>
+              </div>
+            </div>
+            <Notes>
+              Keep this slide architectural and linear: representation - iterative refinement - transform updates - all-atom decode.
+            </Notes>
           </>
         )}
       </Slide>
