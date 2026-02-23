@@ -404,12 +404,47 @@ function App() {
       <Slide header="What EquiFold Reuses from Equiformer" steps={[1, 2, 3, 4]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>EquiFold adopts Equiformer-style equivariant sub-blocks.</Item>
-              <Item>It reuses 3D message passing with spherical harmonics and tensor products.</Item>
-              <Item>It integrates these blocks into iterative structure refinement.</Item>
-              <Item>Callout: EquiFold Appendix A.2 and Equiformer Figure 1.</Item>
-            </List>
+            <ul className="space-y-6">
+              <Show when={step >= 1}>
+                <div>
+                  <Item className="text-green">EquiFold adopts Equiformer-style equivariant sub-blocks.</Item>
+                  <ul className="list-none ml-8 mt-2 space-y-1">
+                    <li>- These blocks preserve rotational and translational symmetries during updates.</li>
+                  </ul>
+                  <div className="ml-6 -mt-8 -mb-8">
+                    <img
+                      src="/assets/equiformer/equivariance-subblock-simple.svg"
+                      alt="Equivariance schematic for reused Equiformer-style sub-blocks"
+                      style={{ width: "56%" }}
+                    />
+                  </div>
+                </div>
+              </Show>
+              <Show when={step >= 2}>
+                <div>
+                  <Item className="text-green">It reuses Equiformer-style 3D message passing where spherical harmonics and tensor products make node updates geometry-aware and equivariant.</Item>
+                  <ul className="list-none ml-8 mt-2 space-y-1">
+                    <li>- This enables geometry-aware feature exchange between coarse-grained nodes.</li>
+                  </ul>
+                </div>
+              </Show>
+              <Show when={step >= 3}>
+                <div>
+                  <Item className="text-green">It integrates these blocks into iterative structure refinement.</Item>
+                  <ul className="list-none ml-8 mt-2 space-y-1">
+                    <li>- Each block predicts transform updates that progressively improve all-atom structure.</li>
+                  </ul>
+                  <div className="ml-8 mt-3">
+                    <Box title="Refinement Update">
+                      {M`(t_i^{(k+1)}, R_i^{(k+1)}) = (t_i^{(k)} + \Delta t_i^{(k)}, \Delta R_i^{(k)} R_i^{(k)})`}
+                    </Box>
+                  </div>
+                </div>
+              </Show>
+              <Show when={step >= 4}>
+                <Item>Callout: EquiFold Appendix A.2 and Equiformer Figure 1.</Item>
+              </Show>
+            </ul>
             <Notes>One line to emphasize: architecture reuse plus a protein-specific representation change.</Notes>
           </>
         )}
