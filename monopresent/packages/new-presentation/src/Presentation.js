@@ -148,13 +148,31 @@ function App() {
       <Slide header="EquiFold: Main Takeaway" steps={[1, 2, 3, 4]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>EquiFold predicts all-atom structures from sequence with SE(3)-equivariant refinement.</Item>
-              <Item>It uses a new coarse-grained representation with explicit side-chain geometry in 3D.</Item>
-              <Item>It does not require MSA or protein language model embeddings.</Item>
-              <Item>Callout: EquiFold Abstract.</Item>
-            </List>
-            <Notes>Open with one sentence: this is a speed-plus-accuracy structure predictor for design workflows.</Notes>
+            <div className="h-full grid grid-cols-2 gap-8 items-center">
+              <List step={step}>
+                <Item>All-atom structure prediction directly from sequence.</Item>
+                <Item>SE(3)-equivariant iterative refinement over coarse-grained nodes.</Item>
+                <Item>No MSA and no protein language model embeddings.</Item>
+                <Item>Fast enough for high-throughput design loops.</Item>
+              </List>
+              <div>
+                <video
+                  className="w-full rounded"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                >
+                  <source src="/assets/equifold/all_sticks.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+            <Notes>
+              Narrative: EquiFold targets the practical speed-accuracy gap. Mention this slide as the thesis:
+              all-atom quality, simpler inputs, and throughput-oriented inference.
+            </Notes>
           </>
         )}
       </Slide>
