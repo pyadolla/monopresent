@@ -266,16 +266,74 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="Positioning vs Prior Pipelines" steps={[1, 2, 3, 4]}>
+      <Slide header="Prior Approaches" steps={[1, 2, 3, 4, 5, 6, 7, 8, 9]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>Prior pipelines are accurate but often costly at screening scale.</Item>
-              <Item>MSA/LM dependencies add preprocessing and system complexity.</Item>
-              <Item>EquiFold simplifies the input stack while keeping all-atom outputs.</Item>
-              <Item>Callout: EquiFold Table 2 runtime row.</Item>
-            </List>
-            <Notes>Keep this neutral: not "better in all cases," but a better point on the speed-accuracy curve.</Notes>
+            <div className="h-full flex flex-col">
+              <div>
+                <Show when={step >= 1}>
+                  <Item className="text-green mb-2">
+                    Models like AlphaFold, RoseTTAFold, OmegaFold, and ESMFold represent backbone geometry as nodes
+                    with Euclidean transforms, then iteratively refine those transforms per structure-model block.
+                  </Item>
+                </Show>
+                <div className="ml-6 mt-2 space-y-2">
+                  <Show when={step >= 2}>
+                    <div>- Side-chains are often implicit until final torsion-angle prediction.</div>
+                  </Show>
+                  <Show when={step >= 3}>
+                    <div className={step >= 8 ? "inline-block border border-white rounded px-2 py-1" : ""}>
+                      - This can make side-chain 3D interactions harder to learn (e.g., clash avoidance).
+                    </div>
+                  </Show>
+                </div>
+              </div>
+
+              <div className="mt-12">
+                <Show when={step >= 4}>
+                  <Item className="text-green mb-2">
+                    Methods such as ProteinMPNN, inverse folding from predicted structures (Hsu et al.), and Rosetta-style
+                    approaches use coarse-grained representations: each residue is modeled by one/few nodes positioned
+                    from atom coordinates.
+                  </Item>
+                </Show>
+                <div className="ml-6 mt-2 space-y-2">
+                  <Show when={step >= 5}>
+                    <div>- Improves efficiency for predictive tasks (e.g., interacting/functional residue prediction).</div>
+                  </Show>
+                  <Show when={step >= 6}>
+                    <div>- Useful for generative tasks (e.g., backbone scaffold generation).</div>
+                  </Show>
+                  <Show when={step >= 7}>
+                    <div className={step >= 8 ? "inline-block border border-white rounded px-2 py-1" : ""}>
+                      - Tradeoff: often loses all-atom detail needed for design/packing and function-relevant signals.
+                    </div>
+                  </Show>
+                </div>
+              </div>
+
+              <Show when={step >= 9}>
+                <div className="mt-8">
+                  <Box title="How EquiFold Addresses This">
+                    EquiFold introduces a novel coarse-grained representation that retains all-atom resolution. Side-chain
+                    degrees of freedom are modeled explicitly in 3D space (rather than only as intrinsic torsion angles),
+                    which makes geometry and interaction modeling easier in 3D.
+                  </Box>
+                </div>
+              </Show>
+            </div>
+            <Notes>
+              <div>
+                <div><b>Source basis</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 10, paddingLeft: 20 }}>
+                  <li>This slide is a direct paraphrase of Section 2 (Related Work), first two paragraphs.</li>
+                </ul>
+                <div><b>Bridge to next slides</b></div>
+                <ul style={{ marginTop: 6, marginBottom: 0, paddingLeft: 20 }}>
+                  <li>Next, show how EquiFold addresses this: explicit 3D side-chain DOFs in a CG representation.</li>
+                </ul>
+              </div>
+            </Notes>
           </>
         )}
       </Slide>
