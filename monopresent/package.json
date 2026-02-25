@@ -5,7 +5,8 @@
   ],
   "scripts": {
     "start:example-presentation": "APP_CONFIG_PATH=./config-overrides.js yarn workspace example-presentation start",
-    "start:new-presentation": "APP_CONFIG_PATH=./config-overrides.js yarn workspace new-presentation start"
+    "start:new-presentation": "APP_CONFIG_PATH=./config-overrides.js yarn workspace new-presentation start",
+    "start:principiae-presentation": "APP_CONFIG_PATH=./config-overrides.js yarn workspace principiae-presentation start"
   },
   "resolutions": {
     "react-router-dom": "5.3.3",
