@@ -171,6 +171,55 @@ const textEdgeCasesSteps = [
   "text:tspan_label": tspan,
 }));
 
+const dualEquationTimeline = timeline`
+left_eq          vvvvv
+right_eq         hhvvh
+right_next_layer hhhhv
+right_eq_next    vvvvv
+`;
+
+const dualEquationLeftFrames = [
+  "$x_t$",
+  "$x_t + \\Delta x$",
+  "$x_t + \\Delta x$",
+  "$x_t + \\Delta x$",
+  "$x_t + \\Delta x$",
+];
+
+const dualEquationRightFrames = [
+  "$y_t$",
+  "$y_t$",
+  "$y_t$",
+  "$y_t + \\Delta y$",
+  "$y_t + \\Delta y$",
+];
+
+const dualEquationRightReplacement = "$\\hat{y}_{t+1}=f_\\theta(y_t)$";
+
+const dualEquationSteps = dualEquationTimeline.map((s, i) => ({
+  left_eq: {
+    ...s.left_eq,
+    seconds: 0.55,
+  },
+  right_eq: {
+    ...s.right_eq,
+    seconds: 0.55,
+  },
+  right_eq_next: {
+    ...s.right_eq_next,
+    seconds: 0.6,
+  },
+  right_next_layer: {
+    ...s.right_next_layer,
+    x: i === 4 ? 0 : 220,
+    opacity: i === 4 ? 1 : 0,
+    seconds: 0.6,
+  },
+  "text:left_eq": dualEquationLeftFrames[i],
+  "text:right_eq": dualEquationRightFrames[i],
+  "text:right_eq_next": dualEquationRightReplacement,
+}));
+
 function App() {
   return (
     <Presentation bibUrl="/references.bib">
@@ -658,30 +707,101 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="Forward and Reverse CG Mappings" steps={[1, 2, 3, 4]}>
+      <Slide header="Forward and Reverse CG Mappings" steps={[1, 2, 3, 4, 5, 6]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>Forward map: atoms to node identity plus transform {m`(t, R)`}.</Item>
-              <Item>Reverse map: transformed templates back to atom coordinates.</Item>
-              <Item>Shared atoms are merged by averaging node-derived coordinates.</Item>
-              <Item>Callout: EquiFold Section 3.1.</Item>
-            </List>
-            <Notes>Mention this is what enables all-atom output while training in CG transform space.</Notes>
+            <div className="grid grid-cols-2 gap-8 items-start">
+              <ul>
+                <Show when={step >= 1}>
+                  <Item className="text-green">Forward map {m`F`} converts all-atom residue coordinates into CG node identities and per-node Euclidean transforms.</Item>
+                </Show>
+                <div className="ml-6 mt-1 space-y-1">
+                  <Show when={step >= 2}>
+                    <div>- For residue {m`a_i`}, produce {m`\{(c^{a_i}_j, T^{a_i}_j)\}_{j=1}^{N_{CG}(a_i)}`}, where {m`T=(t,R)`}.</div>
+                  </Show>
+                  <Show when={step >= 2}>
+                    <div>- CG node templates are fixed in local coordinates {m`x^0_{v,a}`}; only {m`(R_v,t_v)`} vary per structure.</div>
+                  </Show>
+                </div>
+
+                <Show when={step >= 3}>
+                  <Item className="text-green mt-4">Reverse map {m`G`} reconstructs all-atom coordinates from transformed node templates.</Item>
+                </Show>
+                <div className="ml-6 mt-1 space-y-1">
+                  <Show when={step >= 4}>
+                    <div>- Each contributing node proposes an atom position:</div>
+                  </Show>
+                  <Show when={step >= 4}>
+                    <div className="ml-6 text-[1.1rem]">{m`x_{a\leftarrow v}=R_vx^0_{v,a}+t_v`}</div>
+                  </Show>
+                </div>
+
+                <Show when={step >= 5}>
+                  <Item className="text-green mt-4">Atoms shared across nodes are merged by weighted averaging.</Item>
+                </Show>
+                <div className="ml-6 mt-1 space-y-1">
+                  <Show when={step >= 6}>
+                    <div className="ml-6 text-[1.1rem]">{m`x_a=\sum_{v\in\mathcal{V}(a)}w_{av}\,x_{a\leftarrow v},\qquad \sum_{v\in\mathcal{V}(a)}w_{av}=1`}</div>
+                  </Show>
+                </div>
+              </ul>
+
+              <div className="h-full flex items-start justify-center">
+                <Show when={step >= 1}>
+                  <img
+                    src="/assets/equifold/forward-reverse-cg.svg"
+                    alt="Forward and reverse coarse-grained mapping schematic"
+                    className="w-[32rem] max-w-full rounded"
+                  />
+                </Show>
+              </div>
+            </div>
+            <Notes>Key point: train/predict in CG transform space, then decode to all atoms via reverse mapping and overlap merge.</Notes>
           </>
         )}
       </Slide>
 
-      <Slide header="Geometric Features and Equivariant Updates" steps={[1, 2, 3, 4]}>
+      <Slide header="Geometric Features and Equivariant Updates" steps={[1, 2, 3, 4, 5, 6, 7]}>
         {(step) => (
           <>
-            <List step={step}>
-              <Item>Node features are geometric tensors across degrees {m`l=0...l_{max}`}. </Item>
-              <Item>Wigner-D transforms maintain rotation equivariance.</Item>
-              <Item>Each block predicts translation and rotation updates.</Item>
-              <Item>Callout: EquiFold Sections 3.2-3.3.</Item>
-            </List>
-            <Notes>Say "equivariance is built in, not learned as an afterthought."</Notes>
+            <ul>
+              <Show when={step >= 1}>
+                <Item className="text-green">Each CG node carries geometric tensor features across irreducible degrees {m`l=0,\dots,l_{max}`}. </Item>
+              </Show>
+              <div className="ml-6 mt-1 space-y-1">
+                <Show when={step >= 2}>
+                  <div>- For degree {m`l`}, each channel transforms as an SO(3) irrep with {m`2l+1`} components.</div>
+                </Show>
+                <Show when={step >= 2}>
+                  <div>- Total features per node are organized by {m`(l, c)`} blocks rather than Cartesian xyz coordinates.</div>
+                </Show>
+              </div>
+
+              <Show when={step >= 3}>
+                <Item className="text-green mt-4">Rotation-equivariant embedding is implemented via Wigner-{m`D`} transforms.</Item>
+              </Show>
+              <div className="ml-6 mt-1 space-y-1">
+                <Show when={step >= 4}>
+                  <div>- Initial embedding for node type {m`c^{a_i}_j`} and rotation {m`R^{a_i}_j`}:</div>
+                </Show>
+                <Show when={step >= 4}>
+                  <div className="ml-6 text-[1.1rem]">{m`e^{a_i}_j=D(R^{a_i}_j)\cdot \mathrm{LOOKUP}(c^{a_i}_j)`}</div>
+                </Show>
+              </div>
+
+              <Show when={step >= 5}>
+                <Item className="text-green mt-4">Each block updates node transforms with equivariant rotation/translation increments.</Item>
+              </Show>
+              <div className="ml-6 mt-1 space-y-1">
+                <Show when={step >= 6}>
+                  <div className="ml-6 text-[1.1rem]">{m`R_{new}=R'R_{in},\qquad t_{new}=t'+t_{in}`}</div>
+                </Show>
+                <Show when={step >= 7}>
+                  <div>- Intermediate sub-blocks update embeddings; the final sub-block outputs the {m`l=1`} vectors used for {m`(R',t')`}. </div>
+                </Show>
+              </div>
+            </ul>
+            <Notes>Emphasize separation of roles: sub-blocks update equivariant features; block output head turns final l=1 vectors into transform updates.</Notes>
           </>
         )}
       </Slide>
@@ -707,7 +827,7 @@ function App() {
           <>
             <List step={step}>
               <Item>Benchmark covers four mini-protein fold families.</Item>
-              <Item>Reported metrics include all-atom RMSD and {m`C_\alpha`} RMSD.</Item>
+              <Item>Reported metrics include all-atom RMSD and {m`C_{\alpha}`} RMSD.</Item>
               <Item>Average inference speed is ~0.03 seconds per sequence.</Item>
               <Item>Callout: EquiFold Section 4.1 and Table 1.</Item>
             </List>
@@ -721,7 +841,7 @@ function App() {
           <>
             <List step={step}>
               <Item>All-atom RMSD spans roughly 1.00-2.20 A across folds.</Item>
-              <Item>{m`C_\alpha`} RMSD spans roughly 0.43-1.76 A.</Item>
+              <Item>{m`C_{\alpha}`} RMSD spans roughly 0.43-1.76 A.</Item>
               <Item>Visual overlays show close topology and packing agreement.</Item>
               <Item>Callout: EquiFold Figure 2 and Table 1.</Item>
             </List>
@@ -818,6 +938,367 @@ function App() {
             />
             <div className="mt-6 text-sm text-gray-300">
               Step {step + 1}: validates plain text and tspan replacement paths with centered label anchors.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Two Equations (AnimateSVG + Timeline)" steps={range(dualEquationSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/two-equations-timeline.svg"
+              step={dualEquationSteps[step]}
+              style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}
+            />
+            <div className="mt-6 text-sm text-gray-300">
+              {[
+                "Step 1: left equation appears.",
+                "Step 2: left equation morphs.",
+                "Step 3: right equation appears (no sweep).",
+                "Step 4: right equation morphs.",
+                "Step 5: right equation is replaced by a new one sweeping in from the right.",
+              ][step]}
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Plain Sentences via List/Item Overrides" steps={[1, 2, 3]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <Box title="Approach 1: Keep List/Item, Override Styling">
+              <List
+                step={step}
+                style={{
+                  listStyleType: "none",
+                  paddingLeft: 0,
+                  margin: 0,
+                  fontWeight: 400,
+                }}
+              >
+                <Item style={{ fontWeight: 400 }}>This is regular sentence text with no bullet.</Item>
+                <Item style={{ fontWeight: 400 }}>Reveal still works using the theme step mechanism.</Item>
+                <Item style={{ fontWeight: 400 }}>No leading dash or marker is rendered.</Item>
+              </List>
+            </Box>
+            <div className="text-sm text-gray-300">
+              Uses theme List/Item step behavior, but styled to look like plain paragraph lines.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Plain Sentences via Show + p" steps={[0, 1, 2]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <Box title="Approach 2: Plain Elements + Show">
+              <div className="space-y-4 text-base font-normal">
+                <Show when={step >= 0}>
+                  <p style={{ fontWeight: 400, margin: 0 }}>
+                    This is regular sentence text with no bullet and no item styling.
+                  </p>
+                </Show>
+                <Show when={step >= 1}>
+                  <p style={{ fontWeight: 400, margin: 0 }}>
+                    Each sentence reveals by step using Show conditions.
+                  </p>
+                </Show>
+                <Show when={step >= 2}>
+                  <p style={{ fontWeight: 400, margin: 0 }}>
+                    This is the cleanest option when you want pure paragraph-style reveals.
+                  </p>
+                </Show>
+              </div>
+            </Box>
+            <div className="text-sm text-gray-300">
+              Uses only plain paragraph tags and Show visibility conditions.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Equation Sweep-In (Right to Center)" steps={[0, 1, 2]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <Box title="Equation Entry Motion">
+              <div
+                style={{
+                  transform: step >= 1 ? "translateX(0)" : "translateX(42vw)",
+                  opacity: step >= 1 ? 1 : 0,
+                  transition: "transform 600ms ease, opacity 600ms ease",
+                  willChange: "transform, opacity",
+                }}
+              >
+                <Morph display>{String.raw`s_\theta(x,t) \approx \nabla_x \log p_t(x)`}</Morph>
+              </div>
+            </Box>
+            <div className="text-sm text-gray-300">
+              Step 1: off-screen right. Step 2+: swept into center.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Sweep-In + Box Overlay (No Equation Shift)" steps={[0, 1, 2]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                minHeight: 220,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  transform: step >= 1 ? "translateX(0)" : "translateX(42vw)",
+                  opacity: step >= 1 ? 1 : 0,
+                  transition: "transform 600ms ease, opacity 600ms ease",
+                  willChange: "transform, opacity",
+                  zIndex: 2,
+                }}
+              >
+                <Morph display>{String.raw`s_\theta(x,t) \approx \nabla_x \log p_t(x)`}</Morph>
+              </div>
+
+              <Box
+                title="Equation Entry Motion"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  opacity: step >= 2 ? 1 : 0,
+                  transition: "opacity 300ms ease",
+                  pointerEvents: "none",
+                  zIndex: 1,
+                }}
+              >
+                <div />
+              </Box>
+            </div>
+            <div className="text-sm text-gray-300">
+              Step 1: sweep equation in. Step 3: fade in package Box overlay.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Fade-Under + SVG Overlay Arrow" steps={[0, 1]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <Box title="Layered Emphasis Demo" style={{ width: "100%", maxWidth: 980, margin: "0 auto" }}>
+              <div
+                style={{
+                  position: "relative",
+                  minHeight: 240,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    opacity: step >= 1 ? 0.08 : 1,
+                    transition: "opacity 450ms ease",
+                  }}
+                >
+                  <div className="text-xl font-semibold">Initial content block</div>
+                  <div className="mt-2 text-base">
+                    This paragraph and sketch fade to near-transparent while new markup is overlaid.
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 18,
+                      width: 150,
+                      height: 90,
+                      border: "2px solid #9ca3af",
+                      borderRadius: 6,
+                      position: "relative",
+                    }}
+                  >
+                    <div style={{ position: "absolute", left: 12, top: 18, width: 36, height: 2, background: "#9ca3af" }} />
+                    <div style={{ position: "absolute", left: 46, top: 24, width: 2, height: 28, background: "#9ca3af" }} />
+                    <div style={{ position: "absolute", left: 74, top: 52, width: 46, height: 2, background: "#9ca3af" }} />
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: step >= 1 ? 1 : 0,
+                    transition: "opacity 450ms ease",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <svg width="340" height="130" viewBox="0 0 340 130" aria-hidden="true">
+                    <defs>
+                      <marker id="overlay-arrow-head" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#00D56F" />
+                      </marker>
+                    </defs>
+                    <path
+                      d="M20 100 C 120 20, 220 20, 320 90"
+                      fill="none"
+                      stroke="#00D56F"
+                      strokeWidth="8"
+                      markerEnd="url(#overlay-arrow-head)"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </Box>
+            <div className="text-sm text-gray-300">
+              Step 1: original content. Step 2: original fades underneath and SVG arrow overlays on top.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Whole Box Fade + SVG Overlay Arrow" steps={[0, 1]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 980,
+                margin: "0 auto",
+                minHeight: 300,
+              }}
+            >
+              <div
+                style={{
+                  opacity: step >= 1 ? 0.08 : 1,
+                  transition: "opacity 450ms ease",
+                }}
+              >
+                <Box title="Whole Box Fades" style={{ width: "100%" }}>
+                  <div className="text-xl font-semibold">Initial content block</div>
+                  <div className="mt-2 text-base">
+                    In this variant, the entire Box container and everything inside it become nearly transparent.
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 18,
+                      width: 170,
+                      height: 90,
+                      border: "2px solid #9ca3af",
+                      borderRadius: 6,
+                      position: "relative",
+                    }}
+                  >
+                    <div style={{ position: "absolute", left: 14, top: 18, width: 40, height: 2, background: "#9ca3af" }} />
+                    <div style={{ position: "absolute", left: 54, top: 24, width: 2, height: 32, background: "#9ca3af" }} />
+                    <div style={{ position: "absolute", left: 84, top: 56, width: 56, height: 2, background: "#9ca3af" }} />
+                  </div>
+                </Box>
+              </div>
+
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: step >= 1 ? 1 : 0,
+                  transition: "opacity 450ms ease",
+                  pointerEvents: "none",
+                }}
+              >
+                <svg width="360" height="140" viewBox="0 0 360 140" aria-hidden="true">
+                  <defs>
+                    <marker id="overlay-arrow-head-whole-box" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#00D56F" />
+                    </marker>
+                  </defs>
+                  <path
+                    d="M24 112 C 124 24, 236 24, 336 96"
+                    fill="none"
+                    stroke="#00D56F"
+                    strokeWidth="8"
+                    markerEnd="url(#overlay-arrow-head-whole-box)"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="text-sm text-gray-300">
+              Step 1: full Box visible. Step 2: entire Box fades underneath and SVG arrow overlays on top.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Sandbox: Two Boxes + Mid Text + Top-to-Bottom Arrow" steps={[0, 1]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-8">
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 980,
+                margin: "0 auto",
+                minHeight: 520,
+              }}
+            >
+              <div
+                style={{
+                  opacity: step >= 1 ? 0.08 : 1,
+                  transition: "opacity 500ms ease",
+                }}
+              >
+                <Box title="Top Box: Source State" style={{ width: "100%", maxWidth: 560, margin: "0 auto" }}>
+                  <div className="text-base">
+                    Source features and assumptions live here before propagation.
+                  </div>
+                </Box>
+
+                <div className="text-center mt-8 mb-8 text-lg">
+                  Intermediate narrative text between source and target boxes.
+                </div>
+
+                <Box title="Bottom Box: Target State" style={{ width: "100%", maxWidth: 560, margin: "0 auto" }}>
+                  <div className="text-base">
+                    Target outputs and checks appear here after transition.
+                  </div>
+                </Box>
+              </div>
+
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: step >= 1 ? 1 : 0,
+                  transition: "opacity 500ms ease",
+                  pointerEvents: "none",
+                }}
+              >
+                <svg width="420" height="470" viewBox="0 0 420 470" aria-hidden="true">
+                  <defs>
+                    <marker id="overlay-arrow-head-two-box" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#00D56F" />
+                    </marker>
+                  </defs>
+                  <path
+                    d="M210 55 C 210 150, 210 300, 210 415"
+                    fill="none"
+                    stroke="#00D56F"
+                    strokeWidth="9"
+                    markerEnd="url(#overlay-arrow-head-two-box)"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="text-sm text-gray-300">
+              Step 1: two boxes + middle text visible. Step 2: all fades underneath and overlay arrow connects top to bottom.
             </div>
           </div>
         )}

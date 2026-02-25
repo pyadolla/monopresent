@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Presentation from "./Presentation";
+// import "./app.css";
 
 const rootEl = document.getElementById("root");
 ReactDOM.render(<Presentation />, rootEl);
