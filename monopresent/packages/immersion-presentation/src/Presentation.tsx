@@ -143,7 +143,7 @@ function PresentationRouteWrapper({
   const ws = useMemo(
     () => {
       const socket = new WebSocket(`ws://${window.location.hostname}:3003`);
-      socket.binaryType = "text";
+      socket.binaryType = "blob";
       return socket;
     },
     []
@@ -284,7 +284,7 @@ function PresentationUI({
   }
 
   const prev = useCallback(
-    (dontStepButGoToPrevSlide) => {
+    (dontStepButGoToPrevSlide: boolean) => {
       if (dontStepButGoToPrevSlide) {
         if (slideIndex > 0) {
           setSlideAndStep(slideIndex - 1, 0)
@@ -297,7 +297,7 @@ function PresentationUI({
   )
 
   const next = useCallback(
-    (dontStepButGoToNextSlide) => {
+    (dontStepButGoToNextSlide: boolean) => {
       if (dontStepButGoToNextSlide) {
         if (slideIndex < slidesInfo.length - 1) {
           setSlideAndStep(slideIndex + 1, 0)
@@ -310,7 +310,7 @@ function PresentationUI({
   )
 
   const handleKey = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === 'ArrowDown') {
         next(true)
       }
@@ -608,12 +608,12 @@ function PresentationOverview({
 type SlideProps = {
   render: SlideRenderFunction
   steps?: any[]
-  children: React.ReactNode
+  children: React.ReactNode | ((step: any) => React.ReactNode)
 }
 
 type SlideRenderFunction = (arg: {
   slidesInfo: SlidesInfo
-  children: React.ReactNode | ((step: any) => React.ReactNode)
+  children: React.ReactNode
   slideIndex: number
   i: number
   style: React.CSSProperties

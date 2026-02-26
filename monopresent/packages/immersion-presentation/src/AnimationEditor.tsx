@@ -276,10 +276,16 @@ function Animation({
   }, [animation, colorIndex])
 
   const handleClick = useCallback(
-    (ev, part: Part) => {
+    (ev: React.MouseEvent<HTMLElement>, part: Part) => {
+      const target = ev.target as HTMLElement
+
       // remove
       if (ev.button === 2) {
-        const index = ev.target.dataset.index
+        const indexString = target.dataset.index
+        if (indexString === undefined) {
+          return
+        }
+        const index = parseInt(indexString, 10)
         const groups = (part + 'Groups') as 'endGroups' | 'startGroups'
         const selections = determineSelections(
           animation[part],
@@ -304,7 +310,10 @@ function Animation({
       // pick color
       if (ev.button === 1) {
         ev.preventDefault()
-        const group = ev.target.dataset.group
+        const group = target.dataset.group
+        if (group === undefined) {
+          return
+        }
         setColorIndex(+group)
         return
       }
