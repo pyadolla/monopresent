@@ -30,6 +30,20 @@ const morphFrames = [
   String.raw`x_{t+1} = f_\theta(x_t)`,
 ];
 
+const inlineMorphA = [
+  String.raw`x`,
+  String.raw`\frac{1}{1+x^2}`,
+  String.raw`\left(\int_0^1 x^2\,dx\right)^2`,
+  String.raw`\sum_{k=1}^{n}\frac{k^2}{(1+k)^2}`,
+];
+
+const inlineMorphB = [
+  String.raw`y_t`,
+  String.raw`\left[\sum_{i=1}^n i\right]`,
+  String.raw`\left\langle \frac{a+b}{c}, \int_0^1 t\,dt \right\rangle`,
+  String.raw`\frac{\left(\sum_{j=1}^m j\right)^2}{1+\left(\int_0^1 u^2\,du\right)}`,
+];
+
 const flowTimeline = timeline`
 left  v p h
 right h v p
@@ -70,7 +84,7 @@ function App() {
       >
         <div className="mt-10 text-lg">
           Theme: <b>principiae</b> with core animation primitives
-          ({m`\texttt{timeline},\ \texttt{AnimateSVG},\ \texttt{Morph}`}).
+          (<code>timeline</code>, <code>AnimateSVG</code>, <code>Morph</code>).
         </div>
       </OverviewSlide>
 
@@ -100,7 +114,7 @@ function App() {
               <Morph display>{morphFrames[step]}</Morph>
             </Box>
             <div style={{ fontSize: "1.2rem" }}>
-              Display math helper: {M`x_{t+1} = f_\theta(x_t)`}
+              Display math helper: {m`x_{t+1} = f_\theta(x_t)`}
             </div>
           </div>
         )}
@@ -159,6 +173,89 @@ function App() {
                 QED marker from theme: <Qed style={{ marginTop: "1rem" }} />
               </div>
             </Show>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Inline Baseline Stress" steps={[1]}>
+        {() => (
+          <div className="h-full flex flex-col justify-center gap-4" style={{ fontSize: "1.15rem", lineHeight: 1.55 }}>
+            <div>
+              Sentence A with fraction and powers: parameter is {m`\frac{1+x^2}{(1-x)^3}`} inside normal text flow.
+            </div>
+            <div>
+              Sentence B with integral + brackets: define correction as {m`\left(\int_0^1 t^2\,dt\right) + \left[\sum_{i=1}^{n} i\right]`}.
+            </div>
+            <div>
+              Sentence C with large delimiters: stability region is {m`\left\langle \frac{a+b}{c}, \frac{d+e}{f} \right\rangle`} for the update.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Inline Regular-Size Integral" steps={[1]}>
+        {() => (
+          <div className="h-full flex flex-col justify-center gap-4" style={{ fontSize: "1.15rem", lineHeight: 1.55 }}>
+            <div>
+              Default inline integral (already textstyle): value is {m`\int_0^1 x^2\,dx`} in sentence flow.
+            </div>
+            <div>
+              Forced display size inside inline text: value is {m`\displaystyle \int_0^1 x^2\,dx`} in sentence flow.
+            </div>
+            <div>
+              Forced regular style inside inline text: value is {m`\textstyle \int_0^1 x^2\,dx`} (matches default inline style).
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Inline Morph Height Stress" steps={range(inlineMorphA.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-6" style={{ fontSize: "1.25rem", lineHeight: 1.8 }}>
+            <div>
+              Morph set A in sentence flow: value of A is <Morph inline>{inlineMorphA[step]}</Morph> while the sentence continues.
+            </div>
+            <div>
+              Morph set B in sentence flow: value of B is <Morph inline>{inlineMorphB[step]}</Morph> and text remains on baseline.
+            </div>
+            <div>
+              Combined check: C = <Morph inline>{String.raw`\left(${inlineMorphA[step]}\right)\left(${inlineMorphB[step]}\right)`}</Morph> is updated each step.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Inline Displaystyle Stress A" steps={[1]}>
+        {() => (
+          <div className="h-full flex flex-col justify-center gap-4" style={{ fontSize: "1.1rem", lineHeight: 1.6 }}>
+            <div>
+              Fraction: {m`\displaystyle \frac{1+x^2}{(1-x)^3}`} inside sentence flow.
+            </div>
+            <div>
+              Sum with limits: {m`\displaystyle \sum_{k=1}^{n}\frac{k^2}{(1+k)^2}`} inside sentence flow.
+            </div>
+            <div>
+              Integral with limits: {m`\displaystyle \int_0^1 t^2\,dt`} inside sentence flow.
+            </div>
+            <div>
+              Large brackets: {m`\displaystyle \left\langle \frac{a+b}{c}, \frac{d+e}{f} \right\rangle`} inline.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Inline Displaystyle Stress B" steps={[1]}>
+        {() => (
+          <div className="h-full flex flex-col justify-center gap-4" style={{ fontSize: "1.1rem", lineHeight: 1.65 }}>
+            <div>
+              Combined A: {m`\displaystyle \left(\int_0^1 x^2\,dx\right)^2 + \left[\sum_{i=1}^{n} i\right]`}.
+            </div>
+            <div>
+              Combined B: {m`\displaystyle \frac{\left(\sum_{j=1}^{m} j\right)^2}{1+\left(\int_0^1 u^2\,du\right)}`}.
+            </div>
+            <div>
+              Nested delimiters: {m`\displaystyle \left\{\left[\frac{\int_0^1 x\,dx}{\sum_{k=1}^{n}k}\right],\left(\frac{a+b}{c}\right)\right\}`}.
+            </div>
           </div>
         )}
       </Slide>
