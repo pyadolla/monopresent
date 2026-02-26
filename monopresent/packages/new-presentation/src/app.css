@@ -1,0 +1,13 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #11172e;
+}
+
+/* Immersion runtime wrappers in edit/fullscreen modes */
+#root > .flex.h-screen.bg-gray-100,
+#root > .flex.justify-center.items-center.bg-white.h-screen {
+  background: #11172e !important;
+}
