@@ -40,6 +40,7 @@ export const LaTeX = {
   _host: `http://${typeof window !== 'undefined' ? window.location.hostname : 'example.com'
     }:3001`,
   _useBaselineMetadataEnvelope: false,
+  _cacheGeneration: 0,
   getHost: (): string => LaTeX._host,
   setHost: (h: string): void => {
     LaTeX._host = h
@@ -47,7 +48,7 @@ export const LaTeX = {
   getUseBaselineMetadataEnvelope: (): boolean => LaTeX._useBaselineMetadataEnvelope,
   setUseBaselineMetadataEnvelope: (enabled: boolean): void => {
     if (LaTeX._useBaselineMetadataEnvelope !== enabled) {
-      fetchLaTeXSvg.clear()
+      LaTeX._cacheGeneration += 1
     }
     LaTeX._useBaselineMetadataEnvelope = enabled
   },
@@ -259,7 +260,7 @@ export const fetchLaTeXSvg = memoize(
   },
   {
     normalizer: (args) =>
-      `${LaTeX.getHost()}|${LaTeX.getPreamble()}|${LaTeX.getUseBaselineMetadataEnvelope() ? 'm1' : 'm0'}|${args[0]}`
+      `${LaTeX._cacheGeneration}|${LaTeX.getHost()}|${LaTeX.getPreamble()}|${LaTeX.getUseBaselineMetadataEnvelope() ? 'm1' : 'm0'}|${args[0]}`
   }
 )
 
