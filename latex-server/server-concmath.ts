@@ -31,7 +31,7 @@ async function compileConcmathLaTeXToSVG(tex: string, preamble: string): Promise
     ${preamble}
     \\usepackage{fontspec}
     \\usepackage{unicode-math}
-    \\usepackage{concmath-otf}
+    \\usepackage[Style=upint]{concmath-otf}
     \\usepackage{xcolor}
     \\newcommand{\\bm}[1]{\\symbf{#1}}
     \\setlength{\\hoffset}{0pt}
@@ -469,7 +469,10 @@ function applyLegacyCompatibleNormalization(concmathSvg: string, legacySvg: stri
   const [concmathMarkerXFinal, concmathMarkerYFinal] = getFinalXY(concmathMarker, concmathRoot);
   const [legacyMarkerXFinal, legacyMarkerYFinal] = getFinalXY(legacyMarker, legacyRoot);
   const dx = legacyMarkerXFinal - concmathMarkerXFinal;
-  const dy = legacyMarkerYFinal - concmathMarkerYFinal;
+  // Compensate for different engine box heights so inline baseline lands where
+  // immersion's layout expects (bottom of viewBox after normalization).
+  const baselineCompensationY = legacyVh - concmathVh;
+  const dy = legacyMarkerYFinal - concmathMarkerYFinal - baselineCompensationY;
 
   const concmathPage = concmathDoc.getElementById("page1");
   if (!concmathPage) throw new Error("Concmath SVG has no page1.");
