@@ -5,6 +5,7 @@ export declare const LaTeX: {
     _preamble: string;
     _host: string;
     _useBaselineMetadataEnvelope: boolean;
+    _cacheGeneration: number;
     getHost: () => string;
     setHost: (h: string) => void;
     getUseBaselineMetadataEnvelope: () => boolean;
