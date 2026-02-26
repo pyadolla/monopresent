@@ -18,7 +18,11 @@ export { default as MObject } from './MObject'
 export { default as Portal } from './Portal'
 // Presentation.js
 export { default as Notes } from './PresenterNotes'
-export { range } from './utils'
+export {
+  range,
+  setLaTeXBaselineMetadataMode,
+  getLaTeXBaselineMetadataMode
+} from './utils'
 export { timeline, _internalTimeline } from './timeline'
 export { default as formulas } from './formulas'
 export { default as Morph } from './Morph'

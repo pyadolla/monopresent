@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   AnimateSVG,
@@ -10,6 +10,7 @@ import {
   Notes,
   timeline,
   range,
+  setLaTeXBaselineMetadataMode,
   themes,
 } from "../../immersion-presentation/src";
 
@@ -76,6 +77,12 @@ const flowSteps = flowTimeline.map((s, i) => ({
 }));
 
 function App() {
+  useEffect(() => {
+    // Opt-in only in this sandbox while validating metadata-driven baseline.
+    setLaTeXBaselineMetadataMode(true);
+    return () => setLaTeXBaselineMetadataMode(false);
+  }, []);
+
   return (
     <Presentation bibUrl="/references.bib">
       <OverviewSlide

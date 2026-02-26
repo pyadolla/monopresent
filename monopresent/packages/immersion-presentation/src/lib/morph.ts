@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import MorphSVGPlugin from '../gsap/MorphSVGPlugin'
 import DrawSVGPlugin from '../gsap/DrawSVGPlugin'
 
-import { LaTeXSVGData } from '../types'
+import { InlineBaselineMetrics, LaTeXSVGData } from '../types'
 
 gsap.registerPlugin(MorphSVGPlugin, DrawSVGPlugin)
 
@@ -23,6 +23,7 @@ export type SVGData = {
   width: number
   height: number
   viewBox: number[]
+  inlineBaselineMetrics?: InlineBaselineMetrics
 }
 export async function animate(
   svgEl: SVGElement,
@@ -38,7 +39,8 @@ export async function animate(
       groups: {},
       width: 0,
       height: 0,
-      viewBox: [0, 0, 0, 0]
+      viewBox: [0, 0, 0, 0],
+      inlineBaselineMetrics: undefined
     }
   } else {
     data = await fetchLaTeXSvg(text)
@@ -48,10 +50,10 @@ export async function animate(
     return []
   }
 
-  const { groups: newPaths, width, height, viewBox } = data
+  const { groups: newPaths, width, height, viewBox, inlineBaselineMetrics } = data
 
   // This should check if is unmounted
-  setSvgData({ width, height, viewBox })
+  setSvgData({ width, height, viewBox, inlineBaselineMetrics })
 
   const afterIds = Object.keys(newPaths)
   const beforeIds = Array.from(svgEl.querySelectorAll('[id]')).map((e) => e.id)

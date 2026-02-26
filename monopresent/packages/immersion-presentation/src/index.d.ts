@@ -10,11 +10,11 @@ export { RenderPresentation, PresentationContext, useIsCurrentlyVisible } from '
 export { CitationContext } from './Citations';
 export { default as AnimateSVG } from './AnimateSVG';
 export { default as Show } from './Show';
-export { InlineMath, DisplayMath, m, M } from './LaTeX';
+export { InlineMath, DisplayMath, m, mOffset, M } from './LaTeX';
 export { default as MObject } from './MObject';
 export { default as Portal } from './Portal';
 export { default as Notes } from './PresenterNotes';
-export { range } from './utils';
+export { range, setLaTeXBaselineMetadataMode, getLaTeXBaselineMetadataMode } from './utils';
 export { timeline, _internalTimeline } from './timeline';
 export { default as formulas } from './formulas';
 export { default as Morph } from './Morph';
