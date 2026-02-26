@@ -16,7 +16,44 @@ const ENGINE = (process.env.LATEX_ENGINE || "lualatex").toLowerCase();
 const PORT = Number(process.env.LATEX_SERVER_PORT || 3001);
 const LEGACY_ENGINE = "pdflatex";
 
-async function compileConcmathLaTeXToSVG(tex: string, preamble: string): Promise<string> {
+type InlineBaselineMetrics = {
+  version: string;
+  widthPt: number;
+  advanceWidthPt?: number;
+  heightPt: number;
+  viewBox: [number, number, number, number];
+  baselineFromTopPt: number;
+  descentFromBaselinePt: number;
+};
+
+type TeXBoxMetrics = {
+  widthPt: number;
+  heightPt: number;
+  depthPt: number;
+};
+
+function buildLaTeXBoxContent(tex: string): string {
+  const hasMathDelimiters =
+    tex.includes("$") || tex.includes("\\(") || tex.includes("\\[");
+  return hasMathDelimiters ? tex : `\\text{${tex}}`;
+}
+
+function parseTeXBoxMetrics(output: string): TeXBoxMetrics | null {
+  const m = output.match(
+    /IMMBOX:wd=([+-]?\d*\.?\d+)pt;ht=([+-]?\d*\.?\d+)pt;dp=([+-]?\d*\.?\d+)pt/
+  );
+  if (!m) return null;
+  const widthPt = parseFloat(m[1]);
+  const heightPt = parseFloat(m[2]);
+  const depthPt = parseFloat(m[3]);
+  if ([widthPt, heightPt, depthPt].some((n) => Number.isNaN(n))) return null;
+  return { widthPt, heightPt, depthPt };
+}
+
+async function compileConcmathLaTeXToSVG(
+  tex: string,
+  preamble: string
+): Promise<{ svg: string; texBoxMetrics: TeXBoxMetrics | null }> {
   const inputDir = "./tmp";
   await fs.ensureDir(inputDir);
 
@@ -25,6 +62,7 @@ async function compileConcmathLaTeXToSVG(tex: string, preamble: string): Promise
   const texPath = path.join(inputDir, `${baseName}.tex`);
   const pdfPath = path.join(inputDir, `${baseName}.pdf`);
   const svgPath = path.join(inputDir, `${baseName}.svg`);
+  const bodyContent = buildLaTeXBoxContent(tex);
 
   const fullTex = `
     \\documentclass[border=0pt]{standalone}
@@ -42,8 +80,11 @@ async function compileConcmathLaTeXToSVG(tex: string, preamble: string): Promise
       #2%
       \\endgroup
     }
+    \\newbox\\immersionbox
     \\begin{document}
-    \\makebox[0pt][l]{.}\\text{${tex}}
+    \\setbox\\immersionbox=\\hbox{${bodyContent}}
+    \\typeout{IMMBOX:wd=\\the\\wd\\immersionbox;ht=\\the\\ht\\immersionbox;dp=\\the\\dp\\immersionbox}
+    \\makebox[0pt][l]{.}\\copy\\immersionbox
     \\end{document}
   `;
 
@@ -82,8 +123,9 @@ async function compileConcmathLaTeXToSVG(tex: string, preamble: string): Promise
 
       try {
         const svg = await fs.readFile(svgPath, "utf8");
+        const texBoxMetrics = parseTeXBoxMetrics(combinedOutput);
         await cleanup();
-        resolve(svg);
+        resolve({ svg, texBoxMetrics });
       } catch (err: any) {
         await cleanup();
         reject({
@@ -108,6 +150,7 @@ async function compileLegacyLaTeXToSVG(tex: string, preamble: string): Promise<s
   const texPath = path.join(inputDir, `${baseName}.tex`);
   const dviPath = path.join(inputDir, `${baseName}.dvi`);
   const svgPath = path.join(inputDir, `${baseName}.svg`);
+  const bodyContent = buildLaTeXBoxContent(tex);
 
   const fullTex = `
     \\documentclass[border=0pt]{standalone}
@@ -125,8 +168,11 @@ async function compileLegacyLaTeXToSVG(tex: string, preamble: string): Promise<s
       #2%
       \\endgroup
     }
+    \\newbox\\immersionbox
     \\begin{document}
-    \\makebox[0pt][l]{.}\\text{${tex}}
+    \\setbox\\immersionbox=\\hbox{${bodyContent}}
+    \\typeout{IMMBOX:wd=\\the\\wd\\immersionbox;ht=\\the\\ht\\immersionbox;dp=\\the\\dp\\immersionbox}
+    \\makebox[0pt][l]{.}\\copy\\immersionbox
     \\end{document}
   `;
 
@@ -520,9 +566,47 @@ function parseLatexErrors(output: string): string[] {
   return errors.length > 0 ? errors : ["Unknown LaTeX error"];
 }
 
+function extractInlineBaselineMetrics(
+  svgString: string,
+  texBoxMetrics?: TeXBoxMetrics | null,
+  advanceWidthPt?: number
+): InlineBaselineMetrics | null {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgString, "image/svg+xml");
+  const svg = doc.getElementsByTagName("svg")[0];
+  if (!svg) return null;
+
+  const width = parseFloat((svg.getAttribute("width") || "").replace("pt", ""));
+  const height = parseFloat((svg.getAttribute("height") || "").replace("pt", ""));
+  const viewBoxAttr = svg.getAttribute("viewBox") || "";
+  const viewBoxValues = viewBoxAttr.split(/\s+/).map(Number);
+  if (
+    Number.isNaN(width) ||
+    Number.isNaN(height) ||
+    viewBoxValues.length !== 4 ||
+    viewBoxValues.some((n) => Number.isNaN(n))
+  ) {
+    return null;
+  }
+
+  const [vx, vy, vw, vh] = viewBoxValues as [number, number, number, number];
+  const baselineFromTopPt = texBoxMetrics?.heightPt ?? -vy;
+  const descentFromBaselinePt = texBoxMetrics?.depthPt ?? vy + vh;
+
+  return {
+    version: "v1",
+    widthPt: width,
+    advanceWidthPt,
+    heightPt: height,
+    viewBox: [vx, vy, vw, vh],
+    baselineFromTopPt,
+    descentFromBaselinePt,
+  };
+}
+
 app.get("/latex", async (req: Request, res: Response) => {
   console.log("Received request:", req.query);
-  const { tex, preamble = "" } = req.query;
+  const { tex, preamble = "", meta = "0" } = req.query;
 
   if (!tex) {
     return res.status(400).json({
@@ -533,7 +617,10 @@ app.get("/latex", async (req: Request, res: Response) => {
 
   try {
     console.log(`[concmath] compile start engine=${ENGINE}`);
-    const concmathSvg = await compileConcmathLaTeXToSVG(tex as string, preamble as string);
+    const { svg: concmathSvg, texBoxMetrics } = await compileConcmathLaTeXToSVG(
+      tex as string,
+      preamble as string
+    );
     console.log("[concmath] compile ok");
     let finalSvg: string;
     try {
@@ -556,6 +643,17 @@ app.get("/latex", async (req: Request, res: Response) => {
       }
     }
 
+    if (meta === "1") {
+      res.json({
+        svg: finalSvg,
+        metrics: extractInlineBaselineMetrics(
+          finalSvg,
+          texBoxMetrics,
+          texBoxMetrics?.widthPt
+        ),
+      });
+      return;
+    }
     res.type("image/svg+xml").send(finalSvg);
   } catch (error: any) {
     console.error("Error during LaTeX compilation:", error);

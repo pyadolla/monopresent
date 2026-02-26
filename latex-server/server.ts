@@ -7,11 +7,32 @@ import { DOMParser, XMLSerializer } from 'xmldom';
 import { randomUUID } from "crypto";
 import path from "path";
 import { promises as fsp } from "fs";
-import * as xpath from 'xpath';
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+type InlineBaselineMetrics = {
+  version: string;
+  widthPt: number;
+  advanceWidthPt?: number;
+  heightPt: number;
+  viewBox: [number, number, number, number];
+  baselineFromTopPt: number;
+  descentFromBaselinePt: number;
+};
+
+type TeXBoxMetrics = {
+  widthPt: number;
+  heightPt: number;
+  depthPt: number;
+};
+
+function buildLaTeXBoxContent(tex: string): string {
+  const hasMathDelimiters =
+    tex.includes("$") || tex.includes("\\(") || tex.includes("\\[");
+  return hasMathDelimiters ? tex : `\\text{${tex}}`;
+}
 
 // Function to compile LaTeX to SVG
 //async function compileLaTeXToSVG(tex: string, preamble: string): Promise<string> {
@@ -52,7 +73,22 @@ app.use(cors());
 //    \\setlength{\\textwidth}{\\paperwidth}
 //    \\setlength{\\textheight}{\\paperheight}
 
-async function compileLaTeXToSVG(tex: string, preamble: string): Promise<string> {
+function parseTeXBoxMetrics(output: string): TeXBoxMetrics | null {
+  const m = output.match(
+    /IMMBOX:wd=([+-]?\d*\.?\d+)pt;ht=([+-]?\d*\.?\d+)pt;dp=([+-]?\d*\.?\d+)pt/
+  );
+  if (!m) return null;
+  const widthPt = parseFloat(m[1]);
+  const heightPt = parseFloat(m[2]);
+  const depthPt = parseFloat(m[3]);
+  if ([widthPt, heightPt, depthPt].some((n) => Number.isNaN(n))) return null;
+  return { widthPt, heightPt, depthPt };
+}
+
+async function compileLaTeXToSVG(
+  tex: string,
+  preamble: string
+): Promise<{ svg: string; texBoxMetrics: TeXBoxMetrics | null }> {
   const inputDir = "./tmp";
   await fs.ensureDir(inputDir);
 
@@ -61,6 +97,7 @@ async function compileLaTeXToSVG(tex: string, preamble: string): Promise<string>
   const texPath = path.join(inputDir, `${baseName}.tex`);
   const dviPath = path.join(inputDir, `${baseName}.dvi`);
   const svgPath = path.join(inputDir, `${baseName}.svg`);
+  const bodyContent = buildLaTeXBoxContent(tex);
 
     // \\usepackage{textcomp}
     // \\usepackage{amsmath, amssymb}
@@ -81,8 +118,11 @@ async function compileLaTeXToSVG(tex: string, preamble: string): Promise<string>
       #2%
       \\endgroup
     }
+    \\newbox\\immersionbox
     \\begin{document}
-    \\makebox[0pt][l]{.}\\text{${tex}}
+    \\setbox\\immersionbox=\\hbox{${bodyContent}}
+    \\typeout{IMMBOX:wd=\\the\\wd\\immersionbox;ht=\\the\\ht\\immersionbox;dp=\\the\\dp\\immersionbox}
+    \\makebox[0pt][l]{.}\\copy\\immersionbox
     \\end{document}
   `;
 
@@ -116,8 +156,9 @@ async function compileLaTeXToSVG(tex: string, preamble: string): Promise<string>
 
       try {
         const svg = await fs.readFile(svgPath, "utf8");
+        const texBoxMetrics = parseTeXBoxMetrics(combinedOutput);
         await cleanup();
-        resolve(svg);
+        resolve({ svg, texBoxMetrics });
       } catch (err: any) {
         await cleanup();
         reject({
@@ -170,16 +211,26 @@ function adjustSvgViewBox(svgString: string): string {
     throw new Error(`Invalid viewBox format: ${viewBoxAttr}`);
   }
 
-  // Use XPath to find the first element with x="0"
-  const nodes = xpath.select('//*[@x="0"]', doc) as Element[];
-  const target = nodes[0];
-  if (!target) throw new Error('No element with x="0" found.');
+  // Marker inserted by \makebox[0pt][l]{.} is first in page output order.
+  const page = doc.getElementById('page1');
+  if (!page) {
+    return serializer.serializeToString(doc);
+  }
+  const uses = Array.from(page.getElementsByTagName('use')) as Element[];
+  const target = uses[0];
+  if (!target) {
+    return serializer.serializeToString(doc);
+  }
 
   const yAttr = target.getAttribute("y");
-  if (!yAttr) throw new Error('Target element does not have a "y" attribute.');
+  if (!yAttr) {
+    return serializer.serializeToString(doc);
+  }
 
   const y = parseFloat(yAttr);
-  if (isNaN(y)) throw new Error(`Invalid y attribute: ${yAttr}`);
+  if (isNaN(y)) {
+    return serializer.serializeToString(doc);
+  }
 
   // Update viewBox vy = y - vh
   const newVy = y - vh;
@@ -220,6 +271,43 @@ function parseLatexErrors(output: string): string[] {
   return errors.length > 0 ? errors : ["Unknown LaTeX error"];
 }
 
+function extractInlineBaselineMetrics(
+  svgString: string,
+  texBoxMetrics?: TeXBoxMetrics | null
+): InlineBaselineMetrics | null {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgString, "image/svg+xml");
+  const svg = doc.getElementsByTagName("svg")[0];
+  if (!svg) return null;
+
+  const width = parseFloat((svg.getAttribute("width") || "").replace("pt", ""));
+  const height = parseFloat((svg.getAttribute("height") || "").replace("pt", ""));
+  const viewBoxAttr = svg.getAttribute("viewBox") || "";
+  const viewBoxValues = viewBoxAttr.split(/\s+/).map(Number);
+  if (
+    Number.isNaN(width) ||
+    Number.isNaN(height) ||
+    viewBoxValues.length !== 4 ||
+    viewBoxValues.some((n) => Number.isNaN(n))
+  ) {
+    return null;
+  }
+
+  const [vx, vy, vw, vh] = viewBoxValues as [number, number, number, number];
+  const baselineFromTopPt = texBoxMetrics?.heightPt ?? -vy;
+  const descentFromBaselinePt = texBoxMetrics?.depthPt ?? vy + vh;
+
+  return {
+    version: "v1",
+    widthPt: width,
+    advanceWidthPt: texBoxMetrics?.widthPt ?? width,
+    heightPt: height,
+    viewBox: [vx, vy, vw, vh],
+    baselineFromTopPt,
+    descentFromBaselinePt,
+  };
+}
+
 
 
 // Endpoint for rendering LaTeX to SVG
@@ -256,7 +344,7 @@ function parseLatexErrors(output: string): string[] {
 app.get("/latex", async (req: Request, res: Response) => {
   console.log("Received request:", req.query); // Log the query params for debugging
 
-  const { tex, preamble = "" } = req.query;
+  const { tex, preamble = "", meta = "0" } = req.query;
 
   if (!tex) {
     return res.status(400).json({
@@ -266,8 +354,16 @@ app.get("/latex", async (req: Request, res: Response) => {
   }
 
   try {
-    const svg = await compileLaTeXToSVG(tex as string, preamble as string);
-    res.type("image/svg+xml").send(adjustSvgViewBox(svg)); //fixAllSvgYOffset(svg));
+    const { svg, texBoxMetrics } = await compileLaTeXToSVG(tex as string, preamble as string);
+    const finalSvg = adjustSvgViewBox(svg);
+    if (meta === "1") {
+      res.json({
+        svg: finalSvg,
+        metrics: extractInlineBaselineMetrics(finalSvg, texBoxMetrics),
+      });
+      return;
+    }
+    res.type("image/svg+xml").send(finalSvg); //fixAllSvgYOffset(svg));
   } catch (error: any) {
     console.error("Error during LaTeX compilation:", error);
     res.status(500).json({
@@ -285,4 +381,3 @@ const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-

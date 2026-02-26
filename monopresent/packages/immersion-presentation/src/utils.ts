@@ -4,7 +4,7 @@ import { pathParse, serializePath } from 'svg-path-parse'
 
 import { useEffect, useRef, useState, useLayoutEffect } from 'react'
 
-import { LaTeXSVGData } from './types'
+import { LaTeXSVGData, InlineBaselineMetrics } from './types'
 
 export const range = (n: number): number[] => Array.from(Array(n).keys())
 
@@ -30,29 +30,56 @@ const queryParameters = (obj: { [key: string]: string }): string => {
 }
 
 const cacheBust = '8'
+type LaTeXFetchPayload = {
+  svg: string
+  inlineBaselineMetrics?: InlineBaselineMetrics
+}
+
 export const LaTeX = {
   _preamble: ``,
   _host: `http://${typeof window !== 'undefined' ? window.location.hostname : 'example.com'
     }:3001`,
+  _useBaselineMetadataEnvelope: false,
   getHost: (): string => LaTeX._host,
   setHost: (h: string): void => {
     LaTeX._host = h
+  },
+  getUseBaselineMetadataEnvelope: (): boolean => LaTeX._useBaselineMetadataEnvelope,
+  setUseBaselineMetadataEnvelope: (enabled: boolean): void => {
+    if (LaTeX._useBaselineMetadataEnvelope !== enabled) {
+      fetchLaTeXSvg.clear()
+    }
+    LaTeX._useBaselineMetadataEnvelope = enabled
   },
   getPreamble: (): string => LaTeX._preamble,
   setPreamble: (p: string): void => {
     LaTeX._preamble = normalizeLaTeXPreamble(p)
   },
-  fetchSVG: async (tex: string): Promise<string> => {
+  fetchSVGPayload: async (tex: string): Promise<LaTeXFetchPayload> => {
     const result = await fetch(
       `${LaTeX.getHost()}/latex?${queryParameters({
         cachebust: cacheBust,
         tex: tex,
-        preamble: LaTeX.getPreamble()
+        preamble: LaTeX.getPreamble(),
+        meta: LaTeX.getUseBaselineMetadataEnvelope() ? '1' : '0'
       })}`,
       { mode: 'cors' }
     )
     if (result.ok) {
-      return await result.text()
+      const contentType = result.headers.get('content-type') || ''
+      if (contentType.includes('application/json')) {
+        const payload = await result.json()
+        if (!payload || typeof payload.svg !== 'string') {
+          throw new Error('LaTeX server returned invalid metadata payload.')
+        }
+        return {
+          svg: payload.svg,
+          inlineBaselineMetrics: payload.metrics || undefined
+        }
+      }
+      return {
+        svg: await result.text()
+      }
     } else {
       const error = await result.json()
       if (error.name === 'CompilationError') {
@@ -63,6 +90,10 @@ export const LaTeX = {
         throw new Error(error.message)
       }
     }
+  },
+  fetchSVG: async (tex: string): Promise<string> => {
+    const payload = await LaTeX.fetchSVGPayload(tex)
+    return payload.svg
   }
 }
 
@@ -191,8 +222,11 @@ export const fetchLaTeXSvg = memoize(
 
     // console.log('COMPILING', tex)
     let text: string
+    let inlineBaselineMetrics: InlineBaselineMetrics | undefined
     try {
-      text = await LaTeX.fetchSVG(tex)
+      const payload = await LaTeX.fetchSVGPayload(tex)
+      text = payload.svg
+      inlineBaselineMetrics = payload.inlineBaselineMetrics
     } catch (e) {
       console.error(`%cLaTeXError: ${e.message}`, 'color: #AD1457')
       return null
@@ -219,8 +253,13 @@ export const fetchLaTeXSvg = memoize(
       groups,
       width: parseFloat(width.replace('pt', '')),
       height: parseFloat(height.replace('pt', '')),
-      viewBox: viewBox.split(' ').map((s) => parseFloat(s))
+      viewBox: viewBox.split(' ').map((s) => parseFloat(s)),
+      inlineBaselineMetrics
     }
+  },
+  {
+    normalizer: (args) =>
+      `${LaTeX.getHost()}|${LaTeX.getPreamble()}|${LaTeX.getUseBaselineMetadataEnvelope() ? 'm1' : 'm0'}|${args[0]}`
   }
 )
 
@@ -270,3 +309,10 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
 export const isBrowser = typeof window !== 'undefined'
 export const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect
+
+export const setLaTeXBaselineMetadataMode = (enabled: boolean): void => {
+  LaTeX.setUseBaselineMetadataEnvelope(enabled)
+}
+
+export const getLaTeXBaselineMetadataMode = (): boolean =>
+  LaTeX.getUseBaselineMetadataEnvelope()
