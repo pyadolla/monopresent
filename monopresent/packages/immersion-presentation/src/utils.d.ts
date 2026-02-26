@@ -4,8 +4,12 @@ export declare const hashString: (str: string) => number;
 export declare const LaTeX: {
     _preamble: string;
     _host: string;
+    _useBaselineMetadataEnvelope: boolean;
+    _cacheGeneration: number;
     getHost: () => string;
     setHost: (h: string) => void;
+    getUseBaselineMetadataEnvelope: () => boolean;
+    setUseBaselineMetadataEnvelope: (enabled: boolean) => void;
     getPreamble: () => string;
     setPreamble: (p: string) => void;
     fetchSVG: (tex: string) => Promise<string>;
@@ -15,3 +19,5 @@ export declare function usePrevious<T>(value: T): T | undefined;
 export declare function useLocalStorage<T>(key: string, initialValue: T): readonly [T, (value: T | ((t: T) => T)) => void];
 export declare const isBrowser: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
+export declare const setLaTeXBaselineMetadataMode: (enabled: boolean) => void;
+export declare const getLaTeXBaselineMetadataMode: () => boolean;

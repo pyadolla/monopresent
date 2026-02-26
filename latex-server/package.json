@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:legacy": "ts-node server.ts",
+    "start:concmath": "ts-node server-concmath.ts",
+    "start:concmath:xe": "LATEX_ENGINE=xelatex ts-node server-concmath.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

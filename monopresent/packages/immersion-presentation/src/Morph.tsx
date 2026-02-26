@@ -52,26 +52,39 @@ function Morph({
     {
       viewBox: [vx, vy, vw, vh],
       width,
-      height
+      height,
+      inlineBaselineMetrics
     },
     setSvgData
   ] = useState<SVGData>({
     viewBox: [0, 0, 0, 0],
     width: 0,
-    height: 0
+    height: 0,
+    inlineBaselineMetrics: undefined
   })
 
   const [transition, setTransition] = useState(false)
 
   const FONT_SCALING_FACTOR = 2.5 //2
 
-  const updateSvgData = ({ viewBox, width, height }: SVGData) => {
+  const updateSvgData = ({ viewBox, width, height, inlineBaselineMetrics }: SVGData) => {
     setSvgData({
       viewBox,
       width: FONT_SCALING_FACTOR * width,
-      height: FONT_SCALING_FACTOR * height
+      height: FONT_SCALING_FACTOR * height,
+      inlineBaselineMetrics
     })
   }
+
+  const baselineFromTopPt = inlineBaselineMetrics
+    ? inlineBaselineMetrics.baselineFromTopPt * FONT_SCALING_FACTOR
+    : -vy * FONT_SCALING_FACTOR
+  const descentFromBaselinePt = inlineBaselineMetrics
+    ? inlineBaselineMetrics.descentFromBaselinePt * FONT_SCALING_FACTOR
+    : (vy + vh) * FONT_SCALING_FACTOR
+  const inlineAdvanceWidthPt = inlineBaselineMetrics
+    ? (inlineBaselineMetrics.advanceWidthPt ?? inlineBaselineMetrics.widthPt) * FONT_SCALING_FACTOR
+    : width
 
   const wrapMath = useCallback(
     (tex) => wrapMathBasedOnProps({ display, inline }, tex),
@@ -152,8 +165,10 @@ function Morph({
           : {}),
         width: 0,
         height: 0,
-        marginTop: `${vy * FONT_SCALING_FACTOR}pt`,
-        marginRight: `${width}pt`,
+        marginTop: `${-baselineFromTopPt}pt`,
+        // Advance width should follow TeX box width when metadata is available.
+        // This prevents extra trailing gaps from widened normalized SVG viewBoxes.
+        marginRight: `${inlineAdvanceWidthPt}pt`,
         verticalAlign: 'baseline',
         position: 'relative',
         display: 'inline-block',
@@ -211,7 +226,7 @@ function Morph({
             // verticaAlign: height + vy + 'pt',
             verticalAlign: 'text-top',
             marginTop: '0.9em',
-            height: height - ((vy + vh) * FONT_SCALING_FACTOR) + 'pt',
+            height: height - descentFromBaselinePt + 'pt',
             ...(transition
               ? { transition: `${TIMING}s height, ${TIMING}s margin-bottom` }
               : {}),
