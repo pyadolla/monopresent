@@ -133,6 +133,9 @@ function elementToPath(child: SVGElement, transform = ''): string | null {
     }
     if (element.tagName === 'path') {
       const path = element.getAttribute('d')
+      if (!path) {
+        return null
+      }
       const { err, segments, type } = pathParse(path).relNormalize({
         transform: `translate(${offsetX}, ${offsetY}) ${transform}`.trim()
       })
@@ -229,7 +232,8 @@ export const fetchLaTeXSvg = memoize(
       text = payload.svg
       inlineBaselineMetrics = payload.inlineBaselineMetrics
     } catch (e) {
-      console.error(`%cLaTeXError: ${e.message}`, 'color: #AD1457')
+      const message = e instanceof Error ? e.message : String(e)
+      console.error(`%cLaTeXError: ${message}`, 'color: #AD1457')
       return null
     }
 

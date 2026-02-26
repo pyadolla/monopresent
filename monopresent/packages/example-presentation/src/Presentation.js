@@ -20,6 +20,7 @@ import {
 } from "../../immersion-presentation/src";
 
 import { TestSource } from './TestSource';
+import ShearGridDemo from "./ShearGridDemo";
 // import "immersion-presentation/src/index.css";
 import step from "immersion-presentation/src/step.macro";
 // import step from "./step.macro";
@@ -144,6 +145,48 @@ function App() {
       {/* <TableOfContentsSlide></TableOfContentsSlide> */}
       <SectionSlide section="Score Matching & Denoising Diffusion"></SectionSlide>
       <TitleSlide title="Goal of Score-Based Diffusion Models"></TitleSlide>
+      <Slide steps={[0, 1]}>
+          {(step) => (
+            <svg width="400" height="250">
+              <rect
+                x="20" y="20" width="360" height="210"
+                fill="none" stroke="white" strokeWidth="4"
+                strokeDasharray="1140"               // perimeter
+                strokeDashoffset={step >= 1 ? 0 : 1140}
+                style={{ transition: "stroke-dashoffset 0.8s linear" }}
+              />
+            </svg>
+          )}
+        </Slide>
+      <Slide>
+        <div style={{ width: "100%", height: "100%" }}>
+          <ShearGridDemo />
+        </div>
+      </Slide>
+      <Slide steps={[0, 1]}>
+        {(step) => {
+          const d = "M10,120 C120,10 220,230 330,120";
+          return (
+            <svg width="360" height="240">
+              <path d={d} fill="none" stroke="#666" strokeWidth="3" />
+              <path
+                d={d}
+                fill="none"
+                stroke="#00ff66"
+                strokeWidth="5"
+                strokeLinecap="round"
+                pathLength={100}
+                strokeDasharray="25 75"
+                strokeDashoffset={-50}
+                style={{
+                  opacity: step >= 1 ? 1 : 0,
+                  transition: "opacity 0.4s linear"
+                }}
+              />
+            </svg>
+          );
+        }}
+      </Slide>
       <Slide steps={[1, 2]}>
         <List step={step}>
           <Item name={<span className="text-green">Objective</span>}>

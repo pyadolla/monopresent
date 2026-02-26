@@ -87,7 +87,7 @@ function Morph({
     : width
 
   const wrapMath = useCallback(
-    (tex) => wrapMathBasedOnProps({ display, inline }, tex),
+    (tex: string) => wrapMathBasedOnProps({ display, inline }, tex),
     [display, inline]
   )
 

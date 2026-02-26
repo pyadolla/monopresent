@@ -26,13 +26,14 @@ export type SVGData = {
   inlineBaselineMetrics?: InlineBaselineMetrics
 }
 export async function animate(
-  svgEl: SVGSVGElement,
+  svgEl: SVGElement,
   text: string,
   replaceImediately = false,
   TIMING: number = DEFAULT_TIMING,
-  setSvgData: (data: SVGData) => void = () => undefined
+  setSvgData: (data: SVGData) => void = () => undefined,
+  onFrame: () => void = () => undefined
 ): Promise<any[]> {
-  let data: LaTeXSVGData
+  let data: LaTeXSVGData | null
   if (text === '') {
     data = {
       groups: {},
@@ -57,6 +58,8 @@ export async function animate(
   const afterIds = Object.keys(newPaths)
   const beforeIds = Array.from(svgEl.querySelectorAll('[id]')).map((e) => e.id)
   const allIds = Array.from(new Set([...afterIds, ...beforeIds]))
+  const findById = (id: string): SVGElement | null =>
+    svgEl.querySelector(`[id="${id}"]`)
 
   return Promise.all(
     allIds.map(async (id) => {
@@ -64,16 +67,20 @@ export async function animate(
       const isNew = afterIds.includes(id) && !beforeIds.includes(id)
 
       if (shouldRemove) {
-        const element = svgEl.getElementById(id)
+        const element = findById(id)
+        if (!element) return true
         if (replaceImediately) {
           element.remove()
+          onFrame()
           return true
         } else {
           await gsap.to(element, {
             duration: TIMING,
-            opacity: 0
+            opacity: 0,
+            onUpdate: onFrame
           })
           element.remove()
+          onFrame()
           return true
         }
       }
@@ -96,22 +103,27 @@ export async function animate(
 
         if (replaceImediately) {
           path.style.opacity = '1'
+          onFrame()
           return true
         } else {
           await gsap.to(path, {
             duration: TIMING,
-            opacity: 1
+            opacity: 1,
+            onUpdate: onFrame
           })
+          onFrame()
           return true
         }
       }
 
       // morphing
-      const element = svgEl.getElementById(id) as SVGElement
+      const element = findById(id)
+      if (!element) return true
 
       if (replaceImediately) {
         element.setAttribute('d', newPaths[id])
         element.style.opacity = '1'
+        onFrame()
         return true
       } else {
         await gsap.to(element, {
@@ -119,8 +131,10 @@ export async function animate(
           morphSVG: newPaths[id],
           // TODO test if makes difference!
           // type:"rotational",
-          opacity: 1
+          opacity: 1,
+          onUpdate: onFrame
         })
+        onFrame()
         return true
       }
     })
@@ -230,4 +244,3 @@ export async function animate(
 //     resolveCurrent() // mark this animation as done
 //   }
 // }
-
