@@ -146,6 +146,16 @@ const residueCgSteps = residueCgTimeline.map((s, i) => ({
   },
 }));
 
+const cgDefTimeline = timeline`
+frame vv
+text1 hv
+`;
+
+const cgDefSteps = cgDefTimeline.map((s) => ({
+  frame: { ...s.frame, seconds: 0.45 },
+  text1: { ...s.text1, seconds: 0.45 },
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -378,11 +388,13 @@ function App() {
       <Slide header="Residue CG Layers" steps={range(residueCgSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center">
-            <AnimateSVG
-              src="/figures/residuecg.svg"
-              step={residueCgSteps[step]}
-              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
-            />
+            <Portal zoomin>
+              <AnimateSVG
+                src="/figures/residuecg.svg"
+                step={residueCgSteps[step]}
+                style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+              />
+            </Portal>
             <div className="mt-6 text-center" style={{ fontSize: "1.05rem" }}>
               {[
                 "Step 1: show layer1.",
@@ -391,6 +403,67 @@ function App() {
                 "Step 4: reveal layer4.",
               ][step]}
             </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="CG Definition" steps={range(cgDefSteps.length + 5)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-0 py-2">
+            <div className="flex items-center justify-center -mt-4">
+              <Portal zoomout>
+                <AnimateSVG
+                  src="/figures/cgdef.svg"
+                  step={cgDefSteps[Math.min(step, cgDefSteps.length - 1)]}
+                  style={{ width: "100%", maxWidth: "820px", margin: "0 auto" }}
+                />
+              </Portal>
+            </div>
+            <Show when={step >= 2}>
+              <Box className="mx-auto -mt-28" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.76rem", lineHeight: 1.45 }}>
+                <div className="grid gap-x-6 items-start" style={{ gridTemplateColumns: "2.4fr 1fr" }}>
+                  <div className="whitespace-nowrap">
+                    <Show when={step >= 2}>
+                      <div>discrete CG node types&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`c \in \mathcal{C}`}</span></div>
+                    </Show>
+                    <Show when={step >= 3}>
+                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`R, T \in SO(3) \times \mathbb{R}^3`}</span></div>
+                    </Show>
+                    <Show when={step >= 4}>
+                      <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
+                    </Show>
+                    <Show when={step >= 5}>
+                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`s \in \mathbb{R}^n`}</span></div>
+                    </Show>
+                    <Show when={step >= 6}>
+                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`v \in \mathbb{R}^{n \times 3}`}</span></div>
+                    </Show>
+                  </div>
+                  <div className="flex items-start">
+                    <Show when={step >= 3}>
+                      <div style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "right top", marginTop: "1.05rem", marginLeft: "-3rem" }}>
+                        <div className="flex items-start gap-1">
+                          <div>
+                            {m`R=\begin{bmatrix}
+                            r_{11} & r_{12} & r_{13}\\
+                            r_{21} & r_{22} & r_{23}\\
+                            r_{31} & r_{32} & r_{33}
+                            \end{bmatrix}`}
+                          </div>
+                          <div>
+                            {m`T=\begin{bmatrix}
+                            t_{1}\\
+                            t_{2}\\
+                            t_{3}
+                            \end{bmatrix}`}
+                          </div>
+                        </div>
+                      </div>
+                    </Show>
+                  </div>
+                </div>
+              </Box>
+            </Show>
           </div>
         )}
       </Slide>
