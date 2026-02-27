@@ -108,6 +108,12 @@ const testLayerSweepSteps = testLayerTimeline.map((s, i) => ({
     seconds: 0.75,
     ease: "power2.out",
   },
+  text1: {
+    attr: {
+      "data-scale": 2,
+    },
+    seconds: 0,
+  },
   "text:text1": ["$x^2$", "$y^4$", "$y^4$"][i],
 }));
 
