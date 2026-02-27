@@ -117,6 +117,35 @@ const testLayerSweepSteps = testLayerTimeline.map((s, i) => ({
   "text:text1": ["$x^2$", "$y^4$", "$y^4$"][i],
 }));
 
+const residueCgTimeline = timeline`
+layer1 vvhh
+layer2 hvvh
+layer3 hhvv
+layer4 hhhv
+`;
+
+const residueCgSteps = residueCgTimeline.map((s, i) => ({
+  layer1: {
+    ...s.layer1,
+    seconds: i === 2 ? 0.6 : 0.8,
+  },
+  layer2: {
+    ...s.layer2,
+    delay: i === 3 ? 0.6 : 0,
+    seconds: i === 3 ? 0.6 : 0.8,
+  },
+  layer3: {
+    ...s.layer3,
+    delay: i === 2 ? 0.6 : 0,
+    seconds: 0.8,
+  },
+  layer4: {
+    ...s.layer4,
+    delay: 0,
+    seconds: i === 3 ? 0.6 : 0.8,
+  },
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -340,6 +369,26 @@ function App() {
                 "Step 1: reveal layer1.",
                 "Step 2: morph equation text from x^2 to y^4 in layer1.",
                 "Step 3: fade layer1 to 10% and sweep layer2 in from the right to 90% opacity.",
+              ][step]}
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Residue CG Layers" steps={range(residueCgSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/residuecg.svg"
+              step={residueCgSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+            <div className="mt-6 text-center" style={{ fontSize: "1.05rem" }}>
+              {[
+                "Step 1: show layer1.",
+                "Step 2: reveal layer2.",
+                "Step 3: reveal layer3.",
+                "Step 4: reveal layer4.",
               ][step]}
             </div>
           </div>
