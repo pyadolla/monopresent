@@ -156,6 +156,18 @@ const cgDefSteps = cgDefTimeline.map((s) => ({
   text1: { ...s.text1, seconds: 0.45 },
 }));
 
+const cgRepTimeline = timeline`
+left vvvv
+right hvvv
+`;
+
+const cgRepSteps = cgRepTimeline.map((s, i) => ({
+  left: s.left,
+  right: s.right,
+  colorize: i >= 2,
+  underlineOverlap: i >= 3,
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -409,8 +421,8 @@ function App() {
 
       <Slide header="CG Definition" steps={range(cgDefSteps.length + 5)}>
         {(step) => (
-          <div className="h-full flex flex-col justify-center gap-0 py-2">
-            <div className="flex items-center justify-center -mt-4">
+          <div className="h-full flex flex-col justify-center gap-3 py-2">
+            <div className="flex items-center justify-center">
               <Portal zoomout>
                 <AnimateSVG
                   src="/figures/cgdef.svg"
@@ -420,23 +432,23 @@ function App() {
               </Portal>
             </div>
             <Show when={step >= 2}>
-              <Box className="mx-auto -mt-28" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.76rem", lineHeight: 1.45 }}>
+              <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.76rem", lineHeight: 1.45 }}>
                 <div className="grid gap-x-6 items-start" style={{ gridTemplateColumns: "2.4fr 1fr" }}>
                   <div className="whitespace-nowrap">
                     <Show when={step >= 2}>
-                      <div>discrete CG node types&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`c \in \mathcal{C}`}</span></div>
+                      <div>discrete CG node types&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`c \in \mathcal{C}`}</span></div>
                     </Show>
                     <Show when={step >= 3}>
-                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`R, T \in SO(3) \times \mathbb{R}^3`}</span></div>
+                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`R, T \in SO(3) \times \mathbb{R}^3`}</span></div>
                     </Show>
                     <Show when={step >= 4}>
-                      <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
+                      <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
                     </Show>
                     <Show when={step >= 5}>
-                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`s \in \mathbb{R}^n`}</span></div>
+                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`s \in \mathbb{R}^n`}</span></div>
                     </Show>
                     <Show when={step >= 6}>
-                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "left center" }}>{m`v \in \mathbb{R}^{n \times 3}`}</span></div>
+                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`v \in \mathbb{R}^{n \times 3}`}</span></div>
                     </Show>
                   </div>
                   <div className="flex items-start">
@@ -464,6 +476,158 @@ function App() {
                 </div>
               </Box>
             </Show>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="CG Representation" steps={range(cgRepSteps.length)}>
+        {(step) => (
+          <div className="h-full grid grid-cols-2 gap-x-8 gap-y-0 items-center" style={{ marginTop: "-1.4rem" }}>
+            <style>{`
+              .cg-cyan svg * { fill: #19b7c6 !important; stroke: none !important; }
+              .cg-magenta svg * { fill: #ea67c2 !important; stroke: none !important; }
+              .cg-brown svg * { fill: #9c3437 !important; stroke: none !important; }
+              .cg-orange svg * { fill: #efb04f !important; stroke: none !important; }
+              .cg-green svg * { fill: #1c7b2a !important; stroke: none !important; }
+              .cg-violet svg * { fill: #5b2ad6 !important; stroke: none !important; }
+              .cg-red svg * { fill: #ef1f27 !important; stroke: none !important; }
+              .cg-gray svg * { fill: #9ea0a3 !important; stroke: none !important; }
+              .cg-line { margin-top: -0.24rem; line-height: 0; }
+              .cg-line.first { margin-top: -0.14rem; }
+            `}</style>
+            <div style={{ lineHeight: 1.0, opacity: cgRepSteps[step].left.opacity, transition: "opacity 0.35s ease" }}>
+                <div><span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathrm{LYS} \rightarrow 4\ \mathrm{CG\ nodes}`}</span></div>
+                <div className="ml-4 whitespace-nowrap">
+                  <div className={`${cgRepSteps[step].colorize ? "cg-cyan " : ""}cg-line first`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \underline{\text{C}_{\beta}},\ \text{N})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{C}_{\beta},\ \text{N})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-magenta " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \text{O})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{O})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-brown " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}_{\beta}},\ \text{C}_{\gamma},\ \underline{\text{C}_{\delta}})` : String.raw`(\text{C}_{\beta},\ \text{C}_{\gamma},\ \text{C}_{\delta})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-orange " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}_{\delta}},\ \text{C}_{\epsilon},\ \text{N}_{\zeta})` : String.raw`(\text{C}_{\delta},\ \text{C}_{\epsilon},\ \text{N}_{\zeta})`}</Morph>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <div className="flex justify-center" style={{ opacity: cgRepSteps[step].right.opacity, transition: "opacity 0.35s ease" }}>
+                <div style={{ width: "280px", height: "140px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src="/figures/res_a.png"
+                    alt="LYS coarse-grained representation"
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+            
+
+            <div style={{ lineHeight: 1.0, opacity: cgRepSteps[step].left.opacity, transition: "opacity 0.35s ease" }}>
+                <div><span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathrm{PHE} \rightarrow 3\ \mathrm{CG\ nodes}`}</span></div>
+                <div className="ml-4 whitespace-nowrap">
+                  <div className={`${cgRepSteps[step].colorize ? "cg-cyan " : ""}cg-line first`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \text{C}_{\beta},\ \text{N})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{C}_{\beta},\ \text{N})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-magenta " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \text{O})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{O})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-green " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{String.raw`(\text{C}_{\gamma},\ \text{C}_{\delta_1},\ \text{C}_{\delta_2},\ \text{C}_{\epsilon_1},\ \text{C}_{\epsilon_2},\ \text{C}_{\zeta})`}</Morph>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <div className="flex justify-center" style={{ opacity: cgRepSteps[step].right.opacity, transition: "opacity 0.35s ease" }}>
+                <div style={{ width: "280px", height: "140px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src="/figures/res_b.png"
+                    alt="PHE coarse-grained representation"
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+            
+
+            <div style={{ lineHeight: 1.0, opacity: cgRepSteps[step].left.opacity, transition: "opacity 0.35s ease" }}>
+                <div><span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathrm{ILE} \rightarrow 4\ \mathrm{CG\ nodes}`}</span></div>
+                <div className="ml-4 whitespace-nowrap">
+                  <div className={`${cgRepSteps[step].colorize ? "cg-cyan " : ""}cg-line first`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \underline{\text{C}_{\beta}},\ \text{N})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{C}_{\beta},\ \text{N})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-magenta " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \text{O})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{O})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-violet " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}_{\beta}},\ \underline{\text{C}_{\gamma_1}},\ \text{C}_{\gamma_2})` : String.raw`(\text{C}_{\beta},\ \text{C}_{\gamma_1},\ \text{C}_{\gamma_2})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-red " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}_{\beta}},\ \underline{\text{C}_{\gamma_1}},\ \text{C}_{\delta_1})` : String.raw`(\text{C}_{\beta},\ \text{C}_{\gamma_1},\ \text{C}_{\delta_1})`}</Morph>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <div className="flex justify-center" style={{ opacity: cgRepSteps[step].right.opacity, transition: "opacity 0.35s ease" }}>
+                <div style={{ width: "280px", height: "140px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src="/figures/res_c.png"
+                    alt="ILE coarse-grained representation"
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+            
+
+            <div style={{ lineHeight: 1.0, opacity: cgRepSteps[step].left.opacity, transition: "opacity 0.35s ease" }}>
+                <div><span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathrm{GLU} \rightarrow 3\ \mathrm{CG\ nodes}`}</span></div>
+                <div className="ml-4 whitespace-nowrap">
+                  <div className={`${cgRepSteps[step].colorize ? "cg-cyan " : ""}cg-line first`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \text{C}_{\beta},\ \text{N})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{C}_{\beta},\ \text{N})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-magenta " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{cgRepSteps[step].underlineOverlap ? String.raw`(\underline{\text{C}},\ \underline{\text{C}_{\alpha}},\ \text{O})` : String.raw`(\text{C},\ \text{C}_{\alpha},\ \text{O})`}</Morph>
+                    </span>
+                  </div>
+                  <div className={`${cgRepSteps[step].colorize ? "cg-gray " : ""}cg-line`}>
+                    <span style={{ display: "inline-block", zoom: "0.68" }}>
+                      <Morph inline>{String.raw`(\text{C}_{\gamma},\ \text{C}_{\delta},\ \text{O}_{\epsilon_1},\ \text{O}_{\epsilon_2})`}</Morph>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <div className="flex justify-center" style={{ opacity: cgRepSteps[step].right.opacity, transition: "opacity 0.35s ease" }}>
+                <div style={{ width: "280px", height: "140px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src="/figures/res_d.png"
+                    alt="GLU coarse-grained representation"
+                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+            
           </div>
         )}
       </Slide>
