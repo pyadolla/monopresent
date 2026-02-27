@@ -76,6 +76,41 @@ const flowSteps = flowTimeline.map((s, i) => ({
   "text:right_label": ["$x_{t+1}$", "$f_\\theta(x_t)$", "$x_0$"][i],
 }));
 
+const testLayerTimeline = timeline`
+layer1 vvv
+layer2 hhv
+`;
+
+const testLayerSteps = testLayerTimeline.map((s, i) => ({
+  layer1: {
+    ...s.layer1,
+    opacity: i === 2 ? 0.1 : s.layer1.opacity,
+    seconds: 0.45,
+  },
+  layer2: {
+    ...s.layer2,
+    opacity: i === 2 ? 0.9 : s.layer2.opacity,
+    seconds: 0.45,
+  },
+  "text:text1": ["$x^2$", "$y^4$", "$y^4$"][i],
+}));
+
+const testLayerSweepSteps = testLayerTimeline.map((s, i) => ({
+  layer1: {
+    ...s.layer1,
+    opacity: i === 2 ? 0.1 : s.layer1.opacity,
+    seconds: 0.45,
+  },
+  layer2: {
+    ...s.layer2,
+    opacity: i === 2 ? 0.9 : s.layer2.opacity,
+    x: i < 2 ? 220 : 0,
+    seconds: 0.75,
+    ease: "power2.out",
+  },
+  "text:text1": ["$x^2$", "$y^4$", "$y^4$"][i],
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -262,6 +297,44 @@ function App() {
             </div>
             <div>
               Nested delimiters: {m`\displaystyle \left\{\left[\frac{\int_0^1 x\,dx}{\sum_{k=1}^{n}k}\right],\left(\frac{a+b}{c}\right)\right\}`}.
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Layered SVG Test" steps={range(testLayerSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/testlayer.svg"
+              step={testLayerSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+            <div className="mt-6 text-center" style={{ fontSize: "1.05rem" }}>
+              {[
+                "Step 1: reveal layer1.",
+                "Step 2: morph equation text from x^2 to y^4 in layer1.",
+                "Step 3: fade layer1 to 10% and reveal layer2 at 90%.",
+              ][step]}
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Layered SVG Test + Sweep-In" steps={range(testLayerSweepSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/testlayer.svg"
+              step={testLayerSweepSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+            <div className="mt-6 text-center" style={{ fontSize: "1.05rem" }}>
+              {[
+                "Step 1: reveal layer1.",
+                "Step 2: morph equation text from x^2 to y^4 in layer1.",
+                "Step 3: fade layer1 to 10% and sweep layer2 in from the right to 90% opacity.",
+              ][step]}
             </div>
           </div>
         )}
