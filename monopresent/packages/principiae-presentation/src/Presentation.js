@@ -168,6 +168,45 @@ const cgRepSteps = cgRepTimeline.map((s, i) => ({
   underlineOverlap: i >= 3,
 }));
 
+const edgeTypeTimeline = timeline`
+g1 vv
+text1-5 vv
+cg_i_group vv
+text1 hv
+text1-7 hv
+`;
+
+const edgeTypeSteps = edgeTypeTimeline.map((s, i) => ({
+  g1: {
+    ...s.g1,
+    opacity: i === 1 ? 0.2 : s.g1.opacity,
+    delay: i === 1 ? 3.0 : 0,
+    seconds: i === 1 ? 0.6 : 0.45,
+  },
+  "text1-5": {
+    ...s["text1-5"],
+    opacity: i === 1 ? 0.2 : s["text1-5"].opacity,
+    delay: i === 1 ? 3.0 : 0,
+    seconds: i === 1 ? 0.6 : 0.45,
+  },
+  cg_i_group: {
+    ...s.cg_i_group,
+    opacity: i === 1 ? 0.2 : s.cg_i_group.opacity,
+    delay: i === 1 ? 3.0 : 0,
+    seconds: i === 1 ? 0.6 : 0.45,
+  },
+  text1: {
+    ...s.text1,
+    opacity: s.text1.opacity,
+    seconds: 0.45,
+  },
+  "text1-7": {
+    ...s["text1-7"],
+    delay: i === 1 ? 1.0 : 0,
+    seconds: 0.45,
+  },
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -439,7 +478,7 @@ function App() {
                       <div>discrete CG node types&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`c \in \mathcal{C}`}</span></div>
                     </Show>
                     <Show when={step >= 3}>
-                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`R, T \in SO(3) \times \mathbb{R}^3`}</span></div>
+                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{R}, \mathbf{T} \in SO(3) \times \mathbb{R}^3`}</span></div>
                     </Show>
                     <Show when={step >= 4}>
                       <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
@@ -448,7 +487,7 @@ function App() {
                       <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`s \in \mathbb{R}^n`}</span></div>
                     </Show>
                     <Show when={step >= 6}>
-                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`v \in \mathbb{R}^{n \times 3}`}</span></div>
+                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{v} \in \mathbb{R}^{n \times 3}`}</span></div>
                     </Show>
                   </div>
                   <div className="flex items-start">
@@ -456,14 +495,14 @@ function App() {
                       <div style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "right top", marginTop: "1.05rem", marginLeft: "-3rem" }}>
                         <div className="flex items-start gap-1">
                           <div>
-                            {m`R=\begin{bmatrix}
+                            {m`\mathbf{R}=\begin{bmatrix}
                             r_{11} & r_{12} & r_{13}\\
                             r_{21} & r_{22} & r_{23}\\
                             r_{31} & r_{32} & r_{33}
                             \end{bmatrix}`}
                           </div>
                           <div>
-                            {m`T=\begin{bmatrix}
+                            {m`\mathbf{T}=\begin{bmatrix}
                             t_{1}\\
                             t_{2}\\
                             t_{3}
@@ -628,6 +667,45 @@ function App() {
                 </div>
               </div>
             
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Edge Definition" steps={range(edgeTypeSteps.length + 2)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-4">
+            <AnimateSVG
+              src="/figures/edgetype.svg"
+              step={edgeTypeSteps[Math.min(step, edgeTypeSteps.length - 1)]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+            <Box
+              className="mx-auto"
+              style={{
+                width: "100%",
+                maxWidth: "1000px",
+                fontSize: "0.78rem",
+                lineHeight: 1.45,
+                opacity: step >= edgeTypeSteps.length - 1 ? 1 : 0,
+                transition: step === edgeTypeSteps.length - 1 ? "opacity 0.6s ease 3.0s" : "opacity 0.35s ease",
+                pointerEvents: step >= edgeTypeSteps.length - 1 ? "auto" : "none",
+              }}
+            >
+              <Show when={step >= edgeTypeSteps.length - 1}>
+                <div className="whitespace-nowrap">
+                  <div>distance&nbsp;&nbsp;{m`r_{ij}=\|\mathbf{r}_{ij}\|_2`}&nbsp;&nbsp;&nbsp;&nbsp;{m`\mathbf{r}_{ij}=\mathbf{T}_j-\mathbf{T}_i`}</div>
+                  <div>relative direction&nbsp;&nbsp;{m`\hat{\mathbf{r}}_{ij}=\frac{\mathbf{r}_{ij}}{r_{ij}}`}&nbsp;&nbsp;&nbsp;&nbsp;{m`\hat{\mathbf r}_{ji}=-\hat{\mathbf r}_{ij}`}</div>
+                  <div>
+                    edge type&nbsp;&nbsp;{m`e_{ij}=\mathrm{clip}(n_{ij},-D,D)+D`}
+                    &nbsp;&nbsp;&nbsp;&nbsp;{m`\Delta n_{ij}=n_j-n_i`}
+                  </div>
+                  <Show when={step >= edgeTypeSteps.length}>
+                    <div>message ({m`j \to i`}) uses&nbsp;&nbsp;{m`(\mathbf r_{ij},\hat{\mathbf r}_{ij})`}</div>
+                    <div>message ({m`i \to j`}) uses&nbsp;&nbsp;{m`(\mathbf r_{ji},\hat{\mathbf r}_{ji})`}</div>
+                  </Show>
+                </div>
+              </Show>
+            </Box>
           </div>
         )}
       </Slide>
