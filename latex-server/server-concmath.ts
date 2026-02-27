@@ -422,6 +422,33 @@ function rewriteStrokeOnlyPaths(pathEl: Element) {
   pathEl.removeAttribute("style");
 }
 
+function parseStyleMap(styleRaw: string): Map<string, string> {
+  return new Map(
+    styleRaw
+      .split(";")
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((entry) => {
+        const idx = entry.indexOf(":");
+        if (idx < 0) return ["", ""] as const;
+        return [entry.slice(0, idx).trim(), entry.slice(idx + 1).trim()] as const;
+      })
+      .filter(([k]) => k.length > 0)
+  );
+}
+
+function resolveEffectivePaint(el: Element, prop: "fill" | "opacity"): string | null {
+  let cur: Element | null = el;
+  while (cur) {
+    const attrVal = cur.getAttribute(prop);
+    if (attrVal && attrVal.trim() !== "" && attrVal.toLowerCase() !== "none") return attrVal;
+    const styleVal = parseStyleMap(cur.getAttribute("style") || "").get(prop);
+    if (styleVal && styleVal.trim() !== "" && styleVal.toLowerCase() !== "none") return styleVal;
+    cur = cur.parentNode && (cur.parentNode as any).nodeType === 1 ? (cur.parentNode as Element) : null;
+  }
+  return null;
+}
+
 function rewritePagePathsToDefsUses(doc: Document) {
   const svg = doc.getElementsByTagName("svg")[0];
   const page = doc.getElementById("page1");
@@ -457,11 +484,11 @@ function rewritePagePathsToDefsUses(doc: Document) {
     if (transform) {
       use.setAttribute("transform", transform);
     }
-    const fill = pathEl.getAttribute("fill");
+    const fill = resolveEffectivePaint(pathEl, "fill");
     if (fill) {
       use.setAttribute("fill", fill);
     }
-    const opacity = pathEl.getAttribute("opacity");
+    const opacity = resolveEffectivePaint(pathEl, "opacity");
     if (opacity) {
       use.setAttribute("opacity", opacity);
     }
