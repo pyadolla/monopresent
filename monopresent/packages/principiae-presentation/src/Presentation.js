@@ -716,14 +716,54 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="Graph Embedding" steps={[1, 2, 3, 4, 5, 6, 7, 8, 9]}>
+      <Slide header="Graph Embedding" steps={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]}>
         {(step) => (
-          <div className="h-full flex flex-col justify-center gap-4">
-            <div style={{ fontSize: "1.02rem", fontWeight: 400, lineHeight: 1.25 }}>
-              Node embedding {m`(c,\mathbf{R})\mapsto e=`}
-              {m`${step >= 8 ? String.raw`(s',\mathbf{v}')` : String.raw`(s,\mathbf{v})`}`}
+          <div className="h-full flex flex-col justify-center gap-4" style={{ overflow: "hidden" }}>
+            <div style={{ position: "relative", minHeight: "1.6rem", width: "100%" }}>
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  fontSize: "1.02rem",
+                  fontWeight: 400,
+                  lineHeight: 1.25,
+                  transform: step >= 10 ? "translateX(-120%)" : "translateX(0)",
+                  opacity: step >= 10 ? 0 : 1,
+                  transition: "transform 0.5s ease, opacity 0.35s ease",
+                }}
+              >
+                Node embedding {m`(c,\mathbf{R})\mapsto e=`}
+                {m`${step >= 8 ? String.raw`(s',\mathbf{v}')` : String.raw`(s,\mathbf{v})`}`}
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  fontSize: "1.02rem",
+                  fontWeight: 400,
+                  lineHeight: 1.25,
+                  transform: step >= 10 ? "translateX(0)" : "translateX(120%)",
+                  opacity: step >= 10 ? 1 : 0,
+                  transition: "transform 0.5s ease, opacity 0.35s ease",
+                }}
+              >
+                Edge embedding {m`\mathbf{r}_{ij},\ \hat{\mathbf{r}}_{ij},\ \mathbf{z}_{ij},\ \mathbf{w}_{ij}`}
+              </div>
             </div>
-            <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.86rem", lineHeight: 1.35 }}>
+            <div
+              style={{
+                transform: step >= 10 ? "translateX(-120%)" : "translateX(0)",
+                opacity: step >= 10 ? 0 : 1,
+                transition: "transform 0.5s ease, opacity 0.35s ease",
+                height: step >= 10 ? 0 : "auto",
+                overflow: step >= 10 ? "hidden" : "visible",
+              }}
+            >
+              <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.86rem", lineHeight: 1.35 }}>
               <div>
                 {step >= 9 ? (
                   <div style={{ textAlign: "center", marginBottom: "0.25rem" }}>
@@ -821,9 +861,9 @@ function App() {
                     style={{
                       position: "absolute",
                       inset: 0,
-                      opacity: step >= 9 ? 1 : 0,
+                      opacity: step === 9 ? 1 : 0,
                       transition: "opacity 0.2s ease",
-                      pointerEvents: step >= 9 ? "auto" : "none",
+                      pointerEvents: step === 9 ? "auto" : "none",
                       lineHeight: 1.35,
                     }}
                   >
@@ -835,7 +875,43 @@ function App() {
                   </div>
                 </div>
               </div>
-            </Box>
+              </Box>
+            </div>
+            <div
+              style={{
+                opacity: step >= 11 ? 1 : 0,
+                transition: "opacity 0.25s ease",
+                pointerEvents: step >= 11 ? "auto" : "none",
+              }}
+            >
+              <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.82rem", lineHeight: 1.4 }}>
+                <div className="whitespace-nowrap">
+                  <Show when={step >= 11}>
+                    <div>
+                      Recall pair geometry {m`\mathbf{r}_{ij}=\mathbf{T}_j-\mathbf{T}_i\quad r_{ij}=\|\mathbf{r}_{ij}\|_2\quad \hat{\mathbf{r}}_{ij}=\mathbf{r}_{ij}/r_{ij}`}
+                    </div>
+                  </Show>
+                  <Show when={step >= 12}>
+                    <div><span style={{ display: "inline-block", width: "2.4rem" }}>"  "</span>edge type</div>
+                    <div style={{ textAlign: "center" }}>
+                      {M`\Delta n_{ij}=n_j-n_i\qquad e_{ij}^{\mathrm{type}}=\mathrm{clip}(\Delta n_{ij},-D,D)+D`}
+                    </div>
+                  </Show>
+                  <Show when={step >= 13}>
+                    <div>Edge embedding + radial basis</div>
+                    <div style={{ textAlign: "center" }}>
+                      {M`\mathbf{z}_{ij}=\mathrm{Embed}(e_{ij}^{\mathrm{type}})\qquad \boldsymbol{\phi}_{ij}=\mathrm{Bessel}(r_{ij})`}
+                    </div>
+                  </Show>
+                  <Show when={step >= 14}>
+                    <div>Combined edge features for message passing</div>
+                    <div style={{ textAlign: "center" }}>
+                      {M`\mathbf{w}_{ij}=\mathrm{RadialNN}\!\left([\boldsymbol{\phi}_{ij};\mathbf{z}_{ij}]\right)\ \rightarrow\ \{w_{ss,ij},w_{sv,ij},w_{vs,ij},w_{vv,ij}\}`}
+                    </div>
+                  </Show>
+                </div>
+              </Box>
+            </div>
           </div>
         )}
       </Slide>
