@@ -454,10 +454,10 @@ function App() {
             </Portal>
             <div className="mt-6 text-center" style={{ fontSize: "1.05rem" }}>
               {[
-                "Step 1: show layer1.",
-                "Step 2: reveal layer2.",
-                "Step 3: reveal layer3.",
-                "Step 4: reveal layer4.",
+                "Given a polypeptide chain we discritize the residues.",
+                "We map subsets of residue atoms to coarse-grained nodes.",
+                "Each CG node defines a rigid frame over residue atoms.",
+                "We can build a graph over CG nodes.",
               ][step]}
             </div>
           </div>
@@ -490,7 +490,7 @@ function App() {
                       <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
                     </Show>
                     <Show when={step >= 5}>
-                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`s \in \mathbb{R}^n`}</span></div>
+                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`s \in \mathbb{R}`}</span></div>
                     </Show>
                     <Show when={step >= 6}>
                       <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{v} \in \mathbb{R}^{n \times 3}`}</span></div>
