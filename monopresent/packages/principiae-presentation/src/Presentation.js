@@ -207,6 +207,12 @@ const edgeTypeSteps = edgeTypeTimeline.map((s, i) => ({
   },
 }));
 
+const graphEmbeddingMorphStates = [
+  String.raw`\g{lhs}{D(\mathbf{R})=}\g{a}{D^{(0)}(\mathbf{R})}\g{op}{\oplus}\g{b}{D^{(1)}(\mathbf{R})}`,
+  String.raw`\g{lhs}{D(\mathbf{R})=}\g{a}{1}\g{op}{\oplus}\g{b}{\mathbf{R}}`,
+  String.raw`\g{lhs}{D(\mathbf{R})=}\begin{bmatrix}\g{a}{1}&\g{op}{0}\\0&\g{b}{\mathbf{R}}\end{bmatrix}`,
+];
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -705,6 +711,130 @@ function App() {
                   </Show>
                 </div>
               </Show>
+            </Box>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Graph Embedding" steps={[1, 2, 3, 4, 5, 6, 7, 8, 9]}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-4">
+            <div style={{ fontSize: "1.02rem", fontWeight: 400, lineHeight: 1.25 }}>
+              Node embedding {m`(c,\mathbf{R})\mapsto e=`}
+              {m`${step >= 8 ? String.raw`(s',\mathbf{v}')` : String.raw`(s,\mathbf{v})`}`}
+            </div>
+            <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.86rem", lineHeight: 1.35 }}>
+              <div>
+                {step >= 9 ? (
+                  <div style={{ textAlign: "center", marginBottom: "0.25rem" }}>
+                    {m`e=D(\mathbf{R})\,\mathrm{LOOKUP}(c)`}
+                  </div>
+                ) : (
+                  <div style={{ textAlign: "center", marginBottom: "0.25rem" }}>
+                    <span style={{ display: "inline-block" }}>{m`e=`}</span>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        opacity: step >= 6 && step < 8 ? 0.2 : 1,
+                        transition: "opacity 0.25s ease",
+                      }}
+                    >
+                      <Morph inline>
+                        {step >= 6
+                          ? String.raw`\begin{bmatrix}1&0\\0&\mathbf{R}\end{bmatrix}\,`
+                          : String.raw`D(\mathbf{R})\,`}
+                      </Morph>
+                    </span>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        opacity: step >= 2 && step < 6 ? 0.2 : 1,
+                        transition: "opacity 0.25s ease",
+                      }}
+                    >
+                      <Morph inline>{step >= 7 ? String.raw`[s,\mathbf{v}]^T` : String.raw`\mathrm{LOOKUP}(c)`}</Morph>
+                    </span>
+                  </div>
+                )}
+                <div style={{ position: "relative", minHeight: "11rem" }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: step === 2 ? 1 : 0,
+                      transition: "opacity 0.2s ease",
+                      pointerEvents: step === 2 ? "auto" : "none",
+                    }}
+                  >
+                    <div style={{ margin: "0.15rem 0 0.45rem 0" }}>
+                      A Wigner-D matrix {m`D^{(\ell)}(\mathbf{R})`} is the representation matrix that specifies how degree-{m`\ell`} features transform under a rotation {m`\mathbf{R}\in SO(3)`}. You can think of it as the linear rule for rotating coefficients in the {m`\ell`}-th irrep basis. For {m`\ell=0`}, {m`D^{(0)}(\mathbf{R})=1`}, so scalars are unchanged. For {m`\ell=1`}, {m`D^{(1)}(\mathbf{R})=\mathbf{R}`}, so vectors rotate exactly like ordinary 3D vectors.
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: step >= 3 && step < 6 ? 1 : 0,
+                      transition: "opacity 0.2s ease",
+                      pointerEvents: step >= 3 && step < 6 ? "auto" : "none",
+                    }}
+                  >
+                    <Morph display>
+                      {graphEmbeddingMorphStates[Math.min(Math.max(step - 3, 0), 2)]}
+                    </Morph>
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: step === 6 ? 1 : 0,
+                      transition: "opacity 0.2s ease",
+                      pointerEvents: step === 6 ? "auto" : "none",
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    <div style={{ margin: "0.15rem 0 0.35rem 0" }}>
+                      <div>Type lookup (canonical template features)</div>
+                      <div style={{ textAlign: "center", marginTop: "0.35rem" }}>{m`\mathrm{LOOKUP}(c)=[s,\mathbf{v}]^T,\ s\in\mathbb{R},\ \mathbf{v}\in\mathbb{R}^{3}.`}</div>
+                      <div>These are learned per CG node type.</div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: step === 8 ? 1 : 0,
+                      transition: "opacity 0.2s ease",
+                      pointerEvents: step === 8 ? "auto" : "none",
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    <div style={{ marginTop: "0.1rem" }}>
+                      {M`e=\begin{bmatrix}1&0\\0&\mathbf{R}\end{bmatrix}[s,\mathbf{v}]^T=[s,\mathbf{R}\mathbf{v}]^T`}
+                      <div style={{ marginTop: "0.1rem" }}>{m`\ell=0`} part unchanged:</div>
+                      <div style={{ textAlign: "center" }}>{m`s'=s`}</div>
+                      <div style={{ marginTop: "0.2rem" }}>{m`\ell=1`} part rotated channelwise:</div>
+                      <div style={{ textAlign: "center" }}>{m`\mathbf{v}'=\mathbf{R}\mathbf{v}`}</div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: step >= 9 ? 1 : 0,
+                      transition: "opacity 0.2s ease",
+                      pointerEvents: step >= 9 ? "auto" : "none",
+                      lineHeight: 1.35,
+                    }}
+                  >
+                    <div style={{ marginTop: "0.2rem" }}>
+                      <div><b>Interpretation:</b></div>
+                      <div>lookup gives a node-type-specific canonical feature template;</div>
+                      <div>{m`D(\mathbf{R})`} “steers” the equivariant part to the node’s current orientation.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Box>
           </div>
         )}
