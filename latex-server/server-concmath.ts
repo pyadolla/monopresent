@@ -27,9 +27,9 @@ const CACHE_TTL_MS = Number(process.env.CACHE_TTL_MS || 10 * 60_000);
 const CACHE_SCHEMA_VERSION = "v1";
 const MAX_COMPILE_CONCURRENCY = Math.max(
   1,
-  Number(process.env.MAX_COMPILE_CONCURRENCY || "4")
+  Number(process.env.MAX_COMPILE_CONCURRENCY || "6")
 );
-const QUEUE_TIMEOUT_MS = Math.max(100, Number(process.env.QUEUE_TIMEOUT_MS || "10000"));
+const QUEUE_TIMEOUT_MS = Math.max(100, Number(process.env.QUEUE_TIMEOUT_MS || "15000"));
 
 type InlineBaselineMetrics = {
   version: string;

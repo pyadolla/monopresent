@@ -1,0 +1,12 @@
+{
+  "baseUrl": "http://localhost:3001",
+  "totalRequests": 200,
+  "concurrency": 16,
+  "completed": 200,
+  "failed": 0,
+  "durationMs": 8467.1,
+  "rps": 23.62,
+  "p50Ms": 3.4,
+  "p95Ms": 5281.9,
+  "p99Ms": 5871.6
+}

@@ -16,8 +16,8 @@ npm run start:concmath
 - `ENABLE_CACHE` (default: `1`)
 - `ENABLE_INFLIGHT_DEDUPE` (default: `1`)
 - `ENABLE_QUEUE` (default: `1`)
-- `MAX_COMPILE_CONCURRENCY` (default: `4`)
-- `QUEUE_TIMEOUT_MS` (default: `10000`)
+- `MAX_COMPILE_CONCURRENCY` (default: `6`)
+- `QUEUE_TIMEOUT_MS` (default: `15000`)
 - `CACHE_MAX_ENTRIES` (default: `1000`)
 - `CACHE_TTL_MS` (default: `600000`)
 - `LATEX_ENGINE` (`lualatex` by default; use `xelatex` for XeTeX)
@@ -25,7 +25,7 @@ npm run start:concmath
 Example:
 
 ```bash
-ENABLE_QUEUE=1 MAX_COMPILE_CONCURRENCY=4 QUEUE_TIMEOUT_MS=10000 npm run start:concmath
+ENABLE_QUEUE=1 MAX_COMPILE_CONCURRENCY=6 QUEUE_TIMEOUT_MS=15000 npm run start:concmath
 ```
 
 ### Benchmark

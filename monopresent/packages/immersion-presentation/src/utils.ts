@@ -30,6 +30,16 @@ const queryParameters = (obj: { [key: string]: string }): string => {
 }
 
 const cacheBust = '8'
+const LATEX_FETCH_MAX_RETRIES = 1
+const LATEX_FETCH_RETRY_BASE_MS = 200
+const LATEX_FETCH_RETRY_JITTER_MS = 150
+
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms))
+
+const retryDelayMs = (attempt: number): number =>
+  LATEX_FETCH_RETRY_BASE_MS * Math.max(1, attempt) +
+  Math.floor(Math.random() * LATEX_FETCH_RETRY_JITTER_MS)
 type LaTeXFetchPayload = {
   svg: string
   inlineBaselineMetrics?: InlineBaselineMetrics
@@ -57,40 +67,68 @@ export const LaTeX = {
     LaTeX._preamble = normalizeLaTeXPreamble(p)
   },
   fetchSVGPayload: async (tex: string): Promise<LaTeXFetchPayload> => {
-    const result = await fetch(
-      `${LaTeX.getHost()}/latex?${queryParameters({
-        cachebust: cacheBust,
-        tex: tex,
-        preamble: LaTeX.getPreamble(),
-        meta: LaTeX.getUseBaselineMetadataEnvelope() ? '1' : '0'
-      })}`,
-      { mode: 'cors' }
-    )
-    if (result.ok) {
-      const contentType = result.headers.get('content-type') || ''
-      if (contentType.includes('application/json')) {
-        const payload = await result.json()
-        if (!payload || typeof payload.svg !== 'string') {
-          throw new Error('LaTeX server returned invalid metadata payload.')
-        }
-        return {
-          svg: payload.svg,
-          inlineBaselineMetrics: payload.metrics || undefined
-        }
-      }
-      return {
-        svg: await result.text()
-      }
-    } else {
-      const error = await result.json()
-      if (error.name === 'CompilationError') {
-        throw new Error(
-          `Could not compile '${error.tex}': ${error.latexErrors.join('\n')}`
+    let lastError: Error | null = null
+    for (let attempt = 0; attempt <= LATEX_FETCH_MAX_RETRIES; attempt++) {
+      try {
+        const result = await fetch(
+          `${LaTeX.getHost()}/latex?${queryParameters({
+            cachebust: cacheBust,
+            tex: tex,
+            preamble: LaTeX.getPreamble(),
+            meta: LaTeX.getUseBaselineMetadataEnvelope() ? '1' : '0'
+          })}`,
+          { mode: 'cors' }
         )
-      } else {
-        throw new Error(error.message)
+
+        if (result.ok) {
+          const contentType = result.headers.get('content-type') || ''
+          if (contentType.includes('application/json')) {
+            const payload = await result.json()
+            if (!payload || typeof payload.svg !== 'string') {
+              throw new Error('LaTeX server returned invalid metadata payload.')
+            }
+            return {
+              svg: payload.svg,
+              inlineBaselineMetrics: payload.metrics || undefined
+            }
+          }
+          return {
+            svg: await result.text()
+          }
+        }
+
+        let error: any = null
+        try {
+          error = await result.json()
+        } catch {
+          error = { message: await result.text() }
+        }
+
+        const canRetry =
+          result.status === 503 && error?.name === 'QueueTimeout'
+        if (canRetry && attempt < LATEX_FETCH_MAX_RETRIES) {
+          await sleep(retryDelayMs(attempt + 1))
+          continue
+        }
+
+        if (error?.name === 'CompilationError') {
+          throw new Error(
+            `Could not compile '${error.tex}': ${error.latexErrors.join('\n')}`
+          )
+        }
+        throw new Error(error?.message || `LaTeX request failed (${result.status})`)
+      } catch (e) {
+        const message = e instanceof Error ? e.message : String(e)
+        lastError = new Error(message)
+        if (attempt < LATEX_FETCH_MAX_RETRIES) {
+          await sleep(retryDelayMs(attempt + 1))
+          continue
+        }
+        break
       }
     }
+
+    throw lastError || new Error('LaTeX request failed.')
   },
   fetchSVG: async (tex: string): Promise<string> => {
     const payload = await LaTeX.fetchSVGPayload(tex)
