@@ -50,7 +50,9 @@ const centerLatexGroup = (group: SVGGElement): void => {
 const replaceText = async (textEle: SVGGraphicsElement): Promise<void> => {
   const text = textEle.textContent
   if (!text) return
-  const matrix = textEle.getScreenCTM()
+  // Use SVG-local CTM so CSS/slide transition transforms (e.g. Portal zoom)
+  // don't perturb baseline scaling for replaced text.
+  const matrix = textEle.getCTM()
   if (!matrix) return
 
   const isTspan = textEle.tagName.toLowerCase() === 'tspan'
