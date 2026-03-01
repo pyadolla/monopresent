@@ -15,6 +15,8 @@ app.use(cors());
 const ENGINE = (process.env.LATEX_ENGINE || "lualatex").toLowerCase();
 const PORT = Number(process.env.LATEX_SERVER_PORT || 3001);
 const LEGACY_ENGINE = "pdflatex";
+const ENABLE_PARALLEL_COMPILE =
+  (process.env.ENABLE_PARALLEL_COMPILE || "1").toLowerCase() !== "0";
 
 type InlineBaselineMetrics = {
   version: string;
@@ -31,6 +33,14 @@ type TeXBoxMetrics = {
   heightPt: number;
   depthPt: number;
 };
+
+function nowNs(): bigint {
+  return process.hrtime.bigint();
+}
+
+function elapsedMs(startNs: bigint): number {
+  return Number(process.hrtime.bigint() - startNs) / 1_000_000;
+}
 
 function buildLaTeXBoxContent(tex: string): string {
   const hasMathDelimiters =
@@ -635,6 +645,8 @@ function extractInlineBaselineMetrics(
 }
 
 app.get("/latex", async (req: Request, res: Response) => {
+  const requestId = randomUUID().slice(0, 8);
+  const reqStartNs = nowNs();
   console.log("Received request:", req.query);
   const { tex, preamble = "", meta = "0" } = req.query;
 
@@ -646,23 +658,69 @@ app.get("/latex", async (req: Request, res: Response) => {
   }
 
   try {
-    console.log(`[concmath] compile start engine=${ENGINE}`);
-    const { svg: concmathSvg, texBoxMetrics } = await compileConcmathLaTeXToSVG(
-      tex as string,
-      preamble as string
+    let tConcmathMs = 0;
+    let tLegacyMs = 0;
+    let tNormalizeMs = 0;
+    let usedLegacyMetrics = false;
+    const texInput = tex as string;
+    const preambleInput = preamble as string;
+    console.log(
+      `[concmath][${requestId}] compile start engine=${ENGINE} parallel=${ENABLE_PARALLEL_COMPILE}`
     );
-    console.log("[concmath] compile ok");
+
+    let concmathSvg: string;
+    let texBoxMetrics: TeXBoxMetrics | null = null;
+    let legacySvg: string | null = null;
+
+    if (ENABLE_PARALLEL_COMPILE) {
+      const concmathStartNs = nowNs();
+      const legacyStartNs = nowNs();
+      const [concmathResult, legacyResult] = await Promise.allSettled([
+        compileConcmathLaTeXToSVG(texInput, preambleInput),
+        compileLegacyLaTeXToSVG(texInput, preambleInput),
+      ]);
+      tConcmathMs = elapsedMs(concmathStartNs);
+      tLegacyMs = elapsedMs(legacyStartNs);
+
+      if (concmathResult.status === "rejected") {
+        throw concmathResult.reason;
+      }
+      concmathSvg = concmathResult.value.svg;
+      texBoxMetrics = concmathResult.value.texBoxMetrics;
+
+      if (legacyResult.status === "fulfilled") {
+        legacySvg = legacyResult.value;
+      } else {
+        const legacyError: any = legacyResult.reason;
+        console.warn(
+          `[concmath][${requestId}] legacy-metrics compile failed during parallel mode; fallback normalization path will be used.`,
+          {
+            message: legacyError?.message,
+            name: legacyError?.name,
+          }
+        );
+      }
+    } else {
+      const concmathStartNs = nowNs();
+      const concmathResult = await compileConcmathLaTeXToSVG(texInput, preambleInput);
+      tConcmathMs = elapsedMs(concmathStartNs);
+      concmathSvg = concmathResult.svg;
+      texBoxMetrics = concmathResult.texBoxMetrics;
+
+      const legacyStartNs = nowNs();
+      try {
+        legacySvg = await compileLegacyLaTeXToSVG(texInput, preambleInput);
+      } finally {
+        tLegacyMs = elapsedMs(legacyStartNs);
+      }
+    }
+
     let finalSvg: string;
-    try {
-      console.log("[concmath] legacy-metrics compile start");
-      const legacySvg = await compileLegacyLaTeXToSVG(tex as string, preamble as string);
-      console.log("[concmath] legacy-metrics compile ok");
+    const normalizeStartNs = nowNs();
+    if (legacySvg) {
+      usedLegacyMetrics = true;
       finalSvg = applyLegacyCompatibleNormalization(concmathSvg, legacySvg);
-    } catch (legacyError: any) {
-      console.warn("Legacy metrics fallback path failed; using fallback concmath normalization.", {
-        message: legacyError?.message,
-        name: legacyError?.name,
-      });
+    } else {
       finalSvg = fallbackAdjustSvgViewBox(concmathSvg);
       {
         const parser = new DOMParser();
@@ -672,6 +730,8 @@ app.get("/latex", async (req: Request, res: Response) => {
         finalSvg = serializer.serializeToString(fallbackDoc);
       }
     }
+    tNormalizeMs = elapsedMs(normalizeStartNs);
+    console.log(`[concmath][${requestId}] compile ok`);
 
     if (meta === "1") {
       res.json({
@@ -682,11 +742,22 @@ app.get("/latex", async (req: Request, res: Response) => {
           texBoxMetrics?.widthPt
         ),
       });
-      return;
+    } else {
+      res.type("image/svg+xml").send(finalSvg);
     }
-    res.type("image/svg+xml").send(finalSvg);
+
+    const tTotalMs = elapsedMs(reqStartNs);
+    console.log(
+      `[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms concmath=${tConcmathMs.toFixed(
+        1
+      )}ms legacy=${tLegacyMs.toFixed(1)}ms normalize=${tNormalizeMs.toFixed(
+        1
+      )}ms legacyMetrics=${usedLegacyMetrics ? "1" : "0"} meta=${meta}`
+    );
   } catch (error: any) {
-    console.error("Error during LaTeX compilation:", error);
+    const tTotalMs = elapsedMs(reqStartNs);
+    console.error(`[concmath][${requestId}] Error during LaTeX compilation:`, error);
+    console.error(`[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms`);
     res.status(500).json({
       name: error.name || "ServerError",
       message: error.message || "An unexpected error occurred.",
