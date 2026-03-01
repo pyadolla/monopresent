@@ -213,6 +213,43 @@ const graphEmbeddingMorphStates = [
   String.raw`\g{lhs}{D(\mathbf{R})=}\begin{bmatrix}\g{a}{1}&\g{op}{0}\\0&\g{b}{\mathbf{R}}\end{bmatrix}`,
 ];
 
+const outerBlockTimeline = timeline`
+rect6      hhhhhvv
+rect6draw  dddddDD
+text6      vvvvvvv
+text1      vvvvvvv
+text2      hvvvvvv
+text1-3    hvvvvvv
+text3      hhvvvvv
+text1-5    hhvvvvv
+text4      hhhvvvv
+text1-9    hhhvvvv
+text1-7    hhhvvvv
+text5      hhhhvvv
+text1-36   hhhhvvv
+rect7      hhhhhhv
+`;
+
+const outerBlockSteps = outerBlockTimeline.map((s, i) => ({
+  rect6: {
+    ...s.rect6,
+    drawSVG: s.rect6draw.drawSVG,
+    seconds: i === 5 ? 1.2 : 0.45,
+  },
+  text6: { ...s.text6, seconds: 0.45 },
+  text1: { ...s.text1, seconds: 0.45 },
+  text2: { ...s.text2, seconds: 0.45 },
+  "text1-3": { ...s["text1-3"], seconds: 0.45 },
+  text3: { ...s.text3, seconds: 0.45 },
+  "text1-5": { ...s["text1-5"], seconds: 0.45 },
+  text4: { ...s.text4, seconds: 0.45 },
+  "text1-9": { ...s["text1-9"], seconds: 0.45 },
+  "text1-7": { ...s["text1-7"], seconds: 0.45 },
+  text5: { ...s.text5, seconds: 0.45 },
+  "text1-36": { ...s["text1-36"], seconds: 0.45 },
+  rect7: { ...s.rect7, seconds: 0.45 },
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -912,6 +949,21 @@ function App() {
                 </div>
               </Box>
             </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Equivariant Message Passing" steps={range(outerBlockSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-4">
+            <div className="mx-auto w-full" style={{ maxWidth: "1000px", fontSize: "1.05rem", textAlign: "left" }}>
+              Outer Equifold Block
+            </div>
+            <AnimateSVG
+              src="/figures/outerblock.svg"
+              step={outerBlockSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
           </div>
         )}
       </Slide>
