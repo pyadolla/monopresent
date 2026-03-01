@@ -21,9 +21,15 @@ const ENABLE_PARALLEL_COMPILE =
 const ENABLE_CACHE = (process.env.ENABLE_CACHE || "1").toLowerCase() !== "0";
 const ENABLE_INFLIGHT_DEDUPE =
   (process.env.ENABLE_INFLIGHT_DEDUPE || "1").toLowerCase() !== "0";
+const ENABLE_QUEUE = (process.env.ENABLE_QUEUE || "1").toLowerCase() !== "0";
 const CACHE_MAX_ENTRIES = Number(process.env.CACHE_MAX_ENTRIES || 1000);
 const CACHE_TTL_MS = Number(process.env.CACHE_TTL_MS || 10 * 60_000);
 const CACHE_SCHEMA_VERSION = "v1";
+const MAX_COMPILE_CONCURRENCY = Math.max(
+  1,
+  Number(process.env.MAX_COMPILE_CONCURRENCY || "4")
+);
+const QUEUE_TIMEOUT_MS = Math.max(100, Number(process.env.QUEUE_TIMEOUT_MS || "10000"));
 
 type InlineBaselineMetrics = {
   version: string;
@@ -61,6 +67,8 @@ type CompiledResponse = {
 
 const responseCache = new Map<string, CachedResponse>();
 const inflightRequests = new Map<string, Promise<CompiledResponse>>();
+let activeCompileJobs = 0;
+const compileQueue: Array<() => void> = [];
 
 function nowNs(): bigint {
   return process.hrtime.bigint();
@@ -113,6 +121,46 @@ function writeCache(key: string, value: { svg: string; metrics: InlineBaselineMe
     if (!oldestKey) break;
     responseCache.delete(oldestKey);
   }
+}
+
+function getQueueDepth(): number {
+  return compileQueue.length;
+}
+
+function releaseCompileSlot(): void {
+  activeCompileJobs = Math.max(0, activeCompileJobs - 1);
+  const next = compileQueue.shift();
+  if (next) next();
+}
+
+async function acquireCompileSlot(timeoutMs: number): Promise<{ queueWaitMs: number; timedOut: boolean }> {
+  if (!ENABLE_QUEUE) {
+    return { queueWaitMs: 0, timedOut: false };
+  }
+  const waitStartNs = nowNs();
+  if (activeCompileJobs < MAX_COMPILE_CONCURRENCY) {
+    activeCompileJobs += 1;
+    return { queueWaitMs: 0, timedOut: false };
+  }
+
+  return new Promise((resolve) => {
+    let settled = false;
+    const grant = () => {
+      if (settled) return;
+      settled = true;
+      activeCompileJobs += 1;
+      resolve({ queueWaitMs: elapsedMs(waitStartNs), timedOut: false });
+    };
+    compileQueue.push(grant);
+
+    setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      const idx = compileQueue.indexOf(grant);
+      if (idx >= 0) compileQueue.splice(idx, 1);
+      resolve({ queueWaitMs: elapsedMs(waitStartNs), timedOut: true });
+    }, timeoutMs);
+  });
 }
 
 function buildLaTeXBoxContent(tex: string): string {
@@ -812,6 +860,8 @@ async function compileAndNormalize(
 app.get("/latex", async (req: Request, res: Response) => {
   const requestId = randomUUID().slice(0, 8);
   const reqStartNs = nowNs();
+  let queueWaitMs = 0;
+  let compileSlotAcquired = false;
   console.log("Received request:", req.query);
   const { tex, preamble = "", meta = "0" } = req.query;
 
@@ -848,10 +898,33 @@ app.get("/latex", async (req: Request, res: Response) => {
       console.log(
         `[concmath][${requestId}] timings total=${tTotalMs.toFixed(
           1
-        )}ms cacheHit=1 inflightShared=0 meta=${metaInput}`
+        )}ms cacheHit=1 inflightShared=0 queueWaitMs=0.0 queueDepth=${getQueueDepth()} activeCompiles=${activeCompileJobs} meta=${metaInput}`
       );
       return;
     }
+
+    const slot = await acquireCompileSlot(QUEUE_TIMEOUT_MS);
+    queueWaitMs = slot.queueWaitMs;
+    if (slot.timedOut) {
+      const tTotalMs = elapsedMs(reqStartNs);
+      console.warn(
+        `[concmath][${requestId}] queue timeout total=${tTotalMs.toFixed(
+          1
+        )}ms queueWaitMs=${queueWaitMs.toFixed(1)} queueDepth=${getQueueDepth()} activeCompiles=${activeCompileJobs}`
+      );
+      res.status(503).json({
+        name: "QueueTimeout",
+        message: "Compile queue saturated, request timed out while waiting for execution slot.",
+        details: "",
+        tex: texInput,
+        engine: ENGINE,
+        queueWaitMs,
+        queueDepth: getQueueDepth(),
+        activeCompiles: activeCompileJobs,
+      });
+      return;
+    }
+    compileSlotAcquired = true;
 
     let inflightShared = false;
     let workPromise = inflightRequests.get(cacheKey);
@@ -892,7 +965,9 @@ app.get("/latex", async (req: Request, res: Response) => {
         1
       )}ms normalize=${compiled.timing.tNormalizeMs.toFixed(1)}ms legacyMetrics=${
         compiled.timing.usedLegacyMetrics ? "1" : "0"
-      } cacheHit=0 inflightShared=${inflightShared ? "1" : "0"} meta=${meta}`
+      } cacheHit=0 inflightShared=${inflightShared ? "1" : "0"} queueWaitMs=${queueWaitMs.toFixed(
+        1
+      )} queueDepth=${getQueueDepth()} activeCompiles=${activeCompileJobs} meta=${meta}`
     );
   } catch (error: any) {
     if (ENABLE_INFLIGHT_DEDUPE) {
@@ -910,7 +985,11 @@ app.get("/latex", async (req: Request, res: Response) => {
     }
     const tTotalMs = elapsedMs(reqStartNs);
     console.error(`[concmath][${requestId}] Error during LaTeX compilation:`, error);
-    console.error(`[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms`);
+    console.error(
+      `[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms queueWaitMs=${queueWaitMs.toFixed(
+        1
+      )} queueDepth=${getQueueDepth()} activeCompiles=${activeCompileJobs}`
+    );
     res.status(500).json({
       name: error.name || "ServerError",
       message: error.message || "An unexpected error occurred.",
@@ -919,6 +998,10 @@ app.get("/latex", async (req: Request, res: Response) => {
       engine: error.engine || ENGINE,
       latexErrors: error.latexErrors || ["Unknown error during processing."],
     });
+  } finally {
+    if (compileSlotAcquired) {
+      releaseCompileSlot();
+    }
   }
 });
 
