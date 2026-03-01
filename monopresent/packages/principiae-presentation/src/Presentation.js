@@ -230,24 +230,91 @@ text1-36   hhhhvvv
 rect7      hhhhhhv
 `;
 
+const OUTER_BLOCK_GRAY_STEP = outerBlockTimeline.length - 1;
+
+const grayStepOpacity = (id, baseOpacity, stepIndex) => {
+  if (stepIndex !== OUTER_BLOCK_GRAY_STEP) return baseOpacity;
+  if (id === "rect7") return baseOpacity;
+  if (id === "text1-5") return 1;
+  return 0.2;
+};
+
 const outerBlockSteps = outerBlockTimeline.map((s, i) => ({
   rect6: {
     ...s.rect6,
+    opacity: grayStepOpacity("rect6", s.rect6.opacity, i),
     drawSVG: s.rect6draw.drawSVG,
     seconds: i === 5 ? 1.2 : 0.45,
   },
-  text6: { ...s.text6, seconds: 0.45 },
-  text1: { ...s.text1, seconds: 0.45 },
+  text6: { ...s.text6, opacity: grayStepOpacity("text6", s.text6.opacity, i), seconds: 0.45 },
+  text1: { ...s.text1, opacity: grayStepOpacity("text1", s.text1.opacity, i), seconds: 0.45 },
+  text2: { ...s.text2, opacity: grayStepOpacity("text2", s.text2.opacity, i), seconds: 0.45 },
+  "text1-3": { ...s["text1-3"], opacity: grayStepOpacity("text1-3", s["text1-3"].opacity, i), seconds: 0.45 },
+  text3: { ...s.text3, opacity: grayStepOpacity("text3", s.text3.opacity, i), seconds: 0.45 },
+  "text1-5": { ...s["text1-5"], opacity: grayStepOpacity("text1-5", s["text1-5"].opacity, i), seconds: 0.45 },
+  text4: { ...s.text4, opacity: grayStepOpacity("text4", s.text4.opacity, i), seconds: 0.45 },
+  "text1-9": { ...s["text1-9"], opacity: grayStepOpacity("text1-9", s["text1-9"].opacity, i), seconds: 0.45 },
+  "text1-7": { ...s["text1-7"], opacity: grayStepOpacity("text1-7", s["text1-7"].opacity, i), seconds: 0.45 },
+  text5: { ...s.text5, opacity: grayStepOpacity("text5", s.text5.opacity, i), seconds: 0.45 },
+  "text1-36": { ...s["text1-36"], opacity: grayStepOpacity("text1-36", s["text1-36"].opacity, i), seconds: 0.45 },
+  rect7: { ...s.rect7, seconds: 0.45 },
+}));
+
+const innerBlockTimeline = timeline`
+text2      vvvvvvvvvvvv
+text1      vvvvvvvvvvvv
+text3      hvvvvvvvvvvv
+text1-1    hvvvvvvvvvvv
+text4      hhvvvvvvvvvv
+text1-7    hhvvvvvvvvvv
+text5      hhhvvvvvvvvv
+text1-2    hhhvvvvvvvvv
+text6      hhhhvvvvvvvv
+text1-75   hhhhvvvvvvvv
+text7      hhhhhvvvvvvv
+text1-8    hhhhhvvvvvvv
+text8      hhhhhhvvvvvv
+text1-6    hhhhhhvvvvvv
+text9      hhhhhhhvvvvv
+text1-3    hhhhhhhvvvvv
+text10     hhhhhhhhvvvv
+text1-78   hhhhhhhhvvvv
+text11     hhhhhhhhhvvv
+text1-5    hhhhhhhhhvvv
+text12     hhhhhhhhhhvv
+text1-10   hhhhhhhhhhvv
+rect12     hhhhhhhhhhhv
+rect12draw dddddddddddD
+`;
+
+const innerBlockSteps = innerBlockTimeline.map((s, i) => ({
   text2: { ...s.text2, seconds: 0.45 },
-  "text1-3": { ...s["text1-3"], seconds: 0.45 },
+  text1: { ...s.text1, seconds: 0.45 },
   text3: { ...s.text3, seconds: 0.45 },
-  "text1-5": { ...s["text1-5"], seconds: 0.45 },
+  "text1-1": { ...s["text1-1"], seconds: 0.45 },
   text4: { ...s.text4, seconds: 0.45 },
-  "text1-9": { ...s["text1-9"], seconds: 0.45 },
   "text1-7": { ...s["text1-7"], seconds: 0.45 },
   text5: { ...s.text5, seconds: 0.45 },
-  "text1-36": { ...s["text1-36"], seconds: 0.45 },
-  rect7: { ...s.rect7, seconds: 0.45 },
+  "text1-2": { ...s["text1-2"], seconds: 0.45 },
+  text6: { ...s.text6, seconds: 0.45 },
+  "text1-75": { ...s["text1-75"], seconds: 0.45 },
+  text7: { ...s.text7, seconds: 0.45 },
+  "text1-8": { ...s["text1-8"], seconds: 0.45 },
+  text8: { ...s.text8, seconds: 0.45 },
+  "text1-6": { ...s["text1-6"], seconds: 0.45 },
+  text9: { ...s.text9, seconds: 0.45 },
+  "text1-3": { ...s["text1-3"], seconds: 0.45 },
+  text10: { ...s.text10, seconds: 0.45 },
+  "text1-78": { ...s["text1-78"], seconds: 0.45 },
+  text11: { ...s.text11, seconds: 0.45 },
+  "text1-5": { ...s["text1-5"], seconds: 0.45 },
+  text12: { ...s.text12, seconds: 0.45 },
+  "text1-10": { ...s["text1-10"], seconds: 0.45 },
+  rect12: {
+    ...s.rect12,
+    drawSVG: s.rect12draw.drawSVG,
+    seconds: i === innerBlockTimeline.length - 1 ? 1.2 : 0.45,
+  },
 }));
 
 function App() {
@@ -259,6 +326,7 @@ function App() {
 
   return (
     <Presentation bibUrl="/references.bib">
+      {/*
       <OverviewSlide
         title="Principiae Theme Sandbox"
         section="Overview"
@@ -478,6 +546,7 @@ function App() {
           </div>
         )}
       </Slide>
+      */}
 
       <Slide header="Residue CG Layers" steps={range(residueCgSteps.length)}>
         {(step) => (
@@ -959,11 +1028,42 @@ function App() {
             <div className="mx-auto w-full" style={{ maxWidth: "1000px", fontSize: "1.05rem", textAlign: "left" }}>
               Outer Equifold Block
             </div>
-            <AnimateSVG
-              src="/figures/outerblock.svg"
-              step={outerBlockSteps[step]}
-              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
-            />
+            <div
+              style={{
+                width: "100%",
+                maxWidth: "1000px",
+                margin: "0 auto",
+                position: "relative",
+              }}
+            >
+              <AnimateSVG
+                src="/figures/outerblock.svg"
+                step={outerBlockSteps[step]}
+                style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+              />
+              <Show when={step === OUTER_BLOCK_GRAY_STEP}>
+                <Portal zoomin className="absolute" style={{ left: "32%", top: "45%", width: "36%", height: "10%" }}>
+                  <div style={{ width: "100%", height: "100%" }} />
+                </Portal>
+              </Show>
+            </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide steps={range(innerBlockSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-3">
+            <div className="mx-auto w-full" style={{ maxWidth: "1000px", fontSize: "1.05rem", textAlign: "left" }}>
+              Inner equivariant sub-block
+            </div>
+            <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto", transform: "translateY(-12%)" }}>
+              <AnimateSVG
+                src="/figures/innerblock.svg"
+                step={innerBlockSteps[step]}
+                style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+              />
+            </div>
           </div>
         )}
       </Slide>
