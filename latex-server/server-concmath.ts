@@ -7,6 +7,7 @@ import { DOMParser, XMLSerializer } from "xmldom";
 import { randomUUID } from "crypto";
 import path from "path";
 import { promises as fsp } from "fs";
+import { createHash } from "crypto";
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,6 +18,12 @@ const PORT = Number(process.env.LATEX_SERVER_PORT || 3001);
 const LEGACY_ENGINE = "pdflatex";
 const ENABLE_PARALLEL_COMPILE =
   (process.env.ENABLE_PARALLEL_COMPILE || "1").toLowerCase() !== "0";
+const ENABLE_CACHE = (process.env.ENABLE_CACHE || "1").toLowerCase() !== "0";
+const ENABLE_INFLIGHT_DEDUPE =
+  (process.env.ENABLE_INFLIGHT_DEDUPE || "1").toLowerCase() !== "0";
+const CACHE_MAX_ENTRIES = Number(process.env.CACHE_MAX_ENTRIES || 1000);
+const CACHE_TTL_MS = Number(process.env.CACHE_TTL_MS || 10 * 60_000);
+const CACHE_SCHEMA_VERSION = "v1";
 
 type InlineBaselineMetrics = {
   version: string;
@@ -34,12 +41,78 @@ type TeXBoxMetrics = {
   depthPt: number;
 };
 
+type CachedResponse = {
+  svg: string;
+  metrics: InlineBaselineMetrics | null;
+  createdAtMs: number;
+  expiresAtMs: number;
+};
+
+type CompiledResponse = {
+  svg: string;
+  metrics: InlineBaselineMetrics | null;
+  timing: {
+    tConcmathMs: number;
+    tLegacyMs: number;
+    tNormalizeMs: number;
+    usedLegacyMetrics: boolean;
+  };
+};
+
+const responseCache = new Map<string, CachedResponse>();
+const inflightRequests = new Map<string, Promise<CompiledResponse>>();
+
 function nowNs(): bigint {
   return process.hrtime.bigint();
 }
 
 function elapsedMs(startNs: bigint): number {
   return Number(process.hrtime.bigint() - startNs) / 1_000_000;
+}
+
+function hashRequestKey(parts: {
+  tex: string;
+  preamble: string;
+  meta: string;
+  engine: string;
+  schemaVersion: string;
+}): string {
+  const payload = JSON.stringify(parts);
+  return createHash("sha256").update(payload).digest("hex");
+}
+
+function readCache(key: string): CachedResponse | null {
+  if (!ENABLE_CACHE) return null;
+  const entry = responseCache.get(key);
+  if (!entry) return null;
+  const now = Date.now();
+  if (entry.expiresAtMs <= now) {
+    responseCache.delete(key);
+    return null;
+  }
+  // LRU touch
+  responseCache.delete(key);
+  responseCache.set(key, entry);
+  return entry;
+}
+
+function writeCache(key: string, value: { svg: string; metrics: InlineBaselineMetrics | null }): void {
+  if (!ENABLE_CACHE || CACHE_MAX_ENTRIES <= 0 || CACHE_TTL_MS <= 0) return;
+  const now = Date.now();
+  const entry: CachedResponse = {
+    ...value,
+    createdAtMs: now,
+    expiresAtMs: now + CACHE_TTL_MS,
+  };
+  if (responseCache.has(key)) {
+    responseCache.delete(key);
+  }
+  responseCache.set(key, entry);
+  while (responseCache.size > CACHE_MAX_ENTRIES) {
+    const oldestKey = responseCache.keys().next().value;
+    if (!oldestKey) break;
+    responseCache.delete(oldestKey);
+  }
 }
 
 function buildLaTeXBoxContent(tex: string): string {
@@ -644,6 +717,98 @@ function extractInlineBaselineMetrics(
   };
 }
 
+async function compileAndNormalize(
+  texInput: string,
+  preambleInput: string,
+  meta: string,
+  requestId: string
+): Promise<CompiledResponse> {
+  let tConcmathMs = 0;
+  let tLegacyMs = 0;
+  let tNormalizeMs = 0;
+  let usedLegacyMetrics = false;
+  console.log(
+    `[concmath][${requestId}] compile start engine=${ENGINE} parallel=${ENABLE_PARALLEL_COMPILE}`
+  );
+
+  let concmathSvg: string;
+  let texBoxMetrics: TeXBoxMetrics | null = null;
+  let legacySvg: string | null = null;
+
+  if (ENABLE_PARALLEL_COMPILE) {
+    const concmathStartNs = nowNs();
+    const legacyStartNs = nowNs();
+    const [concmathResult, legacyResult] = await Promise.allSettled([
+      compileConcmathLaTeXToSVG(texInput, preambleInput),
+      compileLegacyLaTeXToSVG(texInput, preambleInput),
+    ]);
+    tConcmathMs = elapsedMs(concmathStartNs);
+    tLegacyMs = elapsedMs(legacyStartNs);
+
+    if (concmathResult.status === "rejected") {
+      throw concmathResult.reason;
+    }
+    concmathSvg = concmathResult.value.svg;
+    texBoxMetrics = concmathResult.value.texBoxMetrics;
+
+    if (legacyResult.status === "fulfilled") {
+      legacySvg = legacyResult.value;
+    } else {
+      const legacyError: any = legacyResult.reason;
+      console.warn(
+        `[concmath][${requestId}] legacy-metrics compile failed during parallel mode; fallback normalization path will be used.`,
+        {
+          message: legacyError?.message,
+          name: legacyError?.name,
+        }
+      );
+    }
+  } else {
+    const concmathStartNs = nowNs();
+    const concmathResult = await compileConcmathLaTeXToSVG(texInput, preambleInput);
+    tConcmathMs = elapsedMs(concmathStartNs);
+    concmathSvg = concmathResult.svg;
+    texBoxMetrics = concmathResult.texBoxMetrics;
+
+    const legacyStartNs = nowNs();
+    try {
+      legacySvg = await compileLegacyLaTeXToSVG(texInput, preambleInput);
+    } finally {
+      tLegacyMs = elapsedMs(legacyStartNs);
+    }
+  }
+
+  let finalSvg: string;
+  const normalizeStartNs = nowNs();
+  if (legacySvg) {
+    usedLegacyMetrics = true;
+    finalSvg = applyLegacyCompatibleNormalization(concmathSvg, legacySvg);
+  } else {
+    finalSvg = fallbackAdjustSvgViewBox(concmathSvg);
+    const parser = new DOMParser();
+    const serializer = new XMLSerializer();
+    const fallbackDoc = parser.parseFromString(finalSvg, "image/svg+xml");
+    rewritePagePathsToDefsUses(fallbackDoc);
+    finalSvg = serializer.serializeToString(fallbackDoc);
+  }
+  tNormalizeMs = elapsedMs(normalizeStartNs);
+  console.log(`[concmath][${requestId}] compile ok`);
+
+  return {
+    svg: finalSvg,
+    metrics:
+      meta === "1"
+        ? extractInlineBaselineMetrics(finalSvg, texBoxMetrics, texBoxMetrics?.widthPt)
+        : null,
+    timing: {
+      tConcmathMs,
+      tLegacyMs,
+      tNormalizeMs,
+      usedLegacyMetrics,
+    },
+  };
+}
+
 app.get("/latex", async (req: Request, res: Response) => {
   const requestId = randomUUID().slice(0, 8);
   const reqStartNs = nowNs();
@@ -658,103 +823,91 @@ app.get("/latex", async (req: Request, res: Response) => {
   }
 
   try {
-    let tConcmathMs = 0;
-    let tLegacyMs = 0;
-    let tNormalizeMs = 0;
-    let usedLegacyMetrics = false;
     const texInput = tex as string;
     const preambleInput = preamble as string;
-    console.log(
-      `[concmath][${requestId}] compile start engine=${ENGINE} parallel=${ENABLE_PARALLEL_COMPILE}`
-    );
+    const metaInput = String(meta);
+    const cacheKey = hashRequestKey({
+      tex: texInput,
+      preamble: preambleInput,
+      meta: metaInput,
+      engine: ENGINE,
+      schemaVersion: CACHE_SCHEMA_VERSION,
+    });
 
-    let concmathSvg: string;
-    let texBoxMetrics: TeXBoxMetrics | null = null;
-    let legacySvg: string | null = null;
-
-    if (ENABLE_PARALLEL_COMPILE) {
-      const concmathStartNs = nowNs();
-      const legacyStartNs = nowNs();
-      const [concmathResult, legacyResult] = await Promise.allSettled([
-        compileConcmathLaTeXToSVG(texInput, preambleInput),
-        compileLegacyLaTeXToSVG(texInput, preambleInput),
-      ]);
-      tConcmathMs = elapsedMs(concmathStartNs);
-      tLegacyMs = elapsedMs(legacyStartNs);
-
-      if (concmathResult.status === "rejected") {
-        throw concmathResult.reason;
-      }
-      concmathSvg = concmathResult.value.svg;
-      texBoxMetrics = concmathResult.value.texBoxMetrics;
-
-      if (legacyResult.status === "fulfilled") {
-        legacySvg = legacyResult.value;
+    const cached = readCache(cacheKey);
+    if (cached) {
+      if (metaInput === "1") {
+        res.json({
+          svg: cached.svg,
+          metrics: cached.metrics,
+        });
       } else {
-        const legacyError: any = legacyResult.reason;
-        console.warn(
-          `[concmath][${requestId}] legacy-metrics compile failed during parallel mode; fallback normalization path will be used.`,
-          {
-            message: legacyError?.message,
-            name: legacyError?.name,
-          }
-        );
+        res.type("image/svg+xml").send(cached.svg);
       }
-    } else {
-      const concmathStartNs = nowNs();
-      const concmathResult = await compileConcmathLaTeXToSVG(texInput, preambleInput);
-      tConcmathMs = elapsedMs(concmathStartNs);
-      concmathSvg = concmathResult.svg;
-      texBoxMetrics = concmathResult.texBoxMetrics;
-
-      const legacyStartNs = nowNs();
-      try {
-        legacySvg = await compileLegacyLaTeXToSVG(texInput, preambleInput);
-      } finally {
-        tLegacyMs = elapsedMs(legacyStartNs);
-      }
+      const tTotalMs = elapsedMs(reqStartNs);
+      console.log(
+        `[concmath][${requestId}] timings total=${tTotalMs.toFixed(
+          1
+        )}ms cacheHit=1 inflightShared=0 meta=${metaInput}`
+      );
+      return;
     }
 
-    let finalSvg: string;
-    const normalizeStartNs = nowNs();
-    if (legacySvg) {
-      usedLegacyMetrics = true;
-      finalSvg = applyLegacyCompatibleNormalization(concmathSvg, legacySvg);
-    } else {
-      finalSvg = fallbackAdjustSvgViewBox(concmathSvg);
-      {
-        const parser = new DOMParser();
-        const serializer = new XMLSerializer();
-        const fallbackDoc = parser.parseFromString(finalSvg, "image/svg+xml");
-        rewritePagePathsToDefsUses(fallbackDoc);
-        finalSvg = serializer.serializeToString(fallbackDoc);
+    let inflightShared = false;
+    let workPromise = inflightRequests.get(cacheKey);
+    if (!workPromise || !ENABLE_INFLIGHT_DEDUPE) {
+      workPromise = compileAndNormalize(texInput, preambleInput, metaInput, requestId);
+      if (ENABLE_INFLIGHT_DEDUPE) {
+        inflightRequests.set(cacheKey, workPromise);
       }
+    } else {
+      inflightShared = true;
+      console.log(`[concmath][${requestId}] waiting on in-flight request`);
     }
-    tNormalizeMs = elapsedMs(normalizeStartNs);
-    console.log(`[concmath][${requestId}] compile ok`);
 
-    if (meta === "1") {
+    const compiled = await workPromise;
+    if (ENABLE_INFLIGHT_DEDUPE) {
+      inflightRequests.delete(cacheKey);
+    }
+
+    writeCache(cacheKey, {
+      svg: compiled.svg,
+      metrics: compiled.metrics,
+    });
+
+    if (metaInput === "1") {
       res.json({
-        svg: finalSvg,
-        metrics: extractInlineBaselineMetrics(
-          finalSvg,
-          texBoxMetrics,
-          texBoxMetrics?.widthPt
-        ),
+        svg: compiled.svg,
+        metrics: compiled.metrics,
       });
     } else {
-      res.type("image/svg+xml").send(finalSvg);
+      res.type("image/svg+xml").send(compiled.svg);
     }
 
     const tTotalMs = elapsedMs(reqStartNs);
     console.log(
-      `[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms concmath=${tConcmathMs.toFixed(
+      `[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms concmath=${compiled.timing.tConcmathMs.toFixed(
         1
-      )}ms legacy=${tLegacyMs.toFixed(1)}ms normalize=${tNormalizeMs.toFixed(
+      )}ms legacy=${compiled.timing.tLegacyMs.toFixed(
         1
-      )}ms legacyMetrics=${usedLegacyMetrics ? "1" : "0"} meta=${meta}`
+      )}ms normalize=${compiled.timing.tNormalizeMs.toFixed(1)}ms legacyMetrics=${
+        compiled.timing.usedLegacyMetrics ? "1" : "0"
+      } cacheHit=0 inflightShared=${inflightShared ? "1" : "0"} meta=${meta}`
     );
   } catch (error: any) {
+    if (ENABLE_INFLIGHT_DEDUPE) {
+      const texInput = tex as string;
+      const preambleInput = preamble as string;
+      const metaInput = String(meta);
+      const cacheKey = hashRequestKey({
+        tex: texInput,
+        preamble: preambleInput,
+        meta: metaInput,
+        engine: ENGINE,
+        schemaVersion: CACHE_SCHEMA_VERSION,
+      });
+      inflightRequests.delete(cacheKey);
+    }
     const tTotalMs = elapsedMs(reqStartNs);
     console.error(`[concmath][${requestId}] Error during LaTeX compilation:`, error);
     console.error(`[concmath][${requestId}] timings total=${tTotalMs.toFixed(1)}ms`);
