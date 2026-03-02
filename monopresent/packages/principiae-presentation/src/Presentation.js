@@ -214,23 +214,26 @@ const graphEmbeddingMorphStates = [
 ];
 
 const outerBlockTimeline = timeline`
-rect6      hhhhhvv
-rect6draw  dddddDD
-text6      vvvvvvv
-text1      vvvvvvv
-text2      hvvvvvv
-text1-3    hvvvvvv
-text3      hhvvvvv
-text1-5    hhvvvvv
-text4      hhhvvvv
-text1-9    hhhvvvv
-text1-7    hhhvvvv
-text5      hhhhvvv
-text1-36   hhhhvvv
-rect7      hhhhhhv
+rect6      hhhhhhvv
+rect6draw  ddddddDD
+text6      vvvvvvvv
+text1      vvvvvvvv
+text2      hvvvvvvv
+text1-3    hvvvvvvv
+text7      hhvvvvvv
+text1-367  hhvvvvvv
+text3      hhhvvvvv
+text1-5    hhhvvvvv
+text4      hhhhvvvv
+text1-9    hhhhvvvv
+text1-7    hhhhvvvv
+text5      hhhhhvvv
+text1-36   hhhhhvvv
+rect7      hhhhhhhv
 `;
 
 const OUTER_BLOCK_GRAY_STEP = outerBlockTimeline.length - 1;
+const OUTER_BLOCK_DRAW_STEP = outerBlockTimeline.length - 2;
 
 const grayStepOpacity = (id, baseOpacity, stepIndex) => {
   if (stepIndex !== OUTER_BLOCK_GRAY_STEP) return baseOpacity;
@@ -243,8 +246,8 @@ const outerBlockSteps = outerBlockTimeline.map((s, i) => ({
   rect6: {
     ...s.rect6,
     opacity: grayStepOpacity("rect6", s.rect6.opacity, i),
-    drawSVG: s.rect6draw.drawSVG,
-    seconds: i === 5 ? 1.2 : 0.45,
+    drawSVG: i === OUTER_BLOCK_DRAW_STEP ? "0 100%" : i > OUTER_BLOCK_DRAW_STEP ? "100%" : 0,
+    seconds: i === OUTER_BLOCK_DRAW_STEP ? 1.2 : 0.45,
   },
   text6: { ...s.text6, opacity: grayStepOpacity("text6", s.text6.opacity, i), seconds: 0.45 },
   text1: { ...s.text1, opacity: grayStepOpacity("text1", s.text1.opacity, i), seconds: 0.45 },
@@ -257,6 +260,8 @@ const outerBlockSteps = outerBlockTimeline.map((s, i) => ({
   "text1-7": { ...s["text1-7"], opacity: grayStepOpacity("text1-7", s["text1-7"].opacity, i), seconds: 0.45 },
   text5: { ...s.text5, opacity: grayStepOpacity("text5", s.text5.opacity, i), seconds: 0.45 },
   "text1-36": { ...s["text1-36"], opacity: grayStepOpacity("text1-36", s["text1-36"].opacity, i), seconds: 0.45 },
+  text7: { ...s.text7, opacity: grayStepOpacity("text7", s.text7.opacity, i), seconds: 0.45 },
+  "text1-367": { ...s["text1-367"], opacity: grayStepOpacity("text1-367", s["text1-367"].opacity, i), seconds: 0.45 },
   rect7: { ...s.rect7, seconds: 0.45 },
 }));
 
@@ -315,6 +320,64 @@ const innerBlockSteps = innerBlockTimeline.map((s, i) => ({
     drawSVG: s.rect12draw.drawSVG,
     seconds: i === innerBlockTimeline.length - 1 ? 1.2 : 0.45,
   },
+}));
+
+const outerInnerStepsTimeline = timeline`
+layer2     vvv
+text1      vvv
+text1-3    vvv
+text15     hvv
+text16     hhv
+path1      hvv
+path2      hvv
+path4      hvv
+path6      hvv
+path7      hvv
+path8      hvv
+text1-9    hvv
+text1-35   hvv
+text1-36   hvv
+text1-6    hvv
+text8      hhv
+text9      hhv
+text10     hhv
+text11     hhv
+path11     hhv
+text1-93   hhv
+text12     hhv
+rect12     hvv
+rect13     hhv
+`;
+
+const outerInnerSteps = outerInnerStepsTimeline.map((s) => ({
+  layer2: {
+    ...s.layer2,
+    attr: { style: "display:inline" },
+    seconds: 0,
+  },
+  text1: { ...s.text1, seconds: 0.45 },
+  "text1-3": { ...s["text1-3"], seconds: 0.45 },
+  text15: { ...s.text15, seconds: 0.45 },
+  text16: { ...s.text16, seconds: 0.45 },
+  path1: { ...s.path1, seconds: 0.45 },
+  path2: { ...s.path2, seconds: 0.45 },
+  path4: { ...s.path4, seconds: 0.45 },
+  path6: { ...s.path6, seconds: 0.45 },
+  path7: { ...s.path7, seconds: 0.45 },
+  path8: { ...s.path8, seconds: 0.45 },
+  "text1-9": { ...s["text1-9"], seconds: 0.45 },
+  "text1-35": { ...s["text1-35"], seconds: 0.45 },
+  "text1-36": { ...s["text1-36"], seconds: 0.45 },
+  "text1-6": { ...s["text1-6"], seconds: 0.45 },
+  text8: { ...s.text8, seconds: 0.45 },
+  text9: { ...s.text9, seconds: 0.45 },
+  text10: { ...s.text10, seconds: 0.45 },
+  text11: { ...s.text11, seconds: 0.45 },
+  path11: { ...s.path11, seconds: 0.45 },
+  "text1-93": { ...s["text1-93"], seconds: 0.45 },
+  text12: { ...s.text12, seconds: 0.45 },
+  rect12: { ...s.rect12, seconds: 0.45 },
+  rect13: { ...s.rect13, seconds: 0.45 },
 }));
 
 function App() {
@@ -548,6 +611,7 @@ function App() {
       </Slide>
       */}
 
+      {/*
       <Slide header="Residue CG Layers" steps={range(residueCgSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center">
@@ -1022,6 +1086,7 @@ function App() {
         )}
       </Slide>
 
+      */}
       <Slide header="Equivariant Message Passing" steps={range(outerBlockSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center gap-4">
@@ -1050,7 +1115,6 @@ function App() {
           </div>
         )}
       </Slide>
-
       <Slide steps={range(innerBlockSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center gap-3">
@@ -1064,6 +1128,18 @@ function App() {
                 style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
               />
             </div>
+          </div>
+        )}
+      </Slide>
+
+      <Slide header="Outer Equivariant Block Updates" steps={range(outerInnerSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/outersteps.svg"
+              step={outerInnerSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
           </div>
         )}
       </Slide>
