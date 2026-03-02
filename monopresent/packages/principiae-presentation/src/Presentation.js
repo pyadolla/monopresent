@@ -380,6 +380,82 @@ const outerInnerSteps = outerInnerStepsTimeline.map((s) => ({
   rect13: { ...s.rect13, seconds: 0.45 },
 }));
 
+const innerStepsTimeline = timeline`
+layer2     vvv
+text15     hvv
+text16     hhv
+text1      vvv
+text1-6    vvv
+text1-5    vvv
+text1-56   vvv
+text1-9    vvv
+text1-0    hvv
+text1-2    hvv
+text1-92   hvv
+text1-23   hvv
+path1      hvv
+path2      hvv
+path4      hvv
+path6      hvv
+path7      hvv
+path8      hvv
+text2      hvv
+text3      hvv
+text4      hvv
+text8      hhv
+text9      hhv
+text9-3    hhv
+text10     hhv
+text5      hhv
+text6      hhv
+text7      hhv
+path11     hhv
+text1-93   hhv
+text12     hhv
+rect12     hvv
+rect13     hhv
+`;
+
+const innerSteps = innerStepsTimeline.map((s) => ({
+  layer2: {
+    ...s.layer2,
+    attr: { style: "display:inline" },
+    seconds: 0,
+  },
+  text15: { ...s.text15, seconds: 0.45 },
+  text16: { ...s.text16, seconds: 0.45 },
+  text1: { ...s.text1, seconds: 0.45 },
+  "text1-6": { ...s["text1-6"], seconds: 0.45 },
+  "text1-5": { ...s["text1-5"], seconds: 0.45 },
+  "text1-56": { ...s["text1-56"], seconds: 0.45 },
+  "text1-9": { ...s["text1-9"], seconds: 0.45 },
+  "text1-0": { ...s["text1-0"], seconds: 0.45 },
+  "text1-2": { ...s["text1-2"], seconds: 0.45 },
+  "text1-92": { ...s["text1-92"], seconds: 0.45 },
+  "text1-23": { ...s["text1-23"], seconds: 0.45 },
+  path1: { ...s.path1, seconds: 0.45 },
+  path2: { ...s.path2, seconds: 0.45 },
+  path4: { ...s.path4, seconds: 0.45 },
+  path6: { ...s.path6, seconds: 0.45 },
+  path7: { ...s.path7, seconds: 0.45 },
+  path8: { ...s.path8, seconds: 0.45 },
+  text2: { ...s.text2, seconds: 0.45 },
+  text3: { ...s.text3, seconds: 0.45 },
+  text4: { ...s.text4, seconds: 0.45 },
+  text8: { ...s.text8, seconds: 0.45 },
+  text9: { ...s.text9, seconds: 0.45 },
+  "text9-3": { ...s["text9-3"], seconds: 0.45 },
+  text10: { ...s.text10, seconds: 0.45 },
+  text5: { ...s.text5, seconds: 0.45 },
+  text6: { ...s.text6, seconds: 0.45 },
+  text7: { ...s.text7, seconds: 0.45 },
+  path11: { ...s.path11, seconds: 0.45 },
+  "text1-93": { ...s["text1-93"], seconds: 0.45 },
+  text12: { ...s.text12, seconds: 0.45 },
+  rect12: { ...s.rect12, seconds: 0.45 },
+  rect13: { ...s.rect13, seconds: 0.45 },
+}));
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -1087,6 +1163,18 @@ function App() {
       </Slide>
 
       */}
+      <Slide header="Outer Equivariant Block Updates" steps={range(outerInnerSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/outersteps.svg"
+              step={outerInnerSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+          </div>
+        )}
+      </Slide>
+
       <Slide header="Equivariant Message Passing" steps={range(outerBlockSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center gap-4">
@@ -1115,6 +1203,19 @@ function App() {
           </div>
         )}
       </Slide>
+
+      <Slide header="Inner Equivariant Block Updates" steps={range(innerSteps.length)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center">
+            <AnimateSVG
+              src="/figures/innersteps.svg"
+              step={innerSteps[step]}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+          </div>
+        )}
+      </Slide>
+
       <Slide steps={range(innerBlockSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center gap-3">
@@ -1128,18 +1229,6 @@ function App() {
                 style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
               />
             </div>
-          </div>
-        )}
-      </Slide>
-
-      <Slide header="Outer Equivariant Block Updates" steps={range(outerInnerSteps.length)}>
-        {(step) => (
-          <div className="h-full flex flex-col justify-center">
-            <AnimateSVG
-              src="/figures/outersteps.svg"
-              step={outerInnerSteps[step]}
-              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
-            />
           </div>
         )}
       </Slide>
