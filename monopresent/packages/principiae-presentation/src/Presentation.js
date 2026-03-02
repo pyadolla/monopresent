@@ -347,6 +347,18 @@ text1-93   hhv
 text12     hhv
 rect12     hvv
 rect13     hhv
+path3      vvv
+path5      vvv
+path9      vvv
+path10     vvv
+circle10   hvv
+path12     hvv
+path13     hvv
+path14     hvv
+circle14   hhv
+path15     hhv
+path16     hhv
+path17     hhv
 `;
 
 const outerInnerSteps = outerInnerStepsTimeline.map((s) => ({
@@ -378,45 +390,98 @@ const outerInnerSteps = outerInnerStepsTimeline.map((s) => ({
   text12: { ...s.text12, seconds: 0.45 },
   rect12: { ...s.rect12, seconds: 0.45 },
   rect13: { ...s.rect13, seconds: 0.45 },
+  path3: { ...s.path3, seconds: 0.45, opacity: s.path3.opacity === 0 ? 0 : 0.4 },
+  path5: { ...s.path5, seconds: 0.45, opacity: s.path5.opacity === 0 ? 0 : 0.4 },
+  path9: { ...s.path9, seconds: 0.45, opacity: s.path9.opacity === 0 ? 0 : 0.4 },
+  path10: { ...s.path10, seconds: 0.45, opacity: s.path10.opacity === 0 ? 0 : 0.4 },
+  circle10: { ...s.circle10, seconds: 0.45, opacity: s.circle10.opacity === 0 ? 0 : 0.4 },
+  path12: { ...s.path12, seconds: 0.45, opacity: s.path12.opacity === 0 ? 0 : 0.4 },
+  path13: { ...s.path13, seconds: 0.45, opacity: s.path13.opacity === 0 ? 0 : 0.4 },
+  path14: { ...s.path14, seconds: 0.45, opacity: s.path14.opacity === 0 ? 0 : 0.4 },
+  circle14: { ...s.circle14, seconds: 0.45, opacity: s.circle14.opacity === 0 ? 0 : 0.4 },
+  path15: { ...s.path15, seconds: 0.45, opacity: s.path15.opacity === 0 ? 0 : 0.4 },
+  path16: { ...s.path16, seconds: 0.45, opacity: s.path16.opacity === 0 ? 0 : 0.4 },
+  path17: { ...s.path17, seconds: 0.45, opacity: s.path17.opacity === 0 ? 0 : 0.4 },
 }));
 
 const innerStepsTimeline = timeline`
-layer2     vvv
-text15     hvv
-text16     hhv
-text1      vvv
-text1-6    vvv
-text1-5    vvv
-text1-56   vvv
-text1-9    vvv
-text1-0    hvv
-text1-2    hvv
-text1-92   hvv
-text1-23   hvv
-path1      hvv
-path2      hvv
-path4      hvv
-path6      hvv
-path7      hvv
-path8      hvv
-text2      hvv
-text3      hvv
-text4      hvv
-text8      hhv
-text9      hhv
-text9-3    hhv
-text10     hhv
-text5      hhv
-text6      hhv
-text7      hhv
-path11     hhv
-text1-93   hhv
-text12     hhv
-rect12     hvv
-rect13     hhv
+layer2     vvvvvvv
+text15     hvvvvvv
+text16     hhhhvvv
+text1      vvvvvvv
+text1-6    vvvvvvv
+text1-5    vvvvvvv
+text1-56   vvvvvvv
+text1-9    vvvvvvv
+text1-0    hvvvvvv
+text1-2    hvvvvvv
+text1-92   hvvvvvv
+text1-23   hvvvvvv
+path1      hvvvvvv
+path2      hvvvvvv
+path4      hvvvvvv
+path6      hvvvvvv
+path7      hvvvvvv
+path8      hvvvvvv
+text2      hvvvvvv
+text3      hvvvvvv
+text4      hvvvvvv
+text8      hhhhvvv
+text9      hhhhvvv
+text9-3    hhhhvvv
+text10     hhhhvvv
+text5      hhhhvvv
+text6      hhhhvvv
+text7      hhhhvvv
+path11     hhhhvvv
+text1-93   hhhhvvv
+text12     hhhhvvv
+rect12     hvvvvvv
+rect13     hhhhvvv
+path10     hvvvvvv
+path12     hvvvvvv
+path13     hvvvvvv
+path14     hvvvvvv
+text1-1    hvvvvvv
+text14     hvvvvvv
+text17     hvvvvvv
+text1-8    hvvvvvv
+text18     hvvvvvv
+text19     hvvvvvv
+path20     hvvvvvv
+path22     hvvvvvv
+path23     hvvvvvv
+path24     hvvvvvv
+path25     hvvvvvv
+path26     hvvvvvv
+text1-3    hvvvvvv
+text20     hvvvvvv
+circle27   hhhhvvv
+path27     hhhhvvv
+path28     hhhhvvv
+path29     hhhhvvv
+text29     hhhhvvv
+text30     hhhhvvv
+text31     hhhhvvv
+text32     hhhhvvv
+text33     hhhhvvv
+text34     hhhhvvv
+path36     hhhhvvv
+path37     hhhhvvv
+path38     hhhhvvv
+path39     hhhhvvv
+path40     hhhhvvv
+path41     hhhhvvv
+text35     hhhhvvv
+text36     hhhhvvv
 `;
 
-const innerSteps = innerStepsTimeline.map((s) => ({
+const innerSteps = innerStepsTimeline.map((s, i) => {
+  const dimFirstGroup = i >= 4;
+  const fgMainOpacity = dimFirstGroup ? 0.2 : 1;
+  const fgMsgOpacity = dimFirstGroup ? 0.2 : 0.4;
+
+  return {
   layer2: {
     ...s.layer2,
     attr: { style: "display:inline" },
@@ -454,7 +519,150 @@ const innerSteps = innerStepsTimeline.map((s) => ({
   text12: { ...s.text12, seconds: 0.45 },
   rect12: { ...s.rect12, seconds: 0.45 },
   rect13: { ...s.rect13, seconds: 0.45 },
-}));
+  path10: { ...s.path10, seconds: 0.45, opacity: s.path10.opacity === 0 ? 0 : fgMainOpacity },
+  path12: { ...s.path12, seconds: 0.45, opacity: s.path12.opacity === 0 ? 0 : fgMsgOpacity },
+  path13: { ...s.path13, seconds: 0.45, opacity: s.path13.opacity === 0 ? 0 : fgMsgOpacity },
+  path14: { ...s.path14, seconds: 0.45, opacity: s.path14.opacity === 0 ? 0 : fgMsgOpacity },
+  "text1-1": { ...s["text1-1"], seconds: 0.45, delay: 1, opacity: s["text1-1"].opacity === 0 ? 0 : fgMsgOpacity },
+  text14: { ...s.text14, seconds: 0.45, delay: 1, opacity: s.text14.opacity === 0 ? 0 : fgMsgOpacity },
+  text17: { ...s.text17, seconds: 0.45, delay: 1, opacity: s.text17.opacity === 0 ? 0 : fgMsgOpacity },
+  "text1-8": { ...s["text1-8"], seconds: 0.45, delay: 1, opacity: s["text1-8"].opacity === 0 ? 0 : fgMsgOpacity },
+  text18: { ...s.text18, seconds: 0.45, delay: 1, opacity: s.text18.opacity === 0 ? 0 : fgMsgOpacity },
+  text19: { ...s.text19, seconds: 0.45, delay: 1, opacity: s.text19.opacity === 0 ? 0 : fgMsgOpacity },
+  path20: {
+    ...s.path20,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path20.opacity === 0 ? 0 : fgMsgOpacity,
+    drawSVG: s.path20.opacity === 0 ? 0 : "0 100%",
+  },
+  path22: {
+    ...s.path22,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path22.opacity === 0 ? 0 : fgMsgOpacity,
+    drawSVG: s.path22.opacity === 0 ? 0 : "0 100%",
+  },
+  path23: {
+    ...s.path23,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path23.opacity === 0 ? 0 : fgMsgOpacity,
+    drawSVG: s.path23.opacity === 0 ? 0 : "0 100%",
+  },
+  path24: {
+    ...s.path24,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path24.opacity === 0 ? 0 : fgMsgOpacity,
+    drawSVG: s.path24.opacity === 0 ? 0 : "0 100%",
+  },
+  path25: {
+    ...s.path25,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path25.opacity === 0 ? 0 : fgMsgOpacity,
+    drawSVG: s.path25.opacity === 0 ? 0 : "0 100%",
+  },
+  path26: {
+    ...s.path26,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path26.opacity === 0 ? 0 : fgMsgOpacity,
+    drawSVG: s.path26.opacity === 0 ? 0 : "0 100%",
+  },
+  "text1-3": {
+    ...s["text1-3"],
+    seconds: 0.45,
+    delay: i <= 1 ? 2 : 0,
+    opacity: s["text1-3"].opacity === 0 ? 0 : fgMainOpacity,
+  },
+  text20: {
+    ...s.text20,
+    seconds: 0.45,
+    delay: i <= 1 ? 2 : 0,
+    opacity: s.text20.opacity === 0 ? 0 : fgMainOpacity,
+  },
+  "text:text1-3":
+    i <= 1
+      ? "$\\scriptstyle \\sum_j \\alpha_{ij}m_{ij}^s$"
+      : i === 2
+        ? "$\\Delta s_i^{(k,0)}$"
+      : "$s_i^{(k,1)}$",
+  "text:text20":
+    i <= 1
+      ? "$\\scriptstyle \\sum_j \\alpha_{ij}\\mathbf{m}_{ij}^v$"
+      : i === 2
+        ? "$\\Delta \\mathbf{v}_i^{(k,0)}$"
+      : "$\\mathbf{v}_i^{(k,1)}$",
+  circle27: { ...s.circle27, seconds: 0.45 },
+  path27: { ...s.path27, seconds: 0.45, opacity: s.path27.opacity === 0 ? 0 : 0.4 },
+  path28: { ...s.path28, seconds: 0.45, opacity: s.path28.opacity === 0 ? 0 : 0.4 },
+  path29: { ...s.path29, seconds: 0.45, opacity: s.path29.opacity === 0 ? 0 : 0.4 },
+  text29: { ...s.text29, seconds: 0.45, delay: 1, opacity: s.text29.opacity === 0 ? 0 : 0.4 },
+  text30: { ...s.text30, seconds: 0.45, delay: 1, opacity: s.text30.opacity === 0 ? 0 : 0.4 },
+  text31: { ...s.text31, seconds: 0.45, delay: 1, opacity: s.text31.opacity === 0 ? 0 : 0.4 },
+  text32: { ...s.text32, seconds: 0.45, delay: 1, opacity: s.text32.opacity === 0 ? 0 : 0.4 },
+  text33: { ...s.text33, seconds: 0.45, delay: 1, opacity: s.text33.opacity === 0 ? 0 : 0.4 },
+  text34: { ...s.text34, seconds: 0.45, delay: 1, opacity: s.text34.opacity === 0 ? 0 : 0.4 },
+  path36: {
+    ...s.path36,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path36.opacity === 0 ? 0 : 0.4,
+    drawSVG: s.path36.opacity === 0 ? 0 : "0 100%",
+  },
+  path37: {
+    ...s.path37,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path37.opacity === 0 ? 0 : 0.4,
+    drawSVG: s.path37.opacity === 0 ? 0 : "0 100%",
+  },
+  path38: {
+    ...s.path38,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path38.opacity === 0 ? 0 : 0.4,
+    drawSVG: s.path38.opacity === 0 ? 0 : "0 100%",
+  },
+  path39: {
+    ...s.path39,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path39.opacity === 0 ? 0 : 0.4,
+    drawSVG: s.path39.opacity === 0 ? 0 : "0 100%",
+  },
+  path40: {
+    ...s.path40,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path40.opacity === 0 ? 0 : 0.4,
+    drawSVG: s.path40.opacity === 0 ? 0 : "0 100%",
+  },
+  path41: {
+    ...s.path41,
+    seconds: 0.55,
+    delay: 1,
+    opacity: s.path41.opacity === 0 ? 0 : 0.4,
+    drawSVG: s.path41.opacity === 0 ? 0 : "0 100%",
+  },
+  text35: { ...s.text35, seconds: 0.45, delay: 2 },
+  text36: { ...s.text36, seconds: 0.45, delay: 2 },
+  "text:text35":
+    i <= 4
+      ? "$\\scriptstyle \\sum_j \\alpha_{ij}m_{ij}^s$"
+      : i === 5
+        ? "$\\Delta s_i^{(k,1)}$"
+      : "$s_i^{(k,2)}$",
+  "text:text36":
+    i <= 4
+      ? "$\\scriptstyle \\sum_j \\alpha_{ij}\\mathbf{m}_{ij}^v$"
+      : i === 5
+        ? "$\\Delta \\mathbf{v}_i^{(k,1)}$"
+      : "$\\mathbf{v}_i^{(k,2)}$",
+};
+});
 
 function App() {
   useEffect(() => {
