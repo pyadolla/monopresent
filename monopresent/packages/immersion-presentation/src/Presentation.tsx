@@ -233,6 +233,108 @@ export type Transitions = {
   [key: number]: Transition
 }
 
+type PresenterTimerState = {
+  isRunning: boolean
+  startEpochMs: number | null
+  accumulatedMs: number
+}
+
+const PRESENTER_TIMER_STORAGE_KEY = 'immersion:presentation:presenter-timer'
+
+const formatDuration = (ms: number): string => {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000))
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  const mm = String(minutes).padStart(2, '0')
+  const ss = String(seconds).padStart(2, '0')
+  if (hours > 0) {
+    return `${String(hours).padStart(2, '0')}:${mm}:${ss}`
+  }
+  return `${mm}:${ss}`
+}
+
+const formatWallClock = (nowMs: number): string => {
+  return new Date(nowMs).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const getStoredTimerState = (): PresenterTimerState => {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return { isRunning: false, startEpochMs: null, accumulatedMs: 0 }
+  }
+  try {
+    const raw = localStorage.getItem(PRESENTER_TIMER_STORAGE_KEY)
+    if (!raw) {
+      return { isRunning: false, startEpochMs: null, accumulatedMs: 0 }
+    }
+    const parsed = JSON.parse(raw)
+    if (
+      typeof parsed?.isRunning === 'boolean' &&
+      (typeof parsed?.startEpochMs === 'number' || parsed?.startEpochMs === null) &&
+      typeof parsed?.accumulatedMs === 'number'
+    ) {
+      return parsed as PresenterTimerState
+    }
+  } catch (_e) {
+    // ignore malformed persisted state and fall back to defaults
+  }
+  return { isRunning: false, startEpochMs: null, accumulatedMs: 0 }
+}
+
+function usePresenterTimer() {
+  const [timerState, setTimerState] = useState<PresenterTimerState>(getStoredTimerState)
+  const [nowMs, setNowMs] = useState<number>(Date.now())
+
+  useEffect(() => {
+    const id = window.setInterval(() => setNowMs(Date.now()), 250)
+    return () => window.clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem(PRESENTER_TIMER_STORAGE_KEY, JSON.stringify(timerState))
+      } catch (_e) {
+        // ignore storage failures
+      }
+    }
+  }, [timerState])
+
+  const reset = useCallback(() => {
+    setTimerState({ isRunning: false, startEpochMs: null, accumulatedMs: 0 })
+  }, [])
+
+  const toggle = useCallback(() => {
+    setTimerState((s) => {
+      if (s.isRunning && s.startEpochMs != null) {
+        return {
+          isRunning: false,
+          startEpochMs: null,
+          accumulatedMs: s.accumulatedMs + (Date.now() - s.startEpochMs)
+        }
+      }
+      return { ...s, isRunning: true, startEpochMs: Date.now() }
+    })
+  }, [])
+
+  const elapsedMs =
+    timerState.accumulatedMs +
+    (timerState.isRunning && timerState.startEpochMs != null
+      ? nowMs - timerState.startEpochMs
+      : 0)
+
+  return {
+    isRunning: timerState.isRunning,
+    elapsedLabel: formatDuration(elapsedMs),
+    wallClockLabel: formatWallClock(nowMs),
+    toggle,
+    reset
+  }
+}
+
 function PresentationUI({
   children,
   render,
@@ -262,6 +364,9 @@ function PresentationUI({
   }, [])
 
   const [transitions, setTransitions] = useState<Transitions>({})
+  const presenterTimer = usePresenterTimer()
+  const togglePresenterTimer = presenterTimer.toggle
+  const resetPresenterTimer = presenterTimer.reset
 
   const getNext = (slideIndex: number, stepIndex: number): [number, number] => {
     if (stepIndex < slidesInfo[slideIndex].steps.length - 1) {
@@ -311,6 +416,24 @@ function PresentationUI({
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      const isTyping =
+        !!target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+
+      if (!isTyping && mode === 'presenter' && e.key === ' ') {
+        e.preventDefault()
+        togglePresenterTimer()
+        return
+      }
+      if (!isTyping && mode === 'presenter' && e.key === 'Backspace' && e.shiftKey) {
+        e.preventDefault()
+        resetPresenterTimer()
+        return
+      }
+
       if (e.key === 'ArrowDown') {
         next(true)
       }
@@ -326,7 +449,7 @@ function PresentationUI({
         prev(false)
       }
     },
-    [next, prev, stepIndex, slideIndex]
+    [next, prev, stepIndex, slideIndex, mode, togglePresenterTimer, resetPresenterTimer]
   )
 
   useEffect(() => {
@@ -388,7 +511,13 @@ function PresentationUI({
             <div className='flex flex-col'>
               <div>{slides[0]}</div>
               <div className='text-lg'>
-                <Clock />
+                <Clock
+                  wallClockLabel={presenterTimer.wallClockLabel}
+                  elapsedLabel={presenterTimer.elapsedLabel}
+                  isRunning={presenterTimer.isRunning}
+                  onToggle={presenterTimer.toggle}
+                  onReset={presenterTimer.reset}
+                />
               </div>
             </div>
             <div className='flex flex-col'>
@@ -541,8 +670,40 @@ function Tab({
   )
 }
 
-function Clock(): React.ReactElement {
-  return <div className='flex justify-center items-center'>20:00</div>
+function Clock({
+  wallClockLabel,
+  elapsedLabel,
+  isRunning,
+  onToggle,
+  onReset
+}: {
+  wallClockLabel: string
+  elapsedLabel: string
+  isRunning: boolean
+  onToggle: () => void
+  onReset: () => void
+}): React.ReactElement {
+  return (
+    <div className='flex items-center justify-center gap-3 p-2'>
+      <div className='text-base text-gray-700'>{wallClockLabel}</div>
+      <div className='font-mono text-xl font-semibold'>{elapsedLabel}</div>
+      <button
+        type='button'
+        onClick={onToggle}
+        className='px-2 py-1 text-sm rounded border border-gray-400 bg-white hover:bg-gray-50'
+      >
+        {isRunning ? 'Pause' : 'Start'}
+      </button>
+      <button
+        type='button'
+        onClick={onReset}
+        className='px-2 py-1 text-sm rounded border border-gray-400 bg-white hover:bg-gray-50'
+      >
+        Reset
+      </button>
+      <div className='text-xs text-gray-500'>Space: start/pause · Shift+Backspace: reset</div>
+    </div>
+  )
 }
 
 function PresentationOverview({

@@ -2077,7 +2077,7 @@ function App() {
         </div>
       </Slide>
 
-      <QuestionSlide title="Questions or more Principiae experiments?" />
+      <QuestionSlide title="Questions?" />
     </Presentation>
   );
 }
