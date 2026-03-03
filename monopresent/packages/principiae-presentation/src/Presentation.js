@@ -1975,6 +1975,150 @@ function App() {
         </div>
       </Slide>
 
+      <Slide header="Model Size And Training">
+        {(() => {
+          const modelSizes = [
+            { name: "EquiFold (Mini-protein)", paramsM: 2.3, color: "#2563eb" },
+            { name: "EquiFold (Antibody)", paramsM: 7.38, color: "#0ea5a8" },
+            { name: "AlphaFold", paramsM: 93.2, color: "#f59e0b" },
+            { name: "IgFold (with AntiBERTy)", paramsM: 559.6, color: "#ef4444" },
+          ];
+          const maxParamsM = 559.6;
+
+          return (
+            <div className="h-full flex flex-col justify-center gap-3">
+              <div
+                className="mx-auto"
+                style={{
+                  width: "100%",
+                  maxWidth: "1040px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "0.55rem",
+                }}
+              >
+                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)" }}>
+                  <div style={{ fontSize: "0.44rem", opacity: 0.75 }}>Mini-batch Size</div>
+                  <div style={{ fontSize: "0.78rem", fontWeight: 700 }}>8</div>
+                </div>
+                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)" }}>
+                  <div style={{ fontSize: "0.44rem", opacity: 0.75 }}>Parallel Hardware</div>
+                  <div style={{ fontSize: "0.78rem", fontWeight: 700 }}>8 × A100 GPUs</div>
+                </div>
+                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)" }}>
+                  <div style={{ fontSize: "0.44rem", opacity: 0.75 }}>Training Duration</div>
+                  <div style={{ fontSize: "0.7rem", fontWeight: 700, lineHeight: 1.25 }}>
+                    <div>Mini: 1 day</div>
+                    <div>
+                      Ab: 3.5 + 7 days{" "}
+                      <span style={{ display: "inline-block", transform: "translateY(-0.03rem)" }}>↓</span>
+                      {" "}lr
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ width: "100%", maxWidth: "1040px", margin: "0 auto", fontSize: "0.52rem" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "Spallet, Computer Modern Sans, sans-serif" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ textAlign: "left", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>EquiFold Model</th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>
+                        <span style={{ display: "inline-block", zoom: "0.76", transformOrigin: "right center" }}>{m`n_c`}</span>
+                      </th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>
+                        <span style={{ display: "inline-block", zoom: "0.76", transformOrigin: "right center" }}>{m`d_{\mathrm{bessel}}`}</span>
+                      </th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>
+                        <span style={{ display: "inline-block", zoom: "0.76", transformOrigin: "right center" }}>{m`N_{\mathrm{blocks}}`}</span>
+                      </th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>
+                        <span style={{ display: "inline-block", zoom: "0.76", transformOrigin: "right center" }}>{m`N_{\mathrm{sub}}`}</span>
+                      </th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>
+                        <span style={{ display: "inline-block", zoom: "0.76", transformOrigin: "right center" }}>{m`N_{\mathrm{head}}`}</span>
+                      </th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>
+                        <span style={{ display: "inline-block", zoom: "0.76", transformOrigin: "right center" }}>{m`r_c`}</span>
+                      </th>
+                      <th style={{ textAlign: "right", borderBottom: "1px solid #7c8ca8", padding: "0.2rem 0.28rem" }}>Trainable Params</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style={{ padding: "0.2rem 0.28rem" }}>Mini-protein</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>64</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>64</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>4</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>3</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>2</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>32 Å</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem", fontWeight: 700 }}>2.30M</td>
+                    </tr>
+                    <tr>
+                      <td style={{ padding: "0.2rem 0.28rem" }}>Antibody</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>96</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>96</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>6</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>3</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>3</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem" }}>64 Å</td>
+                      <td style={{ textAlign: "right", padding: "0.2rem 0.28rem", fontWeight: 700 }}>7.38M</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div
+                className="mx-auto"
+                style={{
+                  width: "100%",
+                  maxWidth: "1040px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  columnGap: "0.45rem",
+                }}
+              >
+                {modelSizes.map((model) => {
+                  const pct = Math.min(100, (model.paramsM / maxParamsM) * 100);
+                  return (
+                    <div key={model.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.24rem" }}>
+                      <div
+                        style={{
+                          width: "72px",
+                          height: "72px",
+                          borderRadius: "999px",
+                          background: `conic-gradient(${model.color} 0% ${pct}%, #d5dde8 ${pct}% 100%)`,
+                          border: "1px solid #7c8ca8",
+                        }}
+                      />
+                      <div style={{ textAlign: "center", fontSize: "0.42rem", lineHeight: 1.25 }}>
+                        <div style={{ fontWeight: 700 }}>{model.name}</div>
+                        <div>{model.paramsM.toFixed(model.paramsM < 10 ? 2 : 1)}M parameters</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div
+                className="mx-auto"
+                style={{
+                  width: "100%",
+                  maxWidth: "1040px",
+                  fontSize: "0.4rem",
+                  lineHeight: 1.3,
+                  fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+                  opacity: 0.75,
+                }}
+              >
+                Pie slices are linearly scaled to the largest model (IgFold = 559.6M parameters).
+              </div>
+            </div>
+          );
+        })()}
+      </Slide>
+
       <Slide header="EquiFold vs AF-Multimer/IgFold">
         <div className="h-full flex flex-col justify-center gap-5">
           <div
