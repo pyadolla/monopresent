@@ -1497,8 +1497,8 @@ function App() {
 
             <Show when={lossRevealSteps[step].block1.opacity === 1}>
               <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>1. Frame-aligned point error (all-atom FAPE)</div>
-              <div style={{ marginBottom: "0.46rem", fontSize: "0.4rem", lineHeight: 1.16 }}>
-                <span style={{ display: "inline-block", zoom: "0.64", transformOrigin: "left top" }}>
+              <div style={{ marginBottom: "0.46rem", fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
                   {m`\mathcal{L}_{\mathrm{FAPE}}^{(k)}=\frac{1}{Z\,N_{\mathrm{pairs}}}\sum_{i,j,a}m_{ija}\,\min\!\left(d_{\max},\left\|\mathbf{X}^{(k)}_{ij,a}-\widehat{\mathbf{X}}^{(k)}_{ij,a}\right\|_2\right)`}
                 </span>
               </div>
