@@ -351,14 +351,17 @@ path3      vvv
 path5      vvv
 path9      vvv
 path10     vvv
+g17        vvv
 circle10   hvv
 path12     hvv
 path13     hvv
 path14     hvv
+g18        hvv
 circle14   hhv
 path15     hhv
 path16     hhv
 path17     hhv
+g19        hhv
 `;
 
 const outerInnerSteps = outerInnerStepsTimeline.map((s) => ({
@@ -394,14 +397,41 @@ const outerInnerSteps = outerInnerStepsTimeline.map((s) => ({
   path5: { ...s.path5, seconds: 0.45, opacity: s.path5.opacity === 0 ? 0 : 0.4 },
   path9: { ...s.path9, seconds: 0.45, opacity: s.path9.opacity === 0 ? 0 : 0.4 },
   path10: { ...s.path10, seconds: 0.45, opacity: s.path10.opacity === 0 ? 0 : 0.4 },
+  g17: {
+    ...s.g17,
+    seconds: 0.45,
+    css: {
+      transform: "scale(1.45)",
+      transformOrigin: "center",
+      transformBox: "fill-box",
+    },
+  },
   circle10: { ...s.circle10, seconds: 0.45, opacity: s.circle10.opacity === 0 ? 0 : 0.4 },
   path12: { ...s.path12, seconds: 0.45, opacity: s.path12.opacity === 0 ? 0 : 0.4 },
   path13: { ...s.path13, seconds: 0.45, opacity: s.path13.opacity === 0 ? 0 : 0.4 },
   path14: { ...s.path14, seconds: 0.45, opacity: s.path14.opacity === 0 ? 0 : 0.4 },
+  g18: {
+    ...s.g18,
+    seconds: 0.45,
+    css: {
+      transform: "scale(1.45)",
+      transformOrigin: "center",
+      transformBox: "fill-box",
+    },
+  },
   circle14: { ...s.circle14, seconds: 0.45, opacity: s.circle14.opacity === 0 ? 0 : 0.4 },
   path15: { ...s.path15, seconds: 0.45, opacity: s.path15.opacity === 0 ? 0 : 0.4 },
   path16: { ...s.path16, seconds: 0.45, opacity: s.path16.opacity === 0 ? 0 : 0.4 },
   path17: { ...s.path17, seconds: 0.45, opacity: s.path17.opacity === 0 ? 0 : 0.4 },
+  g19: {
+    ...s.g19,
+    seconds: 0.45,
+    css: {
+      transform: "scale(1.45)",
+      transformOrigin: "center",
+      transformBox: "fill-box",
+    },
+  },
 }));
 
 const innerStepsTimeline = timeline`
@@ -663,6 +693,14 @@ const innerSteps = innerStepsTimeline.map((s, i) => {
       : "$\\mathbf{v}_i^{(k,2)}$",
 };
 });
+
+const lossRevealTimeline = timeline`
+block1 vvv
+block2 hvv
+block3 hhv
+`;
+
+const lossRevealSteps = lossRevealTimeline.map((s) => s);
 
 function App() {
   useEffect(() => {
@@ -1441,7 +1479,8 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="EquiFold Loss Functions">
+      <Slide header="EquiFold Loss Functions" steps={range(lossRevealSteps.length)}>
+        {(step) => (
         <div className="h-full flex flex-col justify-center gap-5">
           <div
             className="mx-auto w-full"
@@ -1456,34 +1495,60 @@ function App() {
               Total training objective is applied at each outer-block output and combines frame-aligned atom error with structure-violation penalties.
             </div>
 
-            <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>1. Frame-aligned point error (all-atom FAPE)</div>
-            <div style={{ marginBottom: "0.45rem" }}>
-              {m`\mathcal{L}_{\mathrm{FAPE}}^{(k)}=\frac{1}{Z\,N_{\mathrm{pairs}}}\sum_{u,v,a}m_{uva}\,\min\!\left(d_{\max},\left\|\mathbf{X}^{(k)}_{uv,a}-\widehat{\mathbf{X}}^{(k)}_{uv,a}\right\|_2\right)`}
-            </div>
+            <Show when={lossRevealSteps[step].block1.opacity === 1}>
+              <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>1. Frame-aligned point error (all-atom FAPE)</div>
+              <div style={{ marginBottom: "0.46rem", fontSize: "0.4rem", lineHeight: 1.16 }}>
+                <span style={{ display: "inline-block", zoom: "0.64", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}_{\mathrm{FAPE}}^{(k)}=\frac{1}{Z\,N_{\mathrm{pairs}}}\sum_{i,j,a}m_{ija}\,\min\!\left(d_{\max},\left\|\mathbf{X}^{(k)}_{ij,a}-\widehat{\mathbf{X}}^{(k)}_{ij,a}\right\|_2\right)`}
+                </span>
+              </div>
+              <div style={{ marginTop: "-0.2rem", marginBottom: "0.26rem", fontSize: "0.27rem", lineHeight: 1.06, opacity: 0.88 }}>
+                <span style={{ display: "inline-block", zoom: "0.52", transformOrigin: "left top" }}>
+                  {m`\mathbf{X}^{(k)}_{ij,a}=\mathbf{R}_i^{\top}\!\left(\mathbf{x}_{j,a}^{(k)}-\mathbf{T}_i^{(k)}\right);\ \mathbf{X}^{(k)}_{ij,a}\text{ is ground-truth atom }a\text{ from CG node }j\text{ expressed in frame }i;\ \widehat{\mathbf{X}}^{(k)}_{ij,a}\text{ is the prediction.}`}
+                </span>
+              </div>
+            </Show>
 
-            <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>2. Structure-violation losses</div>
-            <div style={{ marginBottom: "0.45rem" }}>
-              {m`\mathcal{L}_{\mathrm{struct}}^{(k)}=\mathcal{L}_{\mathrm{bond}}^{(k)}+\mathcal{L}_{\mathrm{angle}}^{(k)}+\mathcal{L}_{\mathrm{clash}}^{(k)}`}
-            </div>
-            <div style={{ marginBottom: "0.2rem" }}>
-              {m`\mathcal{L}_{\mathrm{bond}}=\frac{1}{|\mathcal{B}|}\sum_{(p,q)\in\mathcal{B}}\left[\left|\,\|\mathbf{x}_p-\mathbf{x}_q\|_2-\ell_{pq}\right|-\delta_{pq}^{\mathrm{bond}}\right]_+`}
-            </div>
-            <div style={{ marginBottom: "0.2rem" }}>
-              {m`\mathcal{L}_{\mathrm{angle}}=\frac{1}{|\mathcal{A}|}\sum_{(p,q,r)\in\mathcal{A}}\left[\left|\,\cos\angle pqr-c_{pqr}\right|-\delta_{pqr}^{\mathrm{angle}}\right]_+`}
-            </div>
-            <div style={{ marginBottom: "0.45rem" }}>
-              {m`\mathcal{L}_{\mathrm{clash}}=\frac{1}{|\mathcal{C}|}\sum_{(p,q)\in\mathcal{C}}\left[(w_p+w_q-\delta_{\mathrm{clash}})-\|\mathbf{x}_p-\mathbf{x}_q\|_2\right]_+`}
-            </div>
+            <Show when={lossRevealSteps[step].block2.opacity === 1}>
+              <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>2. Structure-violation losses</div>
+              <div style={{ marginBottom: "0.45rem", fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}_{\mathrm{struct}}^{(k)}=\mathcal{L}_{\mathrm{bond}}^{(k)}+\mathcal{L}_{\mathrm{angle}}^{(k)}+\mathcal{L}_{\mathrm{clash}}^{(k)}`}
+                </span>
+              </div>
+              <div style={{ marginBottom: "0.2rem", fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}_{\mathrm{bond}}=\frac{1}{|\mathcal{B}|}\sum_{(p,q)\in\mathcal{B}}\left[\left|\,\|\mathbf{x}_p-\mathbf{x}_q\|_2-\ell_{pq}\right|-\delta_{pq}^{\mathrm{bond}}\right]_+`}
+                </span>
+              </div>
+              <div style={{ marginBottom: "0.2rem", fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}_{\mathrm{angle}}=\frac{1}{|\mathcal{A}|}\sum_{(p,q,r)\in\mathcal{A}}\left[\left|\,\cos\angle_{\scriptscriptstyle pqr}-c_{pqr}\right|-\delta_{pqr}^{\mathrm{angle}}\right]_+`}
+                </span>
+              </div>
+              <div style={{ marginBottom: "0.45rem", fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}_{\mathrm{clash}}=\frac{1}{|\mathcal{C}|}\sum_{(p,q)\in\mathcal{C}}\left[(w_p+w_q-\delta_{\mathrm{clash}})-\|\mathbf{x}_p-\mathbf{x}_q\|_2\right]_+`}
+                </span>
+              </div>
+            </Show>
 
-            <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>3. Per-block objective and aggregation</div>
-            <div style={{ marginBottom: "0.2rem" }}>
-              {m`\mathcal{L}^{(k)}=\mathcal{L}_{\mathrm{FAPE}}^{(k)}+\tau\,\lambda_{\mathrm{struct}}\,s_k\,\mathcal{L}_{\mathrm{struct}}^{(k)},\quad s_k\in\left\{1,\frac{k}{K},\left(\frac{k}{K}\right)^2\right\}`}
-            </div>
-            <div>
-              {m`\mathcal{L}_{\mathrm{total}}=\frac{1}{K}\sum_{k=1}^{K}\mathcal{L}^{(k)}`}
-            </div>
+            <Show when={lossRevealSteps[step].block3.opacity === 1}>
+              <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>3. Per-block objective and aggregation</div>
+              <div style={{ marginBottom: "0.2rem", fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}^{(k)}=\mathcal{L}_{\mathrm{FAPE}}^{(k)}+\tau\,\lambda_{\mathrm{struct}}\,s_k\,\mathcal{L}_{\mathrm{struct}}^{(k)},\quad s_k\in\left\{1,\frac{k}{K},\left(\frac{k}{K}\right)^2\right\}`}
+                </span>
+              </div>
+              <div style={{ fontSize: "0.48rem", lineHeight: 1.25 }}>
+                <span style={{ display: "inline-block", zoom: "0.82", transformOrigin: "left top" }}>
+                  {m`\mathcal{L}_{\mathrm{total}}=\frac{1}{K}\sum_{k=1}^{K}\mathcal{L}^{(k)}`}
+                </span>
+              </div>
+            </Show>
           </div>
         </div>
+        )}
       </Slide>
 
       <Slide header="De novo Designed Mini-proteins">
@@ -1705,7 +1770,8 @@ function App() {
         </div>
       </Slide>
 
-      <Slide header="Antibody Structure Prediction Results">
+      <Slide header="Antibody Structure Prediction Results" steps={[0, 1]}>
+        {(step) => (
         <div className="h-full flex flex-col justify-center gap-3">
           <div
             className="mx-auto"
@@ -1717,8 +1783,16 @@ function App() {
               fontFamily: "Spallet, Computer Modern Sans, sans-serif",
             }}
           >
-            <div>RMSD (Å) over backbone {m`N,\ C_\alpha,\ C`} atoms by heavy/light framework and CDR loops.</div>
-            <div>Time reports inference time for predicting all-atom structure.</div>
+            <div>
+              RMSD (Å) over backbone{" "}
+              <span style={{ display: "inline-block", zoom: "0.78", transformOrigin: "left top" }}>
+                {m`N,\ C_\alpha,\ C`}
+              </span>{" "}
+              atoms by heavy/light framework and CDR loops.
+            </div>
+            <div style={{ opacity: step >= 1 ? 1 : 0, transition: "0.35s opacity ease-in-out" }}>
+              Time reports inference time for predicting all-atom structure.
+            </div>
             <div>All-atom RMSD for EquiFold on this test set: 1.52 Å.</div>
           </div>
 
@@ -1735,7 +1809,18 @@ function App() {
                   <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L1</th>
                   <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L2</th>
                   <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L3</th>
-                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>Time</th>
+                  <th
+                    style={{
+                      textAlign: "right",
+                      borderBottom: `1px solid ${step >= 1 ? "#888" : "transparent"}`,
+                      padding: "0.2rem 0.3rem",
+                      width: "4.6rem",
+                      opacity: step >= 1 ? 1 : 0,
+                      transition: "0.35s opacity ease-in-out, 0.35s border-color ease-in-out",
+                    }}
+                  >
+                    Time
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1749,7 +1834,21 @@ function App() {
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.78</strong></td>
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.34</strong></td>
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>1.02</strong></td>
-                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>{m`\sim 1\ \text{second}`}</strong></td>
+                  <td
+                    style={{
+                      textAlign: "right",
+                      padding: "0.2rem 0.3rem",
+                      width: "4.6rem",
+                      opacity: step >= 1 ? 1 : 0,
+                      transition: "0.35s opacity ease-in-out",
+                    }}
+                  >
+                    <strong>
+                      <span style={{ display: "inline-block", zoom: "0.8", transformOrigin: "right center" }}>
+                        {m`\sim 1\ \text{second}`}
+                      </span>
+                    </strong>
+                  </td>
                 </tr>
                 <tr>
                   <td style={{ padding: "0.2rem 0.3rem" }}>AlphaFold-Multimer{m`^{\dagger}`}</td>
@@ -1761,7 +1860,19 @@ function App() {
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.82</td>
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.41</td>
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>1.13</td>
-                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>{m`\sim 1\ \text{hour}`}</td>
+                  <td
+                    style={{
+                      textAlign: "right",
+                      padding: "0.2rem 0.3rem",
+                      width: "4.6rem",
+                      opacity: step >= 1 ? 1 : 0,
+                      transition: "0.35s opacity ease-in-out",
+                    }}
+                  >
+                    <span style={{ display: "inline-block", zoom: "0.8", transformOrigin: "right center" }}>
+                      {m`\sim 1\ \text{hour}`}
+                    </span>
+                  </td>
                 </tr>
                 <tr>
                   <td style={{ padding: "0.2rem 0.3rem" }}>IgFold{m`^{\ddagger}`}</td>
@@ -1773,7 +1884,19 @@ function App() {
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.83</td>
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.51</td>
                   <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>1.07</td>
-                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>{m`\sim 1\ \text{minute}`}</td>
+                  <td
+                    style={{
+                      textAlign: "right",
+                      padding: "0.2rem 0.3rem",
+                      width: "4.6rem",
+                      opacity: step >= 1 ? 1 : 0,
+                      transition: "0.35s opacity ease-in-out",
+                    }}
+                  >
+                    <span style={{ display: "inline-block", zoom: "0.8", transformOrigin: "right center" }}>
+                      {m`\sim 1\ \text{minute}`}
+                    </span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -1798,6 +1921,7 @@ function App() {
             </div>
           </div>
         </div>
+        )}
       </Slide>
 
       <Slide header="Antibody Structure Prediction Examples">
