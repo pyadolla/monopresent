@@ -1479,18 +1479,18 @@ function App() {
           <div
             style={{
               width: "100%",
-              maxWidth: "1040px",
+              maxWidth: "1200px",
               margin: "0 auto",
               display: "grid",
-              gridTemplateColumns: "1fr auto 1fr",
+              gridTemplateColumns: "minmax(120px, 1fr) 820px minmax(120px, 1fr)",
               alignItems: "stretch",
-              columnGap: "0.9rem",
+              columnGap: "0.45rem",
             }}
           >
             <div
               style={{
-                fontSize: "0.52rem",
-                lineHeight: 1.55,
+                fontSize: "0.46rem",
+                lineHeight: 1.35,
                 fontFamily: "Spallet, Computer Modern Sans, sans-serif",
                 textAlign: "right",
                 display: "flex",
@@ -1502,7 +1502,7 @@ function App() {
               <div>βαββ, 1.15 Å, 60%</div>
             </div>
 
-            <div style={{ width: "100%", maxWidth: "560px", margin: "0 auto" }}>
+            <div style={{ width: "100%", margin: "0 auto" }}>
               <img
                 src="/assets/equifold/out-002.png"
                 alt="EquiFold Figure 2 overlays on de novo mini-proteins"
@@ -1512,8 +1512,8 @@ function App() {
 
             <div
               style={{
-                fontSize: "0.52rem",
-                lineHeight: 1.55,
+                fontSize: "0.46rem",
+                lineHeight: 1.35,
                 fontFamily: "Spallet, Computer Modern Sans, sans-serif",
                 textAlign: "left",
                 display: "flex",
@@ -1751,6 +1751,57 @@ function App() {
               <div>{m`^{\dagger}`} AlphaFold-Multimer: MSA/pair transformer with an equivariant structure module using rigid-frame updates.</div>
               <div>{m`^{\ddagger}`} IgFold: antibody-focused model with equivariant geometric refinement; not a vanilla Equiformer/EGNN-style graph GNN.</div>
             </div>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="Antibody Structure Prediction Examples">
+        <div className="h-full flex flex-col justify-center gap-3">
+          <div style={{ width: "100%", maxWidth: "760px", margin: "0 auto" }}>
+            <img
+              src="/assets/out-004-trim.png"
+              alt="Antibody prediction overlays"
+              style={{ width: "100%", height: "auto", display: "block", margin: "0 auto" }}
+            />
+          </div>
+
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "760px",
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              columnGap: "0.9rem",
+              fontSize: "0.44rem",
+              lineHeight: 1.45,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <div style={{ textAlign: "left" }}>
+              <div><strong>7fb_HL</strong></div>
+              <div>All-atom RMSD: 1.24 Å</div>
+              <div>Nearest-train similarity: 71%</div>
+            </div>
+            <div style={{ textAlign: "left" }}>
+              <div><strong>7o2c_CD</strong></div>
+              <div>All-atom RMSD: 1.00 Å</div>
+              <div>Nearest-train similarity: 72%</div>
+            </div>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1000px",
+              fontSize: "0.58rem",
+              lineHeight: 1.5,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              textAlign: "center",
+            }}
+          >
+            Predicted antibody structures (rainbow) overlaid with reference structures (gray).
           </div>
         </div>
       </Slide>
