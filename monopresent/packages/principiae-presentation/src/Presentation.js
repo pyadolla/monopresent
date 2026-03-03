@@ -1441,6 +1441,422 @@ function App() {
         )}
       </Slide>
 
+      <Slide header="De novo Designed Mini-proteins">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
+            <AnimateSVG
+              src="/figures/designedminiproteins.svg"
+              step={{}}
+              style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+            />
+          </div>
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1000px",
+              fontSize: "0.62rem",
+              lineHeight: 1.6,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              border: "none",
+              background: "transparent",
+              boxShadow: "none",
+              padding: 0,
+            }}
+          >
+            <div>Dataset source: Rocklin et al. (2017), Rosetta-predicted structures.</div>
+            <div>Folds evaluated: {m`\alpha\alpha\alpha,\ \alpha\beta\beta\alpha,\ \beta\alpha\beta\beta,\ \beta\beta\alpha\beta\beta`}.</div>
+            <div>Filtering: stability score &gt;1 gives 2,842 sequences (length 43–50).</div>
+            <div>Split: train 2,742, validation 50, test 50.</div>
+            <div>Evaluation protocol: all-atom RMSD and {m`C_\alpha`} RMSD versus Rosetta structures.</div>
+            <div>Reported experiment footprint: ~0.03 s/sequence, 2.30M trainable parameters.</div>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="De novo Designed Mini-protein Examples">
+        <div className="h-full flex flex-col justify-center gap-3">
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1fr auto 1fr",
+              alignItems: "stretch",
+              columnGap: "0.9rem",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "0.52rem",
+                lineHeight: 1.55,
+                fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+                textAlign: "right",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+              }}
+            >
+              <div>ααα, 0.88 Å, 62%</div>
+              <div>βαββ, 1.15 Å, 60%</div>
+            </div>
+
+            <div style={{ width: "100%", maxWidth: "560px", margin: "0 auto" }}>
+              <img
+                src="/assets/equifold/out-002.png"
+                alt="EquiFold Figure 2 overlays on de novo mini-proteins"
+                style={{ width: "100%", height: "auto", display: "block", margin: "0 auto" }}
+              />
+            </div>
+
+            <div
+              style={{
+                fontSize: "0.52rem",
+                lineHeight: 1.55,
+                fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+                textAlign: "left",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+              }}
+            >
+              <div>αββα, 1.75 Å, 51%</div>
+              <div>ββαββ, 1.12 Å, 60%</div>
+            </div>
+          </div>
+
+          <div className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.58rem", lineHeight: 1.5, fontFamily: "Spallet, Computer Modern Sans, sans-serif", textAlign: "center" }}>
+            EquiFold predictions (rainbow) overlaid with Rosetta references (gray); values are (all-atom RMSD, nearest-train sequence similarity).
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="De novo Designed Mini-protein Results">
+        <div className="h-full flex flex-col justify-center gap-3">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1000px",
+              fontSize: "0.62rem",
+              lineHeight: 1.6,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <div>Fold-wise RMSD on the mini-protein test split (vs Rosetta structures).</div>
+          </div>
+          <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto", fontSize: "0.68rem" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "Spallet, Computer Modern Sans, sans-serif" }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>Fold</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>Train</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>Test</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>RMSD (Å)</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>{m`C_\alpha`} RMSD (Å)</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>{m`C_\alpha`} RMSD (train) (Å)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>{m`\alpha\beta\beta\alpha`}</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>92</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>3</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>2.20</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>1.76</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>4.36</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>{m`\beta\beta\alpha\beta\beta`}</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>533</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>8</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>1.12</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>0.45</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>0.91</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>{m`\beta\alpha\beta\beta`}</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>787</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>15</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>1.00</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>0.43</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>0.99</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>{m`\alpha\alpha\alpha`}</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>1330</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>24</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>1.14</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>0.53</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.35rem" }}>2.79</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="Antibody Structure Prediction Experiment">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              columnGap: "1rem",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "0.6rem",
+                lineHeight: 1.45,
+                fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.45rem",
+              }}
+            >
+              <div>Source structures: all antibodies in PDB listed in SAbDab.</div>
+              <div>Preprocessing: variable fragment extraction and Chothia numbering via ANARCI.</div>
+              <div>Training pool: 6,789 antibody structures with resolution better than 4 Å.</div>
+              <div>Validation: 50 structures sampled from the training pool.</div>
+              <div>Test protocol: same benchmark test set used by IgFold, resolution better than 3 Å and held out by deposition cutoff.</div>
+              <div>Evaluation setup: compare predicted and experimental structures by backbone RMSD across framework and CDR regions.</div>
+            </div>
+
+            <div style={{ width: "100%", maxWidth: "520px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                <img
+                  src="/assets/SAbDab_logo.png"
+                  alt="SAbDab logo"
+                  style={{ width: "52%", height: "auto", display: "block" }}
+                />
+              </div>
+              <img
+                src="/assets/antibody_schematic.png"
+                alt="Antibody schematic from SAbDab/SAbPred"
+                style={{ width: "100%", height: "auto", display: "block", borderRadius: "4px" }}
+              />
+            </div>
+          </div>
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.45rem",
+              lineHeight: 1.4,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              textAlign: "right",
+              opacity: 0.75,
+            }}
+          >
+            Visual assets: OPIG SAbDab/SAbPred (antibody schematic and SAbDab logo).
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="Antibody Structure Prediction Results">
+        <div className="h-full flex flex-col justify-center gap-3">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.6rem",
+              lineHeight: 1.55,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <div>RMSD (Å) over backbone {m`N,\ C_\alpha,\ C`} atoms by heavy/light framework and CDR loops.</div>
+            <div>Time reports inference time for predicting all-atom structure.</div>
+            <div>All-atom RMSD for EquiFold on this test set: 1.52 Å.</div>
+          </div>
+
+          <div style={{ width: "100%", maxWidth: "1040px", margin: "0 auto", fontSize: "0.6rem" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "Spallet, Computer Modern Sans, sans-serif" }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>Model</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>H Fr</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>H1</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>H2</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>H3</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L Fr</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L1</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L2</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>L3</th>
+                  <th style={{ textAlign: "right", borderBottom: "1px solid #888", padding: "0.2rem 0.3rem" }}>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.3rem" }}>EquiFold</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.41</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.74</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.70</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>2.92</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.39</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.78</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.34</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>1.02</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>{m`\sim 1\ \text{second}`}</strong></td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.3rem" }}>AlphaFold-Multimer{m`^{\dagger}`}</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.43</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.75</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.69</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>3.02</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}><strong>0.39</strong></td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.82</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.41</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>1.13</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>{m`\sim 1\ \text{hour}`}</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.3rem" }}>IgFold{m`^{\ddagger}`}</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.45</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.80</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.75</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>2.99</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.45</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.83</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>0.51</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>1.07</td>
+                  <td style={{ textAlign: "right", padding: "0.2rem 0.3rem" }}>{m`\sim 1\ \text{minute}`}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.5rem",
+              lineHeight: 1.45,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              opacity: 0.85,
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.28rem",
+            }}
+          >
+            <div style={{ fontSize: "0.44rem", lineHeight: 1.2, opacity: 0.8, marginTop: "0.1rem" }}>
+              <div>{m`^{\dagger}`} AlphaFold-Multimer: MSA/pair transformer with an equivariant structure module using rigid-frame updates.</div>
+              <div>{m`^{\ddagger}`} IgFold: antibody-focused model with equivariant geometric refinement; not a vanilla Equiformer/EGNN-style graph GNN.</div>
+            </div>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="EquiFold vs AF-Multimer/IgFold">
+        <div className="h-full flex flex-col justify-center gap-5">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.56rem",
+              lineHeight: 1.45,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div><strong>Representation:</strong> EquiFold uses overlapping coarse-grained nodes with local all-atom templates; AF-Multimer/IgFold use sequence/pair feature stacks with downstream structure refinement modules.</div>
+            <div><strong>Input priors:</strong> AF-Multimer is MSA/template-heavy, IgFold uses learned antibody sequence priors, while EquiFold is designed to run without MSA/PLM inputs in the reported setup.</div>
+            <div><strong>Where iteration lives:</strong> all three are iterative, but EquiFold explicitly iterates node rigid transforms {m`{\scriptscriptstyle (\mathbf{R},\mathbf{T})}`} across outer blocks.</div>
+            <div><strong>State carry-over:</strong> in EquiFold, geometry {m`{\scriptscriptstyle (\mathbf{R},\mathbf{T})}`} is the primary carried state and embeddings are re-steered each block via {m`{\scriptscriptstyle D(\mathbf{R})\,\mathrm{LOOKUP}(c)}`}. </div>
+          </div>
+          <div style={{ width: "100%", maxWidth: "1040px", margin: "0 auto", fontSize: "0.56rem" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "Spallet, Computer Modern Sans, sans-serif" }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>Axis</th>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>EquiFold</th>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>AF-Multimer / IgFold</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Primary representation</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>CG rigid nodes + overlapping atom templates</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Sequence/pair features + structure refinement stacks</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Main carried state across iterations</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>{m`{\scriptscriptstyle (\mathbf{R},\mathbf{T})}`} node transforms</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Internal trunk/structure-module features and frames</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>All-atom decoding</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Transform templates, then merge overlaps</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Direct structure-head refinement pipeline</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="EquiFold vs AF-Multimer/IgFold">
+        <div className="h-full flex flex-col justify-center gap-5">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.56rem",
+              lineHeight: 1.45,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div><strong>Side-chain parameterization:</strong> AF-Multimer predicts explicit side-chain torsion angles; EquiFold models side-chain geometry in extrinsic 3D through CG node transforms and template decoding.</div>
+            <div><strong>Frame granularity:</strong> AF-Multimer is centered on residue-level frame updates; EquiFold updates multiple CG-node frames per residue.</div>
+            <div><strong>IgFold path:</strong> antibody-focused coordinate prediction with geometric refinement; side-chain completion/refinement is typically downstream rather than an explicit AF-style torsion head.</div>
+            <div><strong>Practical outcome in reported tasks:</strong> EquiFold emphasizes a compact, fast geometric pipeline for all-atom prediction from sequence.</div>
+          </div>
+          <div style={{ width: "100%", maxWidth: "1040px", margin: "0 auto", fontSize: "0.56rem" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "Spallet, Computer Modern Sans, sans-serif" }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>Detail</th>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>EquiFold</th>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #888", padding: "0.2rem 0.35rem" }}>AF-Multimer / IgFold</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Iteration primitive</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Outer-block updates of CG-node {m`{\scriptscriptstyle (\mathbf{R},\mathbf{T})}`}</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Structure-module/refinement-stack updates</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Side-chain handling</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Extrinsic 3D via CG nodes and template merge</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>AF-Multimer: explicit torsions; IgFold: downstream completion/refinement</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Per-residue frame count</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Multiple CG-node frames</td>
+                  <td style={{ padding: "0.2rem 0.35rem" }}>Typically residue-level frame backbone refinement</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Slide>
+
       <QuestionSlide title="Questions or more Principiae experiments?" />
     </Presentation>
   );
