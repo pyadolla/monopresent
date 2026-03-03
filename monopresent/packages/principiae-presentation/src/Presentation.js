@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   AnimateSVG,
@@ -75,6 +75,38 @@ const flowSteps = flowTimeline.map((s, i) => ({
   "text:left_label": ["$x_t$", "$x_t$", "$x_t$"][i],
   "text:right_label": ["$x_{t+1}$", "$f_\\theta(x_t)$", "$x_0$"][i],
 }));
+
+function DelayedUnderline({ text, delay = 2000, duration = 700 }) {
+  const routePath = typeof window !== "undefined" ? window.location.pathname : "";
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    setRevealed(false);
+    const timer = setTimeout(() => setRevealed(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay, routePath]);
+
+  return (
+    <span style={{ position: "relative", display: "inline-block", paddingBottom: "2px" }}>
+      {text}
+      <span
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: "-1px",
+          height: "2px",
+          background: "#111827",
+          transform: revealed ? "scaleX(1)" : "scaleX(0)",
+          transformOrigin: "left center",
+          transition: `transform ${duration}ms ease`,
+          pointerEvents: "none",
+        }}
+      />
+    </span>
+  );
+}
 
 const testLayerTimeline = timeline`
 layer1 vvv
@@ -711,6 +743,339 @@ function App() {
 
   return (
     <Presentation bibUrl="/references.bib">
+      <Slide hideNavigation>
+        <div className="h-full flex flex-col items-center justify-center text-center gap-5">
+          <div style={{ fontSize: "2.1rem", lineHeight: 1.2, fontWeight: 700 }}>
+            EquiFold: Fast, Equivariant All-Atom Protein Structure Prediction
+          </div>
+          <div style={{ fontSize: "1.1rem", opacity: 0.85 }}>Payman Yadollahpour</div>
+          <div style={{ fontSize: "1rem", opacity: 0.8 }}>Genentech</div>
+          <div style={{ fontSize: "0.9rem", opacity: 0.75 }}>February 23, 2026</div>
+        </div>
+      </Slide>
+
+      <Slide header="Outline">
+        <div className="h-full flex flex-col justify-center">
+          <List step={6} style={{ lineHeight: 1.7 }}>
+            <Item>Motivation and Context</Item>
+            <Item>Equiformer Background</Item>
+            <Item>EquiFold Method</Item>
+            <Item>Experiments and Results</Item>
+            <Item>Conclusions and Next Steps</Item>
+          </List>
+        </div>
+      </Slide>
+
+      <Slide hideNavigation>
+        <div className="h-full flex items-center justify-center">
+          <div style={{ fontSize: "2rem", opacity: 0.9 }}>Motivation and Context</div>
+        </div>
+      </Slide>
+
+      <Slide header="EquiFold: Main Takeaway" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <>
+            <div className="h-full grid grid-cols-2 gap-6 items-center">
+              <div className="flex flex-col gap-2" style={{ lineHeight: 1.45, fontSize: "0.92rem" }}>
+                <Show when={step >= 1}><div>All-atom structure prediction directly from sequence.</div></Show>
+                <Show when={step >= 2}><div>SE(3)-equivariant iterative refinement over coarse-grained nodes.</div></Show>
+                <Show when={step >= 3}><div>No MSA and no protein language model embeddings.</div></Show>
+                <Show when={step >= 4}><div>Fast enough for high-throughput design loops.</div></Show>
+              </div>
+              <div>
+                <video
+                  className="w-full rounded"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                >
+                  <source src="/assets/equifold/all_sticks.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+            <Notes>
+              Narrative: EquiFold targets the practical speed-accuracy gap. Mention this slide as the thesis:
+              all-atom quality, simpler inputs, and throughput-oriented inference.
+            </Notes>
+          </>
+        )}
+      </Slide>
+
+      <Slide header="Why This Problem Matters" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <>
+            <div className="h-full flex flex-col" style={{ fontSize: "0.64rem", lineHeight: 1.18 }}>
+              <Show when={step >= 1}>
+                <div style={{ paddingTop: "0.05rem", paddingBottom: "0.35rem" }}>
+                  Fast sequence-to-structure inference is the bottleneck for many real experimental loops.
+                </div>
+              </Show>
+
+              <div className="grid grid-cols-2 gap-4" style={{ alignItems: "start" }}>
+                <div className="flex flex-col gap-1.5 pr-2" style={{ paddingTop: "3.2rem" }}>
+                  <Show when={step >= 2}>
+                    <div>In practice this enables:</div>
+                  </Show>
+                  <div className="ml-3 mt-0.5 flex flex-col gap-1.5">
+                    <Show when={step >= 2}>
+                      <div>- Triage of large candidate libraries before synthesis or expression</div>
+                    </Show>
+                    <Show when={step >= 3}>
+                      <div>- Rapid prioritization of antibody variants during affinity-maturation rounds</div>
+                    </Show>
+                    <Show when={step >= 4}>
+                      <div>- Quick structural sanity checks before wet-lab handoff</div>
+                    </Show>
+                  </div>
+                </div>
+
+                <div className="h-full flex flex-col items-center justify-start gap-1" style={{ paddingTop: "0rem" }}>
+                  <Show when={step >= 2}>
+                    <div style={{ width: "100%", maxWidth: "18.2rem" }}>
+                      <img
+                        src="/assets/custom/library-triage-biorender.png"
+                        alt="Library triage example"
+                        className="w-full object-contain rounded"
+                        style={{ height: "276px" }}
+                      />
+                      <div className="text-black text-center" style={{ marginTop: "-2px", fontSize: "0.44rem", opacity: 1 }}>Library triage</div>
+                    </div>
+                  </Show>
+
+                  <div className="w-full flex items-start justify-center gap-6 mt-0">
+                    <Show when={step >= 3}>
+                      <div style={{ width: "44%", maxWidth: "8.8rem" }}>
+                        <img
+                          src="/assets/custom/antibody-prioritization-biorender.png"
+                          alt="Antibody variant prioritization example"
+                          className="w-full object-contain rounded"
+                          style={{ height: "228px" }}
+                        />
+                        <div className="text-black text-center" style={{ marginTop: "-2px", fontSize: "0.44rem", opacity: 1 }}>Variant prioritization</div>
+                      </div>
+                    </Show>
+
+                    <Show when={step >= 4}>
+                      <div style={{ width: "44%", maxWidth: "8.8rem" }}>
+                        <img
+                          src="/assets/custom/pre-wetlab-checks-biorender.png"
+                          alt="Pre wet-lab sanity check example"
+                          className="w-full object-contain rounded"
+                          style={{ height: "228px" }}
+                        />
+                        <div className="text-black text-center" style={{ marginTop: "-2px", fontSize: "0.44rem", opacity: 1 }}>Pre-wet-lab sanity checks</div>
+                      </div>
+                    </Show>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </Slide>
+
+      <Slide header="Prior Approaches" steps={[1, 2, 3, 4, 5, 6, 7]}>
+        {(step) => (
+          <>
+            <div className="h-full flex flex-col" style={{ fontSize: "0.68rem", lineHeight: 1.24 }}>
+              <div>
+                <Show when={step >= 1}>
+                  <div className="mb-1">
+                    <Box style={{ padding: "0.08rem 0.28rem" }}>
+                      Models like AlphaFold, RoseTTAFold, OmegaFold, and ESMFold represent backbone geometry as nodes
+                      with Euclidean transforms, then iteratively refine those transforms per structure-model block.
+                    </Box>
+                  </div>
+                </Show>
+                <div className="mt-1.5 space-y-1.5">
+                  <Show when={step >= 2}>
+                    <div className="rounded px-2 py-1" style={{ backgroundColor: "rgba(251, 191, 36, 0.28)" }}>
+                      <span style={{ display: "inline-flex", alignItems: "flex-start" }}>
+                        <span style={{ marginRight: "0.35rem" }}>-</span>
+                        <span>Side-chains are often implicit until final torsion-angle prediction.</span>
+                      </span>
+                    </div>
+                  </Show>
+                  <Show when={step >= 3}>
+                    <div className="rounded px-2 py-1" style={{ backgroundColor: "rgba(251, 191, 36, 0.28)" }}>
+                      <span style={{ display: "inline-flex", alignItems: "flex-start" }}>
+                        <span style={{ marginRight: "0.35rem" }}>-</span>
+                        <span>This can make side-chain 3D interactions harder to learn (e.g., clash avoidance).</span>
+                      </span>
+                    </div>
+                  </Show>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <Show when={step >= 4}>
+                  <div className="mb-1">
+                    <Box style={{ padding: "0.08rem 0.28rem" }}>
+                      Methods such as ProteinMPNN, inverse folding from predicted structures, and Rosetta-style
+                      approaches use coarse-grained representations where each residue is modeled by one/few nodes.
+                    </Box>
+                  </div>
+                </Show>
+                <div className="mt-1.5 space-y-1.5">
+                  <Show when={step >= 5}>
+                    <div className="rounded px-2 py-1" style={{ backgroundColor: "rgba(251, 191, 36, 0.28)" }}>
+                      <span style={{ display: "inline-flex", alignItems: "flex-start" }}>
+                        <span style={{ marginRight: "0.35rem" }}>-</span>
+                        <span>Improves efficiency for predictive tasks (e.g., interacting/functional residue prediction).</span>
+                      </span>
+                    </div>
+                  </Show>
+                  <Show when={step >= 6}>
+                    <div className="rounded px-2 py-1" style={{ backgroundColor: "rgba(251, 191, 36, 0.28)" }}>
+                      <span style={{ display: "inline-flex", alignItems: "flex-start" }}>
+                        <span style={{ marginRight: "0.35rem" }}>-</span>
+                        <span>Useful for generative tasks (e.g., backbone scaffold generation).</span>
+                      </span>
+                    </div>
+                  </Show>
+                  <Show when={step >= 7}>
+                    <div className="rounded px-2 py-1" style={{ backgroundColor: "rgba(251, 191, 36, 0.28)" }}>
+                      <span style={{ display: "inline-flex", alignItems: "flex-start" }}>
+                        <span style={{ marginRight: "0.35rem" }}>-</span>
+                        <span>Tradeoff: often loses all-atom detail needed for design/packing and function-relevant signals.</span>
+                      </span>
+                    </div>
+                  </Show>
+                </div>
+              </div>
+
+            </div>
+          </>
+        )}
+      </Slide>
+
+      <Slide header="How EquiFold Addresses This" steps={[1]}>
+        <Show when={true}>
+          <div className="h-full flex items-center">
+            <Box style={{ width: "100%", fontSize: "0.72rem", lineHeight: 1.28, paddingTop: "0.45rem", paddingBottom: "0.45rem" }}>
+              EquiFold introduces a{" "}
+              <DelayedUnderline text="coarse-grained representation" delay={2000} duration={700} />{" "}
+              that retains{" "}
+              <DelayedUnderline text="all-atom resolution" delay={2800} duration={700} />
+              . Side-chain degrees of freedom are{" "}
+              <DelayedUnderline text="modeled explicitly" delay={3600} duration={700} />{" "}
+              in 3D space, not only as intrinsic torsion angles.
+            </Box>
+          </div>
+        </Show>
+      </Slide>
+
+      <Slide hideNavigation>
+        <div className="h-full flex items-center justify-center">
+          <div style={{ fontSize: "2rem", opacity: 0.9 }}>Equiformer Background</div>
+        </div>
+      </Slide>
+
+      <Slide header="Equiformer in One Slide" steps={[1, 2, 3]}>
+        {(step) => (
+          <>
+            <div className="flex flex-col gap-7">
+              <div className="grid grid-cols-2 gap-7">
+                <div className="flex flex-col items-center gap-4">
+                  <Show when={step >= 1}>
+                    <h3 className="text-[1.3rem] leading-tight text-center">
+                      SE(3)-Equivariant Graph Transformer for 3D Atomistic Graphs
+                    </h3>
+                  </Show>
+                  <Show when={step >= 1}>
+                    <img
+                      src="/assets/equiformer/equi_arch.svg"
+                      alt="Equiformer architecture"
+                      className="h-auto"
+                      style={{ width: "30%" }}
+                    />
+                  </Show>
+                </div>
+                <div className="flex flex-col items-center gap-4">
+                  <Show when={step >= 2}>
+                    <h3 className="text-[1.3rem] leading-tight text-center">
+                      Core attention change: MLP attention plus non-linear message passing.
+                    </h3>
+                  </Show>
+                  <Show when={step >= 2}>
+                    <img
+                      src="/assets/equiformer/equi_attn.svg"
+                      alt="Equiformer equivariant attention"
+                      className="h-auto"
+                      style={{ width: "30%" }}
+                    />
+                  </Show>
+                </div>
+              </div>
+            </div>
+            <Show when={step >= 3}>
+              <div className="mt-6">
+                <h3 className="text-[1.45rem] leading-tight text-center">
+                  Equivariant Transformer blocks on irreps features.
+                </h3>
+              </div>
+            </Show>
+          </>
+        )}
+      </Slide>
+
+      <Slide header="What EquiFold Reuses from Equiformer" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <>
+            <ul className="space-y-4" style={{ fontSize: "0.88rem", lineHeight: 1.35 }}>
+              <Show when={step >= 1}>
+                <div>
+                  <div>EquiFold adopts Equiformer-style equivariant sub-blocks.</div>
+                  <ul className="list-none ml-8 mt-2 space-y-1">
+                    <li>- These blocks preserve rotational and translational symmetries during updates.</li>
+                  </ul>
+                  <div className="ml-6 -mt-4 -mb-4">
+                    <img
+                      src="/assets/equiformer/equivariance-subblock-simple.svg"
+                      alt="Equivariance schematic for reused Equiformer-style sub-blocks"
+                      style={{ width: "46%" }}
+                    />
+                  </div>
+                </div>
+              </Show>
+              <Show when={step >= 2}>
+                <div>
+                  <div>It reuses Equiformer-style 3D message passing where spherical harmonics and tensor products make node updates geometry-aware and equivariant.</div>
+                  <ul className="list-none ml-8 mt-2 space-y-1">
+                    <li>- This enables geometry-aware feature exchange between coarse-grained nodes.</li>
+                  </ul>
+                </div>
+              </Show>
+              <Show when={step >= 3}>
+                <div>
+                  <div>It integrates these blocks into iterative structure refinement.</div>
+                  <ul className="list-none ml-8 mt-2 space-y-1">
+                    <li>- Each block predicts transform updates that progressively improve all-atom structure.</li>
+                  </ul>
+                  <div className="ml-8 mt-0">
+                    <Box title="Refinement Update">
+                      {M`(t_i^{(k+1)}, R_i^{(k+1)}) = (t_i^{(k)} + \Delta t_i^{(k)}, \Delta R_i^{(k)} R_i^{(k)})`}
+                    </Box>
+                  </div>
+                </div>
+              </Show>
+              <Show when={step >= 4}>
+                <div>Callout: EquiFold Appendix A.2 and Equiformer Figure 1.</div>
+              </Show>
+            </ul>
+          </>
+        )}
+      </Slide>
+
+      <Slide hideNavigation>
+        <div className="h-full flex items-center justify-center">
+          <div style={{ fontSize: "2rem", opacity: 0.9 }}>EquiFold Method</div>
+        </div>
+      </Slide>
+
       {/*
       <OverviewSlide
         title="Principiae Theme Sandbox"
@@ -933,7 +1298,6 @@ function App() {
       </Slide>
       */}
 
-      {/*
       <Slide header="Residue CG Layers" steps={range(residueCgSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center">
@@ -1408,7 +1772,6 @@ function App() {
         )}
       </Slide>
 
-      */}
       <Slide header="Outer Equivariant Block Updates" steps={range(outerInnerSteps.length)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center">
