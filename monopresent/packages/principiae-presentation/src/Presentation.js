@@ -1441,6 +1441,51 @@ function App() {
         )}
       </Slide>
 
+      <Slide header="EquiFold Loss Functions">
+        <div className="h-full flex flex-col justify-center gap-5">
+          <div
+            className="mx-auto w-full"
+            style={{
+              maxWidth: "1060px",
+              fontSize: "0.64rem",
+              lineHeight: 1.45,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <div style={{ marginBottom: "0.35rem" }}>
+              Total training objective is applied at each outer-block output and combines frame-aligned atom error with structure-violation penalties.
+            </div>
+
+            <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>1. Frame-aligned point error (all-atom FAPE)</div>
+            <div style={{ marginBottom: "0.45rem" }}>
+              {m`\mathcal{L}_{\mathrm{FAPE}}^{(k)}=\frac{1}{Z\,N_{\mathrm{pairs}}}\sum_{u,v,a}m_{uva}\,\min\!\left(d_{\max},\left\|\mathbf{X}^{(k)}_{uv,a}-\widehat{\mathbf{X}}^{(k)}_{uv,a}\right\|_2\right)`}
+            </div>
+
+            <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>2. Structure-violation losses</div>
+            <div style={{ marginBottom: "0.45rem" }}>
+              {m`\mathcal{L}_{\mathrm{struct}}^{(k)}=\mathcal{L}_{\mathrm{bond}}^{(k)}+\mathcal{L}_{\mathrm{angle}}^{(k)}+\mathcal{L}_{\mathrm{clash}}^{(k)}`}
+            </div>
+            <div style={{ marginBottom: "0.2rem" }}>
+              {m`\mathcal{L}_{\mathrm{bond}}=\frac{1}{|\mathcal{B}|}\sum_{(p,q)\in\mathcal{B}}\left[\left|\,\|\mathbf{x}_p-\mathbf{x}_q\|_2-\ell_{pq}\right|-\delta_{pq}^{\mathrm{bond}}\right]_+`}
+            </div>
+            <div style={{ marginBottom: "0.2rem" }}>
+              {m`\mathcal{L}_{\mathrm{angle}}=\frac{1}{|\mathcal{A}|}\sum_{(p,q,r)\in\mathcal{A}}\left[\left|\,\cos\angle pqr-c_{pqr}\right|-\delta_{pqr}^{\mathrm{angle}}\right]_+`}
+            </div>
+            <div style={{ marginBottom: "0.45rem" }}>
+              {m`\mathcal{L}_{\mathrm{clash}}=\frac{1}{|\mathcal{C}|}\sum_{(p,q)\in\mathcal{C}}\left[(w_p+w_q-\delta_{\mathrm{clash}})-\|\mathbf{x}_p-\mathbf{x}_q\|_2\right]_+`}
+            </div>
+
+            <div style={{ marginTop: "0.55rem", marginBottom: "0.2rem", fontWeight: 700 }}>3. Per-block objective and aggregation</div>
+            <div style={{ marginBottom: "0.2rem" }}>
+              {m`\mathcal{L}^{(k)}=\mathcal{L}_{\mathrm{FAPE}}^{(k)}+\tau\,\lambda_{\mathrm{struct}}\,s_k\,\mathcal{L}_{\mathrm{struct}}^{(k)},\quad s_k\in\left\{1,\frac{k}{K},\left(\frac{k}{K}\right)^2\right\}`}
+            </div>
+            <div>
+              {m`\mathcal{L}_{\mathrm{total}}=\frac{1}{K}\sum_{k=1}^{K}\mathcal{L}^{(k)}`}
+            </div>
+          </div>
+        </div>
+      </Slide>
+
       <Slide header="De novo Designed Mini-proteins">
         <div className="h-full flex flex-col justify-center gap-4">
           <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
