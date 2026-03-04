@@ -734,6 +734,16 @@ block3 hhv
 
 const lossRevealSteps = lossRevealTimeline.map((s) => s);
 
+const notesContentStyle = {
+  fontSize: "0.38rem",
+  lineHeight: 1.18,
+  width: "52ch",
+  maxWidth: "100%",
+  whiteSpace: "pre-wrap",
+  overflowWrap: "anywhere",
+  wordBreak: "break-word",
+};
+
 function App() {
   useEffect(() => {
     // Opt-in only in this sandbox while validating metadata-driven baseline.
@@ -923,38 +933,6 @@ function App() {
         </div>
       </Slide>
 
-      <Slide header="EquiFold: Main Takeaway" steps={[1, 2, 3, 4]}>
-        {(step) => (
-          <>
-            <div className="h-full grid grid-cols-2 gap-6 items-center">
-              <div className="flex flex-col gap-2" style={{ lineHeight: 1.45, fontSize: "0.92rem" }}>
-                <Show when={step >= 1}><div>All-atom structure prediction directly from sequence.</div></Show>
-                <Show when={step >= 2}><div>SE(3)-equivariant iterative refinement over coarse-grained nodes.</div></Show>
-                <Show when={step >= 3}><div>No MSA and no protein language model embeddings.</div></Show>
-                <Show when={step >= 4}><div>Fast enough for high-throughput design loops.</div></Show>
-              </div>
-              <div>
-                <video
-                  className="w-full rounded"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls
-                >
-                  <source src="/assets/equifold/all_sticks.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
-            <Notes>
-              Narrative: EquiFold targets the practical speed-accuracy gap. Mention this slide as the thesis:
-              all-atom quality, simpler inputs, and throughput-oriented inference.
-            </Notes>
-          </>
-        )}
-      </Slide>
-
       <Slide header="Why This Problem Matters" steps={[1, 2, 3, 4]}>
         {(step) => (
           <>
@@ -1024,6 +1002,18 @@ function App() {
                 </div>
               </div>
             </div>
+            <Notes>
+              <div style={notesContentStyle}>
+                The punchline here is speed-to-decision.
+
+                If sequence-to-structure is slow, it bottlenecks the entire design loop.
+
+                I’ll walk through three concrete places where that matters: triaging large libraries, prioritizing antibody
+                variants, and quick structural checks before wet-lab handoff.
+
+                The point is not just better models, but faster experimental iteration.
+              </div>
+            </Notes>
           </>
         )}
       </Slide>
@@ -1099,24 +1089,88 @@ function App() {
               </div>
 
             </div>
+            <Notes>
+              <div style={notesContentStyle}>
+                I’m contrasting two families of methods.
+
+                One family keeps rich geometric refinement but often treats side chains late.
+
+                The other family gains efficiency through coarse-graining but can lose all-atom detail needed for packing
+                and function-relevant interactions.
+
+                This sets up the gap EquiFold tries to close.
+              </div>
+            </Notes>
           </>
         )}
       </Slide>
 
       <Slide header="How EquiFold Addresses This" steps={[1]}>
-        <Show when={true}>
-          <div className="h-full flex items-center">
-            <Box style={{ width: "100%", fontSize: "0.72rem", lineHeight: 1.28, paddingTop: "0.45rem", paddingBottom: "0.45rem" }}>
-              EquiFold introduces a{" "}
-              <DelayedUnderline text="coarse-grained representation" delay={2000} duration={700} />{" "}
-              that retains{" "}
-              <DelayedUnderline text="all-atom resolution" delay={2800} duration={700} />
-              . Side-chain degrees of freedom are{" "}
-              <DelayedUnderline text="modeled explicitly" delay={3600} duration={700} />{" "}
-              in 3D space, not only as intrinsic torsion angles.
-            </Box>
-          </div>
-        </Show>
+        <>
+          <Show when={true}>
+            <div className="h-full flex items-center">
+              <Box style={{ width: "100%", fontSize: "0.72rem", lineHeight: 1.28, paddingTop: "0.45rem", paddingBottom: "0.45rem" }}>
+                EquiFold introduces a{" "}
+                <DelayedUnderline text="coarse-grained representation" delay={2000} duration={700} />{" "}
+                that retains{" "}
+                <DelayedUnderline text="all-atom resolution" delay={2800} duration={700} />
+                . Side-chain degrees of freedom are{" "}
+                <DelayedUnderline text="modeled explicitly" delay={3600} duration={700} />{" "}
+                in 3D space, not only as intrinsic torsion angles.
+              </Box>
+            </div>
+          </Show>
+          <Notes>
+              <div style={notesContentStyle}>
+                This is the core idea in one sentence:
+                keep the efficiency benefits of coarse-graining, but don’t give up all-atom fidelity.
+
+                The important nuance is that side-chain geometry is modeled explicitly in 3D, instead of being deferred to
+                a late torsion-only stage.
+              </div>
+            </Notes>
+        </>
+      </Slide>
+
+      <Slide header="EquiFold: Main Takeaway" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <>
+            <div className="h-full grid grid-cols-2 gap-6 items-center">
+              <div className="flex flex-col gap-2" style={{ lineHeight: 1.45, fontSize: "0.92rem" }}>
+                <Show when={step >= 1}><div>All-atom structure prediction directly from sequence.</div></Show>
+                <Show when={step >= 2}><div>SE(3)-equivariant iterative refinement over coarse-grained nodes.</div></Show>
+                <Show when={step >= 3}><div>No MSA and no protein language model embeddings.</div></Show>
+                <Show when={step >= 4}><div>Fast enough for high-throughput design loops.</div></Show>
+              </div>
+              <div>
+                <video
+                  className="w-full rounded"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                >
+                  <source src="/assets/equifold/all_sticks.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+            <Notes>
+              <div style={notesContentStyle}>
+                This is the high-level takeaway slide.
+
+                I’ll emphasize four points:
+                direct all-atom prediction from sequence,
+                equivariant iterative refinement,
+                no dependence on MSA or PLM embeddings in this setup,
+                and practical throughput for design loops.
+
+                This is the thesis before we drill into details.
+              </div>
+            </Notes>
+          </>
+        )}
       </Slide>
 
       <Slide hideNavigation>
@@ -1271,7 +1325,11 @@ function App() {
                 Equation helper inline: {m`x_t = \alpha_t x_0 + \sigma_t\epsilon`}.
               </Item>
             </List>
-            <Notes>Principiae List/Item can still drive step-based reveal while you override list styling.</Notes>
+            <Notes>
+              <div style={notesContentStyle}>
+                Principiae List/Item can still drive step-based reveal while you override list styling.
+              </div>
+            </Notes>
           </div>
         )}
       </Slide>
