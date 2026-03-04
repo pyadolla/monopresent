@@ -754,6 +754,157 @@ function App() {
         </div>
       </Slide>
 
+      <Slide header="Professional Background">
+        <div className="h-full flex items-center" style={{ fontSize: "0.5rem", lineHeight: 1.05 }}>
+          <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 0.22rem" }}>
+            <colgroup>
+              <col style={{ width: "6.0rem" }} />
+              <col />
+              <col style={{ width: "4.8rem" }} />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>
+                  <div className="flex items-center gap-1.5">
+                    <img src="/assets/profile/logo-syracuse.svg" alt="Syracuse University logo" style={{ width: "1.75rem", height: "1.75rem", objectFit: "contain" }} />
+                  </div>
+                </td>
+                <td>
+                  <div>B.S. Biomedical Engineering (minor Neuroscience), Syracuse University (2001).</div>
+                </td>
+                <td>
+                  <div style={{ width: "4.4rem", height: "2.1rem" }} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div className="flex items-center gap-1.5">
+                    <img src="/assets/profile/logo-brown.svg" alt="Brown University logo" style={{ width: "1.75rem", height: "1.75rem", objectFit: "contain" }} />
+                  </div>
+                </td>
+                <td>
+                  <div>M.S. Computer Science, Brown University (2006).</div>
+                  <div style={{ marginLeft: "0.55rem", opacity: 0.82 }}>Advisor: Michael Black</div>
+                </td>
+                <td>
+                  <img src="/assets/profile/michael-black-headshot.jpg" alt="Michael Black headshot" style={{ width: "2.1rem", height: "2.1rem", objectFit: "cover", borderRadius: "999px" }} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div className="flex items-center gap-1.5">
+                    <img src="/assets/profile/logo-ttic.png" alt="TTIC logo" style={{ width: "1.75rem", height: "1.75rem", objectFit: "contain" }} />
+                    <img src="/assets/profile/logo-uchicago-coat.png" alt="University of Chicago logo" style={{ width: "1.75rem", height: "1.75rem", objectFit: "contain" }} />
+                  </div>
+                </td>
+                <td>
+                  <div>Ph.D. Computer Science, TTIC (2017).</div>
+                  <div style={{ marginLeft: "0.55rem", opacity: 0.82 }}>Advisor: Gregory Shakhnarovich</div>
+                </td>
+                <td>
+                  <img src="/assets/profile/greg-shakhnarovich-headshot.jpg" alt="Gregory Shakhnarovich headshot" style={{ width: "2.1rem", height: "2.1rem", objectFit: "cover", borderRadius: "999px" }} />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div className="flex items-center gap-1.5">
+                    <img src="/assets/profile/logo-csail-primary.svg" alt="MIT CSAIL logo" style={{ width: "2.05rem", height: "1.75rem", objectFit: "contain" }} />
+                    <img src="/assets/profile/logo-upitt-seal.svg" alt="University of Pittsburgh logo" style={{ width: "1.75rem", height: "1.75rem", objectFit: "contain" }} />
+                  </div>
+                </td>
+                <td>
+                  <div>Postdoc I, Pittsburgh DBMI + MIT CSAIL (2018-2019).</div>
+                  <div style={{ marginLeft: "0.55rem", opacity: 0.82 }}>Mentors: Polina Golland and Kayhan Batmanghelich</div>
+                </td>
+                <td>
+                  <div className="flex items-center gap-1">
+                    <img src="/assets/profile/polina-golland-headshot.jpg" alt="Polina Golland headshot" style={{ width: "2.1rem", height: "2.1rem", objectFit: "cover", borderRadius: "999px" }} />
+                    <img src="/assets/profile/kayhan-batmanghelich-headshot.jpg" alt="Kayhan Batmanghelich headshot" style={{ width: "2.1rem", height: "2.1rem", objectFit: "cover", borderRadius: "999px" }} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div className="flex items-center gap-1.5">
+                    <img src="/assets/profile/broadlogo.png" alt="Broad Institute logo" style={{ width: "2.25rem", height: "1.75rem", objectFit: "contain" }} />
+                    <img src="/assets/profile/logo-genentech.svg" alt="Genentech logo" style={{ width: "1.95rem", height: "1.35rem", objectFit: "contain" }} />
+                  </div>
+                </td>
+                <td>
+                  <div>Postdoc II, Broad Institute then Genentech gRED (2019-present).</div>
+                  <div style={{ marginLeft: "0.55rem", opacity: 0.82 }}>Mentor: Aviv Regev</div>
+                </td>
+                <td>
+                  <img src="/assets/profile/aviv-regev-headshot.jpg" alt="Aviv Regev headshot" style={{ width: "2.1rem", height: "2.1rem", objectFit: "cover", borderRadius: "999px" }} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Slide>
+
+      <Slide header="Why Tahoe" steps={[1, 2, 3, 4]}>
+        {(step) => {
+          const pulseStyle = (active) => ({
+            transform: active ? "scale(1.04)" : "scale(1)",
+            transformOrigin: "center center",
+            transition: "transform 220ms ease",
+          });
+          return (
+            <div className="h-full flex flex-col justify-center gap-4" style={{ fontSize: "0.72rem", lineHeight: 1.32 }}>
+              <div style={pulseStyle(step === 1)}>
+                <Box style={{ padding: "0.14rem 0.3rem" }}>
+                  My background spans multiple domains (ML, brain-machine interfaces, CV, clinical imaging, molecular biology)
+                  and modalities: single-cell (ATAC, RNA-seq), spatial transcriptomics (e.g., Slide-seq), tissue analysis
+                  (tumor microenvironments), geometric 3D cell modeling in embryo, and clinical imaging (MRI/CT).
+                </Box>
+              </div>
+              <div style={pulseStyle(step === 2)}>
+                <Box style={{ padding: "0.14rem 0.3rem" }}>
+                  I want to build multimodal foundation models that explicitly incorporate biological context and interventions,
+                  linking chemical structure, protein sequence, and single-cell response.
+                </Box>
+              </div>
+              <div style={pulseStyle(step === 3)}>
+                <Box style={{ padding: "0.14rem 0.3rem" }}>
+                  My experiences across PhD and post-PhD work in deep learning and ML for predicting structured data,
+                  (spatial) transcriptomics, RNA-seq analysis, protein structure prediction (EquiFold), and sequence-structure
+                  co-design provide the background needed to contribute effectively at Tahoe.
+                </Box>
+              </div>
+            </div>
+          );
+        }}
+      </Slide>
+
+      <Slide header="Post-PhD Projects: What I Learned" steps={[1, 2, 3, 4]}>
+        {(step) => (
+          <div className="h-full flex flex-col gap-3" style={{ fontSize: "0.7rem", lineHeight: 1.3 }}>
+            <Show when={step >= 1}>
+              <Box title="2018 -> 2019 | Disease subtyping + DDNF">
+                Built structured probabilistic models for disease subtyping and worked on diffeomorphic normalizing flows.
+                Learned to pair expressive generative models with interpretable latent structure.
+              </Box>
+            </Show>
+            <Show when={step >= 2}>
+              <Box title="2019 -> 2021 | Single-cell and spatial transcriptomics">
+                Worked on large-scale cellular lineage and tumor ecosystem analyses. Learned how to connect statistical models
+                to biologically validated hypotheses.
+              </Box>
+            </Show>
+            <Show when={step >= 3}>
+              <Box
+                title="2021 -> present | EquiFold + sequence-structure generation at Genentech"
+                style={step >= 4 ? { backgroundColor: "rgba(255, 230, 120, 0.55)" } : undefined}
+              >
+                Developed SE(3)-equivariant protein modeling and diffusion-based co-generation stacks. Learned that practical
+                impact requires both geometric inductive bias and high-throughput inference.
+              </Box>
+            </Show>
+          </div>
+        )}
+      </Slide>
+
       <Slide header="Outline">
         <div className="h-full flex flex-col justify-center">
           <List step={6} style={{ lineHeight: 1.7 }}>
@@ -761,7 +912,7 @@ function App() {
             <Item>Equiformer Background</Item>
             <Item>EquiFold Method</Item>
             <Item>Experiments and Results</Item>
-            <Item>Conclusions and Next Steps</Item>
+            <Item>Impact and Outcomes</Item>
           </List>
         </div>
       </Slide>
@@ -1025,47 +1176,66 @@ function App() {
       <Slide header="What EquiFold Reuses from Equiformer" steps={[1, 2, 3, 4]}>
         {(step) => (
           <>
-            <ul className="space-y-4" style={{ fontSize: "0.88rem", lineHeight: 1.35 }}>
-              <Show when={step >= 1}>
-                <div>
-                  <div>EquiFold adopts Equiformer-style equivariant sub-blocks.</div>
-                  <ul className="list-none ml-8 mt-2 space-y-1">
-                    <li>- These blocks preserve rotational and translational symmetries during updates.</li>
-                  </ul>
-                  <div className="ml-6 -mt-4 -mb-4">
-                    <img
-                      src="/assets/equiformer/equivariance-subblock-simple.svg"
-                      alt="Equivariance schematic for reused Equiformer-style sub-blocks"
-                      style={{ width: "46%" }}
-                    />
-                  </div>
-                </div>
-              </Show>
-              <Show when={step >= 2}>
-                <div>
-                  <div>It reuses Equiformer-style 3D message passing where spherical harmonics and tensor products make node updates geometry-aware and equivariant.</div>
-                  <ul className="list-none ml-8 mt-2 space-y-1">
-                    <li>- This enables geometry-aware feature exchange between coarse-grained nodes.</li>
-                  </ul>
-                </div>
-              </Show>
-              <Show when={step >= 3}>
-                <div>
-                  <div>It integrates these blocks into iterative structure refinement.</div>
-                  <ul className="list-none ml-8 mt-2 space-y-1">
-                    <li>- Each block predicts transform updates that progressively improve all-atom structure.</li>
-                  </ul>
-                  <div className="ml-8 mt-0">
-                    <Box title="Refinement Update">
-                      {M`(t_i^{(k+1)}, R_i^{(k+1)}) = (t_i^{(k)} + \Delta t_i^{(k)}, \Delta R_i^{(k)} R_i^{(k)})`}
+            <div className="h-full flex flex-col" style={{ fontSize: "0.68rem", lineHeight: 1.24 }}>
+              <div>
+                <Show when={step >= 1}>
+                  <div className="mb-1">
+                    <Box style={{ padding: "0.08rem 0.28rem" }}>
+                      EquiFold directly reuses Equiformer-style equivariant sub-blocks for geometry-aware message passing
+                      and representation updates on coarse-grained nodes.
                     </Box>
                   </div>
+                </Show>
+                <div className="mt-1.5 space-y-1.5">
+                  <Show when={step >= 2}>
+                    <div className="rounded px-2 py-1" style={{ backgroundColor: "rgba(251, 191, 36, 0.28)" }}>
+                      <span style={{ display: "inline-flex", alignItems: "flex-start" }}>
+                        <span style={{ marginRight: "0.35rem" }}>-</span>
+                        <span>Rotational and translational symmetries are preserved through equivariant operations.</span>
+                      </span>
+                    </div>
+                  </Show>
                 </div>
-              </Show>
-              <Show when={step >= 4}>
-                <div>Callout: EquiFold Appendix A.2 and Equiformer Figure 1.</div>
-              </Show>
-            </ul>
+              </div>
+
+              <div className="mt-2">
+                <Show when={step >= 3}>
+                  <div className="mb-1">
+                    <Box style={{ padding: "0.08rem 0.28rem" }}>
+                      These reused sub-blocks are embedded inside EquiFold's iterative refinement loop, where each block
+                      predicts frame updates and improves all-atom structure.
+                    </Box>
+                  </div>
+                </Show>
+                <div className="mt-1.5 space-y-1.5">
+                  <Show when={step >= 4}>
+                    <div
+                      className="rounded px-2"
+                      style={{
+                        backgroundColor: "rgba(251, 191, 36, 0.28)",
+                        height: "1.9rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          textAlign: "center",
+                          lineHeight: 1,
+                        }}
+                      >
+                        <div style={{ display: "inline-block", transform: "translateY(0.56rem)" }}>
+                          {M`(\mathbf{T}_i^{(k+1)}, \mathbf{R}_i^{(k+1)}) = (\mathbf{T}_i^{(k)} + \Delta \mathbf{T}_i^{(k)}, \Delta \mathbf{R}_i^{(k)} \mathbf{R}_i^{(k)})`}
+                        </div>
+                      </div>
+                    </div>
+                  </Show>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </Slide>
@@ -2360,15 +2530,15 @@ function App() {
                   gap: "0.55rem",
                 }}
               >
-                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)" }}>
+                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                   <div style={{ fontSize: "0.44rem", opacity: 0.75 }}>Mini-batch Size</div>
                   <div style={{ fontSize: "0.78rem", fontWeight: 700 }}>8</div>
                 </div>
-                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)" }}>
+                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                   <div style={{ fontSize: "0.44rem", opacity: 0.75 }}>Parallel Hardware</div>
                   <div style={{ fontSize: "0.78rem", fontWeight: 700 }}>8 × A100 GPUs</div>
                 </div>
-                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)" }}>
+                <div style={{ border: "1px solid #7c8ca8", borderRadius: "8px", padding: "0.45rem 0.55rem", background: "rgba(255,255,255,0.45)", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                   <div style={{ fontSize: "0.44rem", opacity: 0.75 }}>Training Duration</div>
                   <div style={{ fontSize: "0.7rem", fontWeight: 700, lineHeight: 1.25 }}>
                     <div>Mini: 1 day</div>
@@ -2580,6 +2750,45 @@ function App() {
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="Impact">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              EquiFold established the geometric modeling foundation that directly informed the follow-on portfolio work at
+              Genentech (Prescient Design / gRED sequence-structure co-generation platform).
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div>- Progression: EquiFold (fast SE(3)-equivariant all-atom prediction) -> portfolio sequence-structure co-generation stack.</div>
+            <div>- Platform outcome: modular PyTorch framework combining SE(3)-equivariant GNNs with score-based diffusion/SDE modeling for bidirectional inference and conditional generation.</div>
+            <div>- Organizational impact: cross-functional workflow adopted with 20+ ML scientists, structural biologists, and protein engineers.</div>
+            <div>- Downstream impact: internal toolkits and methods that now support gRED discovery programs.</div>
           </div>
         </div>
       </Slide>
