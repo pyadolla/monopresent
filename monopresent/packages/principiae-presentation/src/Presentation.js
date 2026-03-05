@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import {
   AnimateSVG,
@@ -79,6 +79,10 @@ const flowSteps = flowTimeline.map((s, i) => ({
 function DelayedUnderline({ text, delay = 2000, duration = 700 }) {
   const routePath = typeof window !== "undefined" ? window.location.pathname : "";
   const [revealed, setRevealed] = useState(false);
+  const filterId = useMemo(
+    () => `charcoal-${Math.random().toString(36).slice(2, 10)}`,
+    []
+  );
 
   useEffect(() => {
     setRevealed(false);
@@ -89,21 +93,78 @@ function DelayedUnderline({ text, delay = 2000, duration = 700 }) {
   return (
     <span style={{ position: "relative", display: "inline-block", paddingBottom: "2px" }}>
       {text}
-      <span
+      <svg
         aria-hidden="true"
+        viewBox="0 0 100 12"
+        preserveAspectRatio="none"
         style={{
           position: "absolute",
           left: 0,
           right: 0,
-          bottom: "-1px",
-          height: "2px",
-          background: "#111827",
+          bottom: "-5px",
+          width: "100%",
+          height: "8px",
+          overflow: "visible",
           transform: revealed ? "scaleX(1)" : "scaleX(0)",
           transformOrigin: "left center",
           transition: `transform ${duration}ms ease`,
           pointerEvents: "none",
+          zIndex: 2,
         }}
-      />
+      >
+        <defs>
+          <filter id={filterId} x="-15%" y="-60%" width="130%" height="220%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="11" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+              <feFuncA type="table" tableValues="0 0.3" />
+            </feComponentTransfer>
+          </filter>
+        </defs>
+        <path
+          d="M1 7 C10 5.6, 18 8.4, 27 7.1 C36 5.9, 44 8.1, 53 7.0 C62 5.8, 71 8.2, 80 7.2 C88 6.3, 94 7.7, 99 7.1"
+          stroke="#4a4a4a"
+          strokeWidth="4.6"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M1 7 C10 5.6, 18 8.4, 27 7.1 C36 5.9, 44 8.1, 53 7.0 C62 5.8, 71 8.2, 80 7.2 C88 6.3, 94 7.7, 99 7.1"
+          stroke="#2e2e2e"
+          strokeWidth="4.0"
+          strokeLinecap="round"
+          fill="none"
+          filter={`url(#${filterId})`}
+          opacity="0.9"
+        />
+        <path
+          d="M1 7.2 C10 5.8, 18 8.6, 27 7.3 C36 6.1, 44 8.3, 53 7.2 C62 6.0, 71 8.4, 80 7.4 C88 6.5, 94 7.9, 99 7.3"
+          stroke="#5f5f5f"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.42"
+          strokeDasharray="0.9 1.7"
+        />
+        <path
+          d="M1 6.7 C10 5.3, 18 8.1, 27 6.8 C36 5.6, 44 7.8, 53 6.7 C62 5.5, 71 7.9, 80 6.9 C88 6.0, 94 7.4, 99 6.8"
+          stroke="#3a3a3a"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.35"
+          strokeDasharray="0.5 1.2"
+        />
+        <path
+          d="M1 7.5 C10 6.1, 18 8.9, 27 7.6 C36 6.4, 44 8.6, 53 7.5 C62 6.3, 71 8.7, 80 7.7 C88 6.8, 94 8.2, 99 7.6"
+          stroke="#707070"
+          strokeWidth="1.15"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.28"
+          strokeDasharray="0.35 1.35"
+        />
+      </svg>
     </span>
   );
 }
@@ -1161,12 +1222,14 @@ function App() {
                 This is the high-level takeaway slide.
 
                 I’ll emphasize four points:
-                direct all-atom prediction from sequence,
-                equivariant iterative refinement,
-                no dependence on MSA or PLM embeddings in this setup,
-                and practical throughput for design loops.
+                <ul style={{ margin: "0.2rem 0 0.2rem 0.9rem", padding: 0 }}>
+                  <li>direct all-atom prediction from sequence</li>
+                  <li>equivariant iterative refinement</li>
+                  <li>no dependence on MSA or PLM embeddings in this setup</li>
+                  <li>practical throughput for design loops</li>
+                </ul>
 
-                This is the thesis before we drill into details.
+                These are the main points before we drill down into details.
               </div>
             </Notes>
           </>
@@ -1223,6 +1286,37 @@ function App() {
                 </h3>
               </div>
             </Show>
+            <Notes>
+              <div style={notesContentStyle}>
+                Equiformer’s core block applies equivariant maps that preserve how those channels transform under group actions.
+
+                <div style={{ marginTop: "0.2rem" }}>
+                  Conceptually, the graph represents a 3D interacting system:
+                  nodes are entities (atoms, residues, coarse-grained units), edges are interaction channels
+                  (typically cutoff or neighborhood based), and node/edge attributes carry type plus geometry
+                  (distances, directions, embeddings). It is a structured proxy of who can influence whom in 3D space.
+                </div>
+
+                <div style={{ marginTop: "0.2rem" }}>
+                  Here, attention is still doing neighbor weighting, but the score is not just a query-key dot product.
+                  For each node pair, the model looks at both node features plus edge geometry, runs that through a
+                  small neural network, and gets a compatibility score.
+                  Those scores are normalized across neighbors, so each neighbor gets an attention weight.
+                  Then each node update is a weighted combination of incoming neighbor messages.
+                  The key idea is the same attention mechanism with a richer learned scoring function that directly
+                  uses pairwise geometric context.
+                </div>
+
+                <div style={{ marginTop: "0.2rem" }}>
+                  The output head predicts task-specific targets from the final node features.
+                  For molecular property prediction, this is a scalar graph output (energy, affinity, class/logit).
+                  For force prediction, this is per-node vectors (forces).
+                  For node-level tasks, this is per-node labels or regression.
+                  For structure tasks, this is frame or coordinate-related outputs used to decode or update geometry.
+                  So the Equiformer trunk is a generic equivariant feature extractor, and the head is target-specific.
+                </div>
+              </div>
+            </Notes>
           </>
         )}
       </Slide>
@@ -1548,67 +1642,6 @@ function App() {
         )}
       </Slide>
 
-      <Slide header="CG Definition" steps={range(cgDefSteps.length + 5)}>
-        {(step) => (
-          <div className="h-full flex flex-col justify-center gap-3 py-2">
-            <div className="flex items-center justify-center">
-              <Portal zoomout>
-                <AnimateSVG
-                  src="/figures/cgdef.svg"
-                  step={cgDefSteps[Math.min(step, cgDefSteps.length - 1)]}
-                  style={{ width: "100%", maxWidth: "820px", margin: "0 auto" }}
-                />
-              </Portal>
-            </div>
-            <Show when={step >= 2}>
-              <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.76rem", lineHeight: 1.45 }}>
-                <div className="grid gap-x-6 items-start" style={{ gridTemplateColumns: "2.4fr 1fr" }}>
-                  <div className="whitespace-nowrap">
-                    <Show when={step >= 2}>
-                      <div>discrete CG node types&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`c \in \mathcal{C}`}</span></div>
-                    </Show>
-                    <Show when={step >= 3}>
-                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{R}, \mathbf{T} \in SO(3) \times \mathbb{R}^3`}</span></div>
-                    </Show>
-                    <Show when={step >= 4}>
-                      <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
-                    </Show>
-                    <Show when={step >= 5}>
-                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`s \in \mathbb{R}`}</span></div>
-                    </Show>
-                    <Show when={step >= 6}>
-                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{v} \in \mathbb{R}^{n \times 3}`}</span></div>
-                    </Show>
-                  </div>
-                  <div className="flex items-start">
-                    <Show when={step >= 3}>
-                      <div style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "right top", marginTop: "1.05rem", marginLeft: "-3rem" }}>
-                        <div className="flex items-start gap-1">
-                          <div>
-                            {m`\mathbf{R}=\begin{bmatrix}
-                            r_{11} & r_{12} & r_{13}\\
-                            r_{21} & r_{22} & r_{23}\\
-                            r_{31} & r_{32} & r_{33}
-                            \end{bmatrix}`}
-                          </div>
-                          <div>
-                            {m`\mathbf{T}=\begin{bmatrix}
-                            t_{1}\\
-                            t_{2}\\
-                            t_{3}
-                            \end{bmatrix}`}
-                          </div>
-                        </div>
-                      </div>
-                    </Show>
-                  </div>
-                </div>
-              </Box>
-            </Show>
-          </div>
-        )}
-      </Slide>
-
       <Slide header="CG Representation" steps={range(cgRepSteps.length)}>
         {(step) => (
           <div className="h-full grid grid-cols-2 gap-x-8 gap-y-0 items-center" style={{ marginTop: "-1.4rem" }}>
@@ -1761,6 +1794,67 @@ function App() {
         )}
       </Slide>
 
+      <Slide header="CG Definition" steps={range(cgDefSteps.length + 5)}>
+        {(step) => (
+          <div className="h-full flex flex-col justify-center gap-3 py-2">
+            <div className="flex items-center justify-center">
+              <Portal zoomout>
+                <AnimateSVG
+                  src="/figures/cgdef.svg"
+                  step={cgDefSteps[Math.min(step, cgDefSteps.length - 1)]}
+                  style={{ width: "100%", maxWidth: "820px", margin: "0 auto" }}
+                />
+              </Portal>
+            </div>
+            <Show when={step >= 2}>
+              <Box className="mx-auto" style={{ width: "100%", maxWidth: "1000px", fontSize: "0.76rem", lineHeight: 1.45 }}>
+                <div className="grid gap-x-6 items-start" style={{ gridTemplateColumns: "2.4fr 1fr" }}>
+                  <div className="whitespace-nowrap">
+                    <Show when={step >= 2}>
+                      <div>discrete CG node types&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`c \in \mathcal{C}`}</span></div>
+                    </Show>
+                    <Show when={step >= 3}>
+                      <div>node rigid transform&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{R}, \mathbf{T} \in SO(3) \times \mathbb{R}^3`}</span></div>
+                    </Show>
+                    <Show when={step >= 4}>
+                      <div>local template atom coordinates&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`X^0 \in \mathbb{R}^{n_j \times 3}`}</span></div>
+                    </Show>
+                    <Show when={step >= 5}>
+                      <div>scalar identity embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`s \in \mathbb{R}`}</span></div>
+                    </Show>
+                    <Show when={step >= 6}>
+                      <div>vector orientation embedding&nbsp;&nbsp;<span style={{ display: "inline-block", zoom: "0.8" }}>{m`\mathbf{v} \in \mathbb{R}^{3}`}</span></div>
+                    </Show>
+                  </div>
+                  <div className="flex items-start">
+                    <Show when={step >= 3}>
+                      <div style={{ display: "inline-block", transform: "scale(0.8)", transformOrigin: "right top", marginTop: "1.05rem", marginLeft: "-3rem" }}>
+                        <div className="flex items-start gap-1">
+                          <div>
+                            {m`\mathbf{R}=\begin{bmatrix}
+                            r_{11} & r_{12} & r_{13}\\
+                            r_{21} & r_{22} & r_{23}\\
+                            r_{31} & r_{32} & r_{33}
+                            \end{bmatrix}`}
+                          </div>
+                          <div>
+                            {m`\mathbf{T}=\begin{bmatrix}
+                            t_{1}\\
+                            t_{2}\\
+                            t_{3}
+                            \end{bmatrix}`}
+                          </div>
+                        </div>
+                      </div>
+                    </Show>
+                  </div>
+                </div>
+              </Box>
+            </Show>
+          </div>
+        )}
+      </Slide>
+
       <Slide header="Edge Definition" steps={range(edgeTypeSteps.length + 2)}>
         {(step) => (
           <div className="h-full flex flex-col justify-center gap-4">
@@ -1802,8 +1896,9 @@ function App() {
 
       <Slide header="Graph Embedding" steps={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]}>
         {(step) => (
-          <div className="h-full flex flex-col justify-center gap-4" style={{ overflow: "hidden" }}>
-            <div style={{ position: "relative", minHeight: "1.6rem", width: "100%" }}>
+          <>
+            <div className="h-full flex flex-col justify-center gap-4" style={{ overflow: "hidden" }}>
+              <div style={{ position: "relative", minHeight: "1.6rem", width: "100%" }}>
               <div
                 style={{
                   position: "absolute",
@@ -1996,7 +2091,31 @@ function App() {
                 </div>
               </Box>
             </div>
-          </div>
+            </div>
+            <Notes>
+              <div style={notesContentStyle}>
+                Simple intuition for irreps:
+                irreps are the basic transformation modes under rotation, like primary colors for symmetry.
+
+                <div style={{ marginTop: "0.2rem" }}>
+                  For SO(3), l=0 is scalar mode, unchanged by rotation.
+                  l=1 is vector mode, rotates like a 3D arrow.
+                  l=2 is a higher-order directional shape mode.
+                </div>
+
+                <div style={{ marginTop: "0.2rem" }}>
+                  Any equivariant feature can be built by stacking these modes.
+                  That is why irreps are used: they make how features should transform explicit and controllable.
+                </div>
+
+                <div style={{ marginTop: "0.2rem" }}>
+                  So D(R)*Lookup(c) means:
+                  Lookup(c) gives the node-type template content, and D(R) applies the correct geometric action,
+                  so identity and orientation are fused in an equivariant way.
+                </div>
+              </div>
+            </Notes>
+          </>
         )}
       </Slide>
 
