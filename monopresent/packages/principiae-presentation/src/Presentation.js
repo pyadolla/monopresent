@@ -952,20 +952,20 @@ function App() {
         {(step) => (
           <div className="h-full flex flex-col gap-3" style={{ fontSize: "0.7rem", lineHeight: 1.3 }}>
             <Show when={step >= 1}>
-              <Box title="2018 -> 2019 | Disease subtyping + DDNF">
+              <Box title="2018 → 2019 | Disease subtyping + DDNF">
                 Built structured probabilistic models for disease subtyping and worked on diffeomorphic normalizing flows.
                 Learned to pair expressive generative models with interpretable latent structure.
               </Box>
             </Show>
             <Show when={step >= 2}>
-              <Box title="2019 -> 2021 | Single-cell and spatial transcriptomics">
+              <Box title="2019 → 2021 | Single-cell and spatial transcriptomics">
                 Worked on large-scale cellular lineage and tumor ecosystem analyses. Learned how to connect statistical models
                 to biologically validated hypotheses.
               </Box>
             </Show>
             <Show when={step >= 3}>
               <Box
-                title="2021 -> present | EquiFold + sequence-structure generation at Genentech"
+                title="2021 → present | EquiFold + sequence-structure generation at Genentech"
                 style={step >= 4 ? { backgroundColor: "rgba(255, 230, 120, 0.55)" } : undefined}
               >
                 Developed SE(3)-equivariant protein modeling and diffusion-based co-generation stacks. Learned that practical
@@ -2962,7 +2962,7 @@ function App() {
               gap: "0.34rem",
             }}
           >
-            <div>- Progression: EquiFold (fast SE(3)-equivariant all-atom prediction) -> portfolio sequence-structure co-generation stack.</div>
+            <div>- Progression: EquiFold (fast SE(3)-equivariant all-atom prediction) → portfolio sequence-structure co-generation stack.</div>
             <div>- Platform outcome: modular PyTorch framework combining SE(3)-equivariant GNNs with score-based diffusion/SDE modeling for bidirectional inference and conditional generation.</div>
             <div>- Organizational impact: cross-functional workflow adopted with 20+ ML scientists, structural biologists, and protein engineers.</div>
             <div>- Downstream impact: internal toolkits and methods that now support gRED discovery programs.</div>
