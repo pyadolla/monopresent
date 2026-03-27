@@ -19,7 +19,7 @@ async function main() {
     timeout: 0
   })
   console.log('Network idle ... ')
-  await page.waitFor(1000)
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   console.log('Creating pdf!')
   await page.pdf({
     path: `./output.pdf`,
