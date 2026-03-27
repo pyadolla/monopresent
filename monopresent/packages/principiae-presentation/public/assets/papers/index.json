@@ -1,0 +1,115 @@
+{
+  "generated_at": "2026-03-07T04:01:13.034Z",
+  "papers": [
+    {
+      "slug": "decoding-complete-reach-and-grasp-actions-from-local-primary-motor-cortex-popula",
+      "title": "Decoding Complete Reach and Grasp Actions from Local Primary Motor Cortex Populations",
+      "doi": "10.1523/jneurosci.5443-09.2010",
+      "year": 2010,
+      "authors": [
+        "Carlos E. Vargas-Irwin",
+        "Gregory Shakhnarovich",
+        "Payman Yadollahpour",
+        "John M.K. Mislow",
+        "Michael J. Black",
+        "John P. Donoghue"
+      ],
+      "acquisition_source": "publisher",
+      "processing_status": "processed",
+      "figure_count": 9,
+      "embedded_asset_count": 7,
+      "pdf_path": "/assets/papers/decoding-complete-reach-and-grasp-actions-from-local-primary-motor-cortex-popula/paper.pdf",
+      "catalog_path": "/assets/papers/decoding-complete-reach-and-grasp-actions-from-local-primary-motor-cortex-popula/catalog.json",
+      "readme_path": "/assets/papers/decoding-complete-reach-and-grasp-actions-from-local-primary-motor-cortex-popula/README.md",
+      "warnings": [],
+      "updated_at": "2026-03-07T03:06:13.446Z"
+    },
+    {
+      "slug": "diverse-m-best-solutions-in-markov-random-fields",
+      "title": "Diverse M-Best Solutions in Markov Random Fields",
+      "doi": "10.1007/978-3-642-33715-4_1",
+      "year": 2012,
+      "authors": [
+        "Dhruv Batra",
+        "Payman Yadollahpour",
+        "Abner Guzman-Rivera",
+        "Gregory Shakhnarovich"
+      ],
+      "acquisition_source": "publisher",
+      "processing_status": "processed",
+      "figure_count": 15,
+      "embedded_asset_count": 292,
+      "pdf_path": "/assets/papers/diverse-m-best-solutions-in-markov-random-fields/paper.pdf",
+      "catalog_path": "/assets/papers/diverse-m-best-solutions-in-markov-random-fields/catalog.json",
+      "readme_path": "/assets/papers/diverse-m-best-solutions-in-markov-random-fields/README.md",
+      "warnings": [],
+      "updated_at": "2026-03-07T03:40:14.997Z"
+    },
+    {
+      "slug": "discriminative-re-ranking-of-diverse-segmentations",
+      "title": "Discriminative Re-ranking of Diverse Segmentations",
+      "doi": "10.1109/cvpr.2013.251",
+      "year": 2013,
+      "authors": [
+        "Payman Yadollahpour",
+        "Dhruv Batra",
+        "Gregory Shakhnarovich"
+      ],
+      "acquisition_source": "publisher",
+      "processing_status": "processed",
+      "figure_count": 19,
+      "embedded_asset_count": 85,
+      "pdf_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/paper.pdf",
+      "catalog_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/catalog.json",
+      "readme_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/README.md",
+      "warnings": [],
+      "updated_at": "2026-03-07T03:43:50.178Z"
+    },
+    {
+      "slug": "neurally-constrained-subspace-learning-of-reach-and-grasp",
+      "title": "Neurally Constrained Subspace Learning of Reach and Grasp",
+      "doi": null,
+      "year": null,
+      "authors": [],
+      "acquisition_source": "manual",
+      "processing_status": "processed",
+      "figure_count": 3,
+      "embedded_asset_count": 6,
+      "pdf_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/paper.pdf",
+      "catalog_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/catalog.json",
+      "readme_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/README.md",
+      "warnings": [],
+      "updated_at": "2026-03-07T03:58:04.949Z"
+    },
+    {
+      "slug": "unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-",
+      "title": "Unified Transcriptome and Mechanics Map of the Intact Mammalian Preimplantation Embryo In Situ",
+      "doi": "10.64898/2026.02.23.706394",
+      "year": 2026,
+      "authors": [
+        "Ehsan Habibi",
+        "Anubhav Sinha",
+        "Haiqian Yang",
+        "Payman Yadollahpour",
+        "Yiwei Li",
+        "Lani Lee",
+        "David Wollensak",
+        "Zachary Chiang",
+        "Denny Sakkas",
+        "Edward S Boyden",
+        "Ming Guo",
+        "Aviv Regev",
+        "F. Chen"
+      ],
+      "acquisition_source": "publisher",
+      "processing_status": "processed",
+      "figure_count": 6,
+      "embedded_asset_count": 18,
+      "pdf_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/paper.pdf",
+      "catalog_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/catalog.json",
+      "readme_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/README.md",
+      "warnings": [],
+      "updated_at": "2026-03-07T04:01:13.034Z"
+    }
+  ]
+}

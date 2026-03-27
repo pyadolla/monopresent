@@ -14,7 +14,12 @@
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "pdf": "node ./node_modules/immersion-presentation/make-pdf"
+    "pdf": "node ../immersion-presentation/make-pdf/index.js",
+    "papers:init": "node ./scripts/paper-catalog.js init",
+    "papers:interactive": "node ./scripts/paper-catalog.js interactive",
+    "papers:ingest": "node ./scripts/paper-catalog.js ingest",
+    "papers:rebuild": "node ./scripts/paper-catalog.js rebuild",
+    "papers:test": "node --test ./scripts/paper-catalog.test.js"
   },
   "eslintConfig": {
     "extends": "react-app"

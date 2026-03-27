@@ -1,0 +1,2534 @@
+{
+  "slug": "discriminative-re-ranking-of-diverse-segmentations",
+  "title": "Discriminative Re-ranking of Diverse Segmentations",
+  "authors": [
+    "Payman Yadollahpour",
+    "Dhruv Batra",
+    "Gregory Shakhnarovich"
+  ],
+  "year": 2013,
+  "doi": "10.1109/cvpr.2013.251",
+  "acquisition_source": "publisher",
+  "processing_status": "processed",
+  "pdf_file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/paper.pdf",
+  "pdf_public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/paper.pdf",
+  "supplements": [],
+  "extracted_assets": [
+    {
+      "asset_id": "asset-001",
+      "page": 1,
+      "object_id": 888,
+      "generation": 0,
+      "type": "image",
+      "width": 2550,
+      "height": 3300,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 763,
+      "y_ppi": 763,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-000.jpg",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-000.jpg"
+    },
+    {
+      "asset_id": "asset-002",
+      "page": 7,
+      "object_id": 34,
+      "generation": 0,
+      "type": "image",
+      "width": 1075,
+      "height": 196,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 489,
+      "y_ppi": 489,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-001.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-001.png"
+    },
+    {
+      "asset_id": "asset-003",
+      "page": 7,
+      "object_id": 35,
+      "generation": 0,
+      "type": "image",
+      "width": 2082,
+      "height": 1562,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 1901,
+      "y_ppi": 1901,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-002.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-002.png"
+    },
+    {
+      "asset_id": "asset-004",
+      "page": 7,
+      "object_id": 36,
+      "generation": 0,
+      "type": "image",
+      "width": 2082,
+      "height": 1562,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 1903,
+      "y_ppi": 1903,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-003.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-003.png"
+    },
+    {
+      "asset_id": "asset-005",
+      "page": 7,
+      "object_id": 38,
+      "generation": 0,
+      "type": "image",
+      "width": 1071,
+      "height": 194,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 487,
+      "y_ppi": 487,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-004.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-004.png"
+    },
+    {
+      "asset_id": "asset-006",
+      "page": 7,
+      "object_id": 39,
+      "generation": 0,
+      "type": "image",
+      "width": 2082,
+      "height": 1562,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 1901,
+      "y_ppi": 1901,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-005.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-005.png"
+    },
+    {
+      "asset_id": "asset-007",
+      "page": 7,
+      "object_id": 40,
+      "generation": 0,
+      "type": "image",
+      "width": 2082,
+      "height": 1562,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 1901,
+      "y_ppi": 1901,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-006.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-006.png"
+    },
+    {
+      "asset_id": "asset-008",
+      "page": 7,
+      "object_id": 42,
+      "generation": 0,
+      "type": "image",
+      "width": 2082,
+      "height": 1562,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 1904,
+      "y_ppi": 1904,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-007.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-007.png"
+    },
+    {
+      "asset_id": "asset-009",
+      "page": 7,
+      "object_id": 43,
+      "generation": 0,
+      "type": "image",
+      "width": 2082,
+      "height": 1562,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 1904,
+      "y_ppi": 1904,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-008.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-008.png"
+    },
+    {
+      "asset_id": "asset-010",
+      "page": 7,
+      "object_id": 44,
+      "generation": 0,
+      "type": "image",
+      "width": 1075,
+      "height": 193,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 490,
+      "y_ppi": 490,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-009.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-009.png"
+    },
+    {
+      "asset_id": "asset-011",
+      "page": 8,
+      "object_id": 51,
+      "generation": 0,
+      "type": "image",
+      "width": 2012,
+      "height": 473,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1281,
+      "y_ppi": 1281,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-010.jpg",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-010.jpg"
+    },
+    {
+      "asset_id": "asset-012",
+      "page": 8,
+      "object_id": 53,
+      "generation": 0,
+      "type": "image",
+      "width": 2012,
+      "height": 473,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1254,
+      "y_ppi": 1254,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-011.jpg",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-011.jpg"
+    },
+    {
+      "asset_id": "asset-013",
+      "page": 8,
+      "object_id": 55,
+      "generation": 0,
+      "type": "image",
+      "width": 1312,
+      "height": 640,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 819,
+      "y_ppi": 819,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-012.jpg",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-012.jpg"
+    },
+    {
+      "asset_id": "asset-014",
+      "page": 8,
+      "object_id": 57,
+      "generation": 0,
+      "type": "image",
+      "width": 1436,
+      "height": 620,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 896,
+      "y_ppi": 896,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-013.jpg",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-013.jpg"
+    },
+    {
+      "asset_id": "asset-015",
+      "page": 11,
+      "object_id": null,
+      "generation": 0,
+      "type": "image",
+      "width": 5,
+      "height": 5,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 6,
+      "y_ppi": 0,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-014.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-014.png"
+    },
+    {
+      "asset_id": "asset-016",
+      "page": 12,
+      "object_id": 83,
+      "generation": 0,
+      "type": "image",
+      "width": 3944,
+      "height": 1149,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-015.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-015.png"
+    },
+    {
+      "asset_id": "asset-017",
+      "page": 12,
+      "object_id": 84,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 611,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-016.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-016.png"
+    },
+    {
+      "asset_id": "asset-018",
+      "page": 12,
+      "object_id": 85,
+      "generation": 0,
+      "type": "image",
+      "width": 3944,
+      "height": 1299,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-017.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-017.png"
+    },
+    {
+      "asset_id": "asset-019",
+      "page": 12,
+      "object_id": 86,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 688,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-018.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-018.png"
+    },
+    {
+      "asset_id": "asset-020",
+      "page": 13,
+      "object_id": 97,
+      "generation": 0,
+      "type": "image",
+      "width": 3842,
+      "height": 602,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 559,
+      "y_ppi": 559,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-019.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-019.png"
+    },
+    {
+      "asset_id": "asset-021",
+      "page": 13,
+      "object_id": 90,
+      "generation": 0,
+      "type": "image",
+      "width": 3842,
+      "height": 326,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 559,
+      "y_ppi": 559,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-020.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-020.png"
+    },
+    {
+      "asset_id": "asset-022",
+      "page": 13,
+      "object_id": 91,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 614,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-021.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-021.png"
+    },
+    {
+      "asset_id": "asset-023",
+      "page": 13,
+      "object_id": 92,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 332,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-022.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-022.png"
+    },
+    {
+      "asset_id": "asset-024",
+      "page": 13,
+      "object_id": 93,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 618,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-023.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-023.png"
+    },
+    {
+      "asset_id": "asset-025",
+      "page": 13,
+      "object_id": 94,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 334,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-024.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-024.png"
+    },
+    {
+      "asset_id": "asset-026",
+      "page": 13,
+      "object_id": 95,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 618,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-025.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-025.png"
+    },
+    {
+      "asset_id": "asset-027",
+      "page": 13,
+      "object_id": 96,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 334,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-026.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-026.png"
+    },
+    {
+      "asset_id": "asset-028",
+      "page": 14,
+      "object_id": 101,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 1134,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-027.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-027.png"
+    },
+    {
+      "asset_id": "asset-029",
+      "page": 14,
+      "object_id": 102,
+      "generation": 0,
+      "type": "image",
+      "width": 3947,
+      "height": 600,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-028.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-028.png"
+    },
+    {
+      "asset_id": "asset-030",
+      "page": 14,
+      "object_id": 103,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-029.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-029.png"
+    },
+    {
+      "asset_id": "asset-031",
+      "page": 14,
+      "object_id": 104,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-030.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-030.png"
+    },
+    {
+      "asset_id": "asset-032",
+      "page": 14,
+      "object_id": 105,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-031.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-031.png"
+    },
+    {
+      "asset_id": "asset-033",
+      "page": 14,
+      "object_id": 106,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-032.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-032.png"
+    },
+    {
+      "asset_id": "asset-034",
+      "page": 15,
+      "object_id": 110,
+      "generation": 0,
+      "type": "image",
+      "width": 3946,
+      "height": 1265,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-033.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-033.png"
+    },
+    {
+      "asset_id": "asset-035",
+      "page": 15,
+      "object_id": 111,
+      "generation": 0,
+      "type": "image",
+      "width": 3944,
+      "height": 669,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-034.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-034.png"
+    },
+    {
+      "asset_id": "asset-036",
+      "page": 15,
+      "object_id": 112,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-035.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-035.png"
+    },
+    {
+      "asset_id": "asset-037",
+      "page": 15,
+      "object_id": 113,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-036.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-036.png"
+    },
+    {
+      "asset_id": "asset-038",
+      "page": 15,
+      "object_id": 114,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-037.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-037.png"
+    },
+    {
+      "asset_id": "asset-039",
+      "page": 15,
+      "object_id": 115,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-038.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-038.png"
+    },
+    {
+      "asset_id": "asset-040",
+      "page": 16,
+      "object_id": 119,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-039.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-039.png"
+    },
+    {
+      "asset_id": "asset-041",
+      "page": 16,
+      "object_id": 120,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-040.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-040.png"
+    },
+    {
+      "asset_id": "asset-042",
+      "page": 16,
+      "object_id": 121,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 1249,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-041.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-041.png"
+    },
+    {
+      "asset_id": "asset-043",
+      "page": 16,
+      "object_id": 122,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 661,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-042.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-042.png"
+    },
+    {
+      "asset_id": "asset-044",
+      "page": 16,
+      "object_id": 123,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-043.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-043.png"
+    },
+    {
+      "asset_id": "asset-045",
+      "page": 16,
+      "object_id": 124,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-044.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-044.png"
+    },
+    {
+      "asset_id": "asset-046",
+      "page": 17,
+      "object_id": 128,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 616,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-045.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-045.png"
+    },
+    {
+      "asset_id": "asset-047",
+      "page": 17,
+      "object_id": 129,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 333,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-046.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-046.png"
+    },
+    {
+      "asset_id": "asset-048",
+      "page": 17,
+      "object_id": 130,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 650,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-047.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-047.png"
+    },
+    {
+      "asset_id": "asset-049",
+      "page": 17,
+      "object_id": 131,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 350,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-048.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-048.png"
+    },
+    {
+      "asset_id": "asset-050",
+      "page": 18,
+      "object_id": 135,
+      "generation": 0,
+      "type": "image",
+      "width": 3842,
+      "height": 1236,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 559,
+      "y_ppi": 559,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-049.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-049.png"
+    },
+    {
+      "asset_id": "asset-051",
+      "page": 18,
+      "object_id": 136,
+      "generation": 0,
+      "type": "image",
+      "width": 3842,
+      "height": 654,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 559,
+      "y_ppi": 559,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-050.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-050.png"
+    },
+    {
+      "asset_id": "asset-052",
+      "page": 18,
+      "object_id": 137,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 760,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-051.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-051.png"
+    },
+    {
+      "asset_id": "asset-053",
+      "page": 18,
+      "object_id": 138,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 405,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-052.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-052.png"
+    },
+    {
+      "asset_id": "asset-054",
+      "page": 18,
+      "object_id": 139,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-053.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-053.png"
+    },
+    {
+      "asset_id": "asset-055",
+      "page": 18,
+      "object_id": 140,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-054.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-054.png"
+    },
+    {
+      "asset_id": "asset-056",
+      "page": 19,
+      "object_id": 144,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 1008,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 592,
+      "y_ppi": 592,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-055.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-055.png"
+    },
+    {
+      "asset_id": "asset-057",
+      "page": 19,
+      "object_id": 145,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 533,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 592,
+      "y_ppi": 592,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-056.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-056.png"
+    },
+    {
+      "asset_id": "asset-058",
+      "page": 19,
+      "object_id": 146,
+      "generation": 0,
+      "type": "image",
+      "width": 3944,
+      "height": 1130,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 591,
+      "y_ppi": 591,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-057.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-057.png"
+    },
+    {
+      "asset_id": "asset-059",
+      "page": 19,
+      "object_id": 147,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 599,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 592,
+      "y_ppi": 592,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-058.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-058.png"
+    },
+    {
+      "asset_id": "asset-060",
+      "page": 19,
+      "object_id": 148,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 618,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 592,
+      "y_ppi": 592,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-059.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-059.png"
+    },
+    {
+      "asset_id": "asset-061",
+      "page": 19,
+      "object_id": 149,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 334,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-060.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-060.png"
+    },
+    {
+      "asset_id": "asset-062",
+      "page": 20,
+      "object_id": 153,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 618,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-061.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-061.png"
+    },
+    {
+      "asset_id": "asset-063",
+      "page": 20,
+      "object_id": 154,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 334,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-062.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-062.png"
+    },
+    {
+      "asset_id": "asset-064",
+      "page": 20,
+      "object_id": 155,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 669,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-063.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-063.png"
+    },
+    {
+      "asset_id": "asset-065",
+      "page": 20,
+      "object_id": 156,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 360,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-064.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-064.png"
+    },
+    {
+      "asset_id": "asset-066",
+      "page": 20,
+      "object_id": 157,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 618,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-065.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-065.png"
+    },
+    {
+      "asset_id": "asset-067",
+      "page": 20,
+      "object_id": 158,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 334,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-066.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-066.png"
+    },
+    {
+      "asset_id": "asset-068",
+      "page": 21,
+      "object_id": 162,
+      "generation": 0,
+      "type": "image",
+      "width": 3944,
+      "height": 1130,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-067.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-067.png"
+    },
+    {
+      "asset_id": "asset-069",
+      "page": 21,
+      "object_id": 163,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 599,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-068.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-068.png"
+    },
+    {
+      "asset_id": "asset-070",
+      "page": 21,
+      "object_id": 164,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-069.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-069.png"
+    },
+    {
+      "asset_id": "asset-071",
+      "page": 21,
+      "object_id": 165,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-070.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-070.png"
+    },
+    {
+      "asset_id": "asset-072",
+      "page": 21,
+      "object_id": 166,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 677,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-071.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-071.png"
+    },
+    {
+      "asset_id": "asset-073",
+      "page": 21,
+      "object_id": 167,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 364,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-072.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-072.png"
+    },
+    {
+      "asset_id": "asset-074",
+      "page": 22,
+      "object_id": 171,
+      "generation": 0,
+      "type": "image",
+      "width": 3842,
+      "height": 659,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 559,
+      "y_ppi": 559,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-073.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-073.png"
+    },
+    {
+      "asset_id": "asset-075",
+      "page": 22,
+      "object_id": 172,
+      "generation": 0,
+      "type": "image",
+      "width": 3842,
+      "height": 354,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 559,
+      "y_ppi": 559,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-074.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-074.png"
+    },
+    {
+      "asset_id": "asset-076",
+      "page": 22,
+      "object_id": 173,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 1274,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-075.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-075.png"
+    },
+    {
+      "asset_id": "asset-077",
+      "page": 22,
+      "object_id": 174,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 674,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-076.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-076.png"
+    },
+    {
+      "asset_id": "asset-078",
+      "page": 22,
+      "object_id": 175,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 618,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-077.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-077.png"
+    },
+    {
+      "asset_id": "asset-079",
+      "page": 22,
+      "object_id": 176,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 334,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-078.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-078.png"
+    },
+    {
+      "asset_id": "asset-080",
+      "page": 23,
+      "object_id": 180,
+      "generation": 0,
+      "type": "image",
+      "width": 3950,
+      "height": 1035,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 575,
+      "y_ppi": 575,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-079.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-079.png"
+    },
+    {
+      "asset_id": "asset-081",
+      "page": 23,
+      "object_id": 181,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 547,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-080.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-080.png"
+    },
+    {
+      "asset_id": "asset-082",
+      "page": 23,
+      "object_id": 182,
+      "generation": 0,
+      "type": "image",
+      "width": 3944,
+      "height": 1130,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-081.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-081.png"
+    },
+    {
+      "asset_id": "asset-083",
+      "page": 23,
+      "object_id": 183,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 599,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-082.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-082.png"
+    },
+    {
+      "asset_id": "asset-084",
+      "page": 23,
+      "object_id": 184,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 602,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-083.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-083.png"
+    },
+    {
+      "asset_id": "asset-085",
+      "page": 23,
+      "object_id": 185,
+      "generation": 0,
+      "type": "image",
+      "width": 3948,
+      "height": 326,
+      "color": "rgb",
+      "bits_per_component": 8,
+      "encoding": "image",
+      "x_ppi": 574,
+      "y_ppi": 574,
+      "detected_format": "png",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-084.png",
+      "public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-084.png"
+    }
+  ],
+  "figures": [
+    {
+      "figure_id": "1",
+      "page": 1,
+      "line_index": 26,
+      "caption": "Figure 1: An overview of our Div MB EST +R E R ANK approach.",
+      "caption_bbox": {
+        "left": 308.86,
+        "top": 472.29,
+        "bottom": 482.29,
+        "side": "right"
+      },
+      "section_heading": "1. Introduction",
+      "body_references": [
+        {
+          "page": 1,
+          "snippet": "– in the picture shown in Fig. 1. A semantic segmentation",
+          "count": 1
+        },
+        {
+          "page": 1,
+          "snippet": "– in the picture shown in Fig. 1. A semantic segmentation",
+          "count": 1
+        },
+        {
+          "page": 1,
+          "snippet": "– from inter and intra object occlusion and varying appear- Figure 1: An overview of our DivMB EST +R E R ANK approach.",
+          "count": 1
+        },
+        {
+          "page": 1,
+          "snippet": "– from inter and intra object occlusion and varying appear- Figure 1: An overview of our DivMB EST +R E R ANK approach.",
+          "count": 1
+        },
+        {
+          "page": 2,
+          "snippet": "to this two-stage process as DivMB EST +R E R ANK. Fig. 1 age?’, perhaps more progress can be made by answering a",
+          "count": 1
+        },
+        {
+          "page": 2,
+          "snippet": "to this two-stage process as DivMB EST +R E R ANK. Fig. 1 age?’, perhaps more progress can be made by answering a",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-1-page-1/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-1-page-1/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-000.jpg"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-000.jpg"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-1-page-1/reconstruction.svg",
+      "layout_item_count": 1
+    },
+    {
+      "figure_id": "2",
+      "page": 7,
+      "line_index": 76,
+      "caption": "Figure 2: Statistics on VOC 2012 val with O 2 P model: (a),(b) show the number ranked solution was originally at rank M . We can see that there is a heavy tail in the tail in the re-ranker, suggesting that the re-ranker “plays it safe” and predicts MAP of re-ranker score vs solution accuracy.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 285.35,
+        "bottom": 330.66,
+        "side": "left"
+      },
+      "section_heading": "Number of Images",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "For every pair of labels c1 , c2 we compute the binary co- Re-ranker Behavior Fig. 2 shows the behavior of the re-",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "For every pair of labels c1 , c2 we compute the binary co- Re-ranker Behavior Fig. 2 shows the behavior of the re-",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/rendered/figure-2.png"
+      ],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-001.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-002.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-003.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-004.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-005.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-006.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-007.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-008.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-009.png"
+      ],
+      "extracted_asset_paths": [],
+      "mapping_note": "Multiple figure captions were detected on this page, so extracted assets are listed as page-level candidates only. Added rendered fallback crop from the page region above the caption."
+    },
+    {
+      "figure_id": "3",
+      "page": 7,
+      "line_index": 93,
+      "caption": "Figure 3: Div MB EST +R E R ANK perfor-",
+      "caption_bbox": {
+        "left": 381.82,
+        "top": 381.98,
+        "bottom": 391.98,
+        "side": "right"
+      },
+      "section_heading": "Solution Solution Reïranker Score",
+      "body_references": [
+        {
+          "page": 5,
+          "snippet": "in Fig. 3 (lines with circles), is striking: with only 10 so-",
+          "count": 1
+        },
+        {
+          "page": 5,
+          "snippet": "in Fig. 3 (lines with circles), is striking: with only 10 so-",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "tors from [21] to get detector-based segmentations D1 , D2 , Re-ranker Results. In Fig. 3 we show the",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "tors from [21] to get detector-based segmentations D1 , D2 , Re-ranker Results. In Fig. 3 we show the",
+          "count": 1
+        },
+        {
+          "page": 7,
+          "snippet": "35 ALE−Rand O2P−Rand Figure 3: DivMB EST +R E R ANK perfor-",
+          "count": 1
+        },
+        {
+          "page": 7,
+          "snippet": "35 ALE−Rand O2P−Rand Figure 3: DivMB EST +R E R ANK perfor-",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/rendered/figure-3.png"
+      ],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-3-page-7/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-3-page-7/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-001.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-002.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-003.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-004.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-005.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-006.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-007.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-008.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-009.png"
+      ],
+      "extracted_asset_paths": [],
+      "mapping_note": "Multiple figure captions were detected on this page, so extracted assets are listed as page-level candidates only. Added rendered fallback crop from the page region above the caption.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-3-page-7/reconstruction.svg",
+      "layout_item_count": 9
+    },
+    {
+      "figure_id": "4",
+      "page": 7,
+      "line_index": 119,
+      "caption": "Figure 4: Example MTurk tasks along with user-provided responses which were instructive features.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 593.4,
+        "bottom": 614.82,
+        "side": "left"
+      },
+      "section_heading": "Number of Solutions Number of Solutions",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "refer to segment boundaries is hard in CRF. However, eval- in Fig. 4, with actual feedback received from AMT work-",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "refer to segment boundaries is hard in CRF. However, eval- in Fig. 4, with actual feedback received from AMT work-",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/rendered/figure-4.png"
+      ],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-4-page-7/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-4-page-7/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-001.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-002.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-003.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-004.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-005.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-006.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-007.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-008.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-009.png"
+      ],
+      "extracted_asset_paths": [],
+      "mapping_note": "Multiple figure captions were detected on this page, so extracted assets are listed as page-level candidates only. Added rendered fallback crop from the page region above the caption.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-4-page-7/reconstruction.svg",
+      "layout_item_count": 9
+    },
+    {
+      "figure_id": "5",
+      "page": 8,
+      "line_index": 33,
+      "caption": "Figure 5: Cases where Div MB EST +R E R ANK outperforms O 2 P - [6] J. Carreira and C. MAP. In each group of images, the first column shows the original for automatic object [7] Y.-L. Chow and R. image followed by the ground-truth, MAP, and top re-ranked so- cedure for finding lution returned by Div MB EST +R E R ANK . PASCAL intersection- Workshop on Speech over-union accuracy is shown below the segmentations. [8] M. Collins. Discriminative In ICML, pages 175–182, [9] M. Collins. Discriminative Binary Task Accuracies Pascal VOC Avg. Acc. recognition. In In B-vs-W M-vs-W B-vs-M Best MAP Worst HR Computational Linguistics [10] M. Dinarelli, A. ALE 71.9 64.4 61.7 38.0 19.1 3.2 20.5 ing for spoken language O 2 P 73.9 73.1 56.3 62.8 43.6 24.5 49.0 Lang. Proc., 20(2):526–539, [11] I. Endres and D. ECCV, 2010. 2",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 170.74,
+        "bottom": 309.47,
+        "side": "left"
+      },
+      "section_heading": "O2 P 73.9 73.1 56.3 62.8 43.6 24.5 49.0",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "centroids of masks for each category pair (420 dimensions). art performance on this challenging dataset. In Fig. 5 we",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "centroids of masks for each category pair (420 dimensions). art performance on this challenging dataset. In Fig. 5 we",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-5-page-8/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-5-page-8/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-010.jpg",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-011.jpg",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-012.jpg",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-013.jpg"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-010.jpg",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-011.jpg",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-012.jpg",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-013.jpg"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-5-page-8/reconstruction.svg",
+      "layout_item_count": 4
+    },
+    {
+      "figure_id": "1",
+      "page": 9,
+      "line_index": 71,
+      "caption": "Figure 1: (a) Average minimum-covering (2) of MAP in the first M solutions vs. M . (b) Accuracy in the MAP, or (c) restricted to masks present in MAP. See text for details.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 581.68,
+        "bottom": 603.09,
+        "side": "left"
+      },
+      "section_heading": "D1 (yi )= P (1)",
+      "body_references": [
+        {
+          "page": 1,
+          "snippet": "– in the picture shown in Fig. 1. A semantic segmentation",
+          "count": 1
+        },
+        {
+          "page": 1,
+          "snippet": "– in the picture shown in Fig. 1. A semantic segmentation",
+          "count": 1
+        },
+        {
+          "page": 1,
+          "snippet": "– from inter and intra object occlusion and varying appear- Figure 1: An overview of our DivMB EST +R E R ANK approach.",
+          "count": 1
+        },
+        {
+          "page": 1,
+          "snippet": "– from inter and intra object occlusion and varying appear- Figure 1: An overview of our DivMB EST +R E R ANK approach.",
+          "count": 1
+        },
+        {
+          "page": 2,
+          "snippet": "to this two-stage process as DivMB EST +R E R ANK. Fig. 1 age?’, perhaps more progress can be made by answering a",
+          "count": 1
+        },
+        {
+          "page": 2,
+          "snippet": "to this two-stage process as DivMB EST +R E R ANK. Fig. 1 age?’, perhaps more progress can be made by answering a",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/rendered/figure-1.png"
+      ],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page. Added rendered fallback crop from the page region above the caption."
+    },
+    {
+      "figure_id": "2",
+      "page": 11,
+      "line_index": 28,
+      "caption": "Figure 2: Color map for reading VOC segmentation",
+      "caption_bbox": {
+        "left": 178.74,
+        "top": 307.96,
+        "bottom": 317.96,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "For every pair of labels c1 , c2 we compute the binary co- Re-ranker Behavior Fig. 2 shows the behavior of the re-",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "For every pair of labels c1 , c2 we compute the binary co- Re-ranker Behavior Fig. 2 shows the behavior of the re-",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-2-page-11/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-2-page-11/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-014.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-014.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-2-page-11/reconstruction.svg",
+      "layout_item_count": 1
+    },
+    {
+      "figure_id": "3",
+      "page": 12,
+      "line_index": 2,
+      "caption": "Figure 3: Success Case #1: MAP is not the most accurate; Re-ranker picks a solution row shows the original image and ground-truth segmentation. The second row shows from the CRF in stage 1. The third row shows the solutions re-ranked by our proposed",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 621.42,
+        "bottom": 654.85,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [
+        {
+          "page": 5,
+          "snippet": "in Fig. 3 (lines with circles), is striking: with only 10 so-",
+          "count": 1
+        },
+        {
+          "page": 5,
+          "snippet": "in Fig. 3 (lines with circles), is striking: with only 10 so-",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "tors from [21] to get detector-based segmentations D1 , D2 , Re-ranker Results. In Fig. 3 we show the",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "tors from [21] to get detector-based segmentations D1 , D2 , Re-ranker Results. In Fig. 3 we show the",
+          "count": 1
+        },
+        {
+          "page": 7,
+          "snippet": "35 ALE−Rand O2P−Rand Figure 3: DivMB EST +R E R ANK perfor-",
+          "count": 1
+        },
+        {
+          "page": 7,
+          "snippet": "35 ALE−Rand O2P−Rand Figure 3: DivMB EST +R E R ANK perfor-",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-3-page-12/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-3-page-12/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-015.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-016.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-017.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-018.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-015.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-016.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-017.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-018.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-3-page-12/reconstruction.svg",
+      "layout_item_count": 4
+    },
+    {
+      "figure_id": "4",
+      "page": 13,
+      "line_index": 2,
+      "caption": "Figure 4: Success Case #1: MAP is not the most accurate; Re-ranker picks a solution row shows the original image and ground-truth segmentation. The second row shows from the CRF in stage 1. The third row shows the solutions re-ranked by our proposed",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 662.07,
+        "bottom": 695.5,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "refer to segment boundaries is hard in CRF. However, eval- in Fig. 4, with actual feedback received from AMT work-",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "refer to segment boundaries is hard in CRF. However, eval- in Fig. 4, with actual feedback received from AMT work-",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-4-page-13/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-4-page-13/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-019.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-020.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-021.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-022.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-023.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-024.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-025.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-026.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-019.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-020.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-021.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-022.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-023.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-024.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-025.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-026.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-4-page-13/reconstruction.svg",
+      "layout_item_count": 8
+    },
+    {
+      "figure_id": "5",
+      "page": 14,
+      "line_index": 2,
+      "caption": "Figure 5: Success Case #1: MAP is not the most accurate; Re-ranker picks a solution row shows the original image and ground-truth segmentation. The second row shows from the CRF in stage 1. The third row shows the solutions re-ranked by our proposed",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 646.71,
+        "bottom": 680.14,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "centroids of masks for each category pair (420 dimensions). art performance on this challenging dataset. In Fig. 5 we",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "centroids of masks for each category pair (420 dimensions). art performance on this challenging dataset. In Fig. 5 we",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-5-page-14/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-5-page-14/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-027.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-028.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-029.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-030.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-031.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-032.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-027.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-028.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-029.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-030.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-031.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-032.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-5-page-14/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "6",
+      "page": 15,
+      "line_index": 2,
+      "caption": "Figure 6: Success Case #1: MAP is not the most accurate; Re-ranker picks a solution row shows the original image and ground-truth segmentation. The second row shows from the CRF in stage 1. The third row shows the solutions re-ranked by our proposed",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 671.93,
+        "bottom": 705.37,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-6-page-15/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-6-page-15/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-033.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-034.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-035.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-036.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-037.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-038.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-033.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-034.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-035.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-036.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-037.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-038.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-6-page-15/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "7",
+      "page": 16,
+      "line_index": 2,
+      "caption": "Figure 7: Success Case #1: MAP is not the most accurate; Re-ranker picks a solution row shows the original image and ground-truth segmentation. The second row shows from the CRF in stage 1. The third row shows the solutions re-ranked by our proposed",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 668.75,
+        "bottom": 702.18,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-7-page-16/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-7-page-16/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-039.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-040.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-041.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-042.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-043.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-044.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-039.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-040.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-041.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-042.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-043.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-044.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-7-page-16/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "8",
+      "page": 17,
+      "line_index": 2,
+      "caption": "Figure 8: Success Case #1: MAP is not the most accurate; Re-ranker picks a solution row shows the original image and ground-truth segmentation. The second row shows from the CRF in stage 1. The third row shows the solutions re-ranked by our proposed",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 395.67,
+        "bottom": 429.11,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-8-page-17/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-8-page-17/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-045.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-046.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-047.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-048.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-045.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-046.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-047.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-048.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-8-page-17/reconstruction.svg",
+      "layout_item_count": 4
+    },
+    {
+      "figure_id": "9",
+      "page": 18,
+      "line_index": 2,
+      "caption": "Figure 9: Success Case #2: MAP is the most accurate; Re-ranker picks MAP. In each image and ground-truth segmentation. The second row shows the 10 Div MB EST solutions 1. The third row shows the solutions re-ranked by our proposed re-ranker.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 684.35,
+        "bottom": 717.78,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-9-page-18/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-9-page-18/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-049.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-050.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-051.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-052.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-053.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-054.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-049.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-050.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-051.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-052.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-053.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-054.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-9-page-18/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "10",
+      "page": 19,
+      "line_index": 2,
+      "caption": "Figure 10: Success Case #2: MAP is the most accurate; Re-ranker picks MAP. In each image and ground-truth segmentation. The second row shows the 10 Div MB EST solutions 1. The third row shows the solutions re-ranked by our proposed re-ranker.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 678.05,
+        "bottom": 711.48,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-10-page-19/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-10-page-19/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-055.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-056.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-057.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-058.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-059.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-060.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-055.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-056.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-057.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-058.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-059.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-060.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-10-page-19/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "11",
+      "page": 20,
+      "line_index": 2,
+      "caption": "Figure 11: Success Case #2: MAP is the most accurate; Re-ranker picks MAP. In each image and ground-truth segmentation. The second row shows the 10 Div MB EST solutions 1. The third row shows the solutions re-ranked by our proposed re-ranker.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 535.98,
+        "bottom": 569.41,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-11-page-20/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-11-page-20/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-061.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-062.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-063.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-064.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-065.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-066.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-061.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-062.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-063.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-064.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-065.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-066.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-11-page-20/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "12",
+      "page": 21,
+      "line_index": 2,
+      "caption": "Figure 12: Failure Case: Re-ranker picks a solution worse than MAP. In each group, and ground-truth segmentation. The second row shows the 10 Div MB EST solutions third row shows the solutions re-ranked by our proposed re-ranker.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 646.21,
+        "bottom": 679.64,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-12-page-21/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-12-page-21/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-067.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-068.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-069.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-070.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-071.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-072.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-067.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-068.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-069.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-070.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-071.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-072.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-12-page-21/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "13",
+      "page": 22,
+      "line_index": 2,
+      "caption": "Figure 13: Failure Case: Re-ranker picks a solution worse than MAP. In each group, and ground-truth segmentation. The second row shows the 10 Div MB EST solutions third row shows the solutions re-ranked by our proposed re-ranker.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 662.35,
+        "bottom": 695.79,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-13-page-22/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-13-page-22/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-073.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-074.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-075.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-076.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-077.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-078.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-073.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-074.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-075.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-076.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-077.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-078.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-13-page-22/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "14",
+      "page": 23,
+      "line_index": 2,
+      "caption": "Figure 14: Failure Case: Re-ranker picks a solution worse than MAP. In each group, and ground-truth segmentation. The second row shows the 10 Div MB EST solutions third row shows the solutions re-ranked by our proposed re-ranker.",
+      "caption_bbox": {
+        "left": 50.11,
+        "top": 683.87,
+        "bottom": 717.3,
+        "side": "left"
+      },
+      "section_heading": "2. Example Re-ranking Results",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-14-page-23/layout.json",
+      "composite_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-14-page-23/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-079.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-080.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-081.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-082.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-083.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-084.png"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-079.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-080.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-081.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-082.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-083.png",
+        "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-084.png"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/layout/figure-14-page-23/reconstruction.svg",
+      "layout_item_count": 6
+    }
+  ],
+  "headings": [
+    {
+      "page": 1,
+      "heading": "Discriminative Re-ranking of Diverse Segmentations",
+      "line_index": 0
+    },
+    {
+      "page": 1,
+      "heading": "Payman Yadollahpour Dhruv Batra Gregory Shakhnarovich",
+      "line_index": 2
+    },
+    {
+      "page": 1,
+      "heading": "Abstract",
+      "line_index": 6
+    },
+    {
+      "page": 1,
+      "heading": "1. Introduction",
+      "line_index": 23
+    },
+    {
+      "page": 3,
+      "heading": "X −1 \u0010 \u0011",
+      "line_index": 58
+    },
+    {
+      "page": 3,
+      "heading": "Stage 1: Producing Diverse Segmentations",
+      "line_index": 62
+    },
+    {
+      "page": 4,
+      "heading": "X\u0012 M",
+      "line_index": 1
+    },
+    {
+      "page": 4,
+      "heading": "Perturbed Unary Score",
+      "line_index": 7
+    },
+    {
+      "page": 4,
+      "heading": "4. Analyzing Diverse Segmentations",
+      "line_index": 62
+    },
+    {
+      "page": 6,
+      "heading": "5.2. Human Experiments",
+      "line_index": 38
+    },
+    {
+      "page": 7,
+      "heading": "Average",
+      "line_index": 0
+    },
+    {
+      "page": 7,
+      "heading": "Bicycle",
+      "line_index": 11
+    },
+    {
+      "page": 7,
+      "heading": "Person Bottle",
+      "line_index": 18
+    },
+    {
+      "page": 7,
+      "heading": "Sheep Horse Plane",
+      "line_index": 24
+    },
+    {
+      "page": 7,
+      "heading": "Chair",
+      "line_index": 31
+    },
+    {
+      "page": 7,
+      "heading": "Train Plant Boat",
+      "line_index": 36
+    },
+    {
+      "page": 7,
+      "heading": "Sofa Bird",
+      "line_index": 48
+    },
+    {
+      "page": 7,
+      "heading": "700 700 100 600 600 Number of Images",
+      "line_index": 65
+    },
+    {
+      "page": 7,
+      "heading": "Number of Images",
+      "line_index": 72
+    },
+    {
+      "page": 7,
+      "heading": "Accuracy (%) 500 500 400 400 60 300 300 40 200 200",
+      "line_index": 78
+    },
+    {
+      "page": 7,
+      "heading": "100 100 0 0 0",
+      "line_index": 84
+    },
+    {
+      "page": 7,
+      "heading": "Solution Solution Reïranker Score",
+      "line_index": 87
+    },
+    {
+      "page": 7,
+      "heading": "Average PASCAL Accuracy",
+      "line_index": 94
+    },
+    {
+      "page": 7,
+      "heading": "ALE−MAP 60 O2P−MAP",
+      "line_index": 104
+    },
+    {
+      "page": 7,
+      "heading": "25 45",
+      "line_index": 112
+    },
+    {
+      "page": 7,
+      "heading": "Number of Solutions Number of Solutions",
+      "line_index": 114
+    },
+    {
+      "page": 8,
+      "heading": "Original Image Ground Truth MAP Re−ranked Original Image Ground Truth MAP Re−ranked",
+      "line_index": 0
+    },
+    {
+      "page": 8,
+      "heading": "Original Image Ground Truth MAP Re−ranked",
+      "line_index": 5
+    },
+    {
+      "page": 8,
+      "heading": "33.90% 95.05% 56.23% 71.99% 2012. 2, 5",
+      "line_index": 10
+    },
+    {
+      "page": 8,
+      "heading": "ALE 71.9 64.4 61.7 38.0 19.1 3.2 20.5",
+      "line_index": 25
+    },
+    {
+      "page": 8,
+      "heading": "O2 P 73.9 73.1 56.3 62.8 43.6 24.5 49.0",
+      "line_index": 27
+    },
+    {
+      "page": 9,
+      "heading": "Discriminative Re-ranking of Diverse Segmentations",
+      "line_index": 1
+    },
+    {
+      "page": 9,
+      "heading": "Payman Yadollahpour Dhruv Batra Gregory Shakhnarovich",
+      "line_index": 3
+    },
+    {
+      "page": 9,
+      "heading": "Abstract",
+      "line_index": 7
+    },
+    {
+      "page": 9,
+      "heading": "1. Analyzing Diverse Segmentations",
+      "line_index": 13
+    },
+    {
+      "page": 9,
+      "heading": "1.1. Diversity and Oracles",
+      "line_index": 17
+    },
+    {
+      "page": 9,
+      "heading": "Average PASCAL Accuracy",
+      "line_index": 24
+    },
+    {
+      "page": 9,
+      "heading": "60 60",
+      "line_index": 40
+    },
+    {
+      "page": 9,
+      "heading": "50 50",
+      "line_index": 43
+    },
+    {
+      "page": 9,
+      "heading": "40 40",
+      "line_index": 45
+    },
+    {
+      "page": 9,
+      "heading": "0.2 O2p-oracle O2p-oracle",
+      "line_index": 48
+    },
+    {
+      "page": 9,
+      "heading": "Number of Solutions Number of Solutions Number of Solutions",
+      "line_index": 53
+    },
+    {
+      "page": 9,
+      "heading": "D1 (yi )= P (1)",
+      "line_index": 67
+    },
+    {
+      "page": 10,
+      "heading": "D1 Oracle Covering D2 Oracle Covering ALE 0.55 0.45 O2 P 0.61 0.58",
+      "line_index": 0
+    },
+    {
+      "page": 10,
+      "heading": "(1) (1)",
+      "line_index": 31
+    },
+    {
+      "page": 10,
+      "heading": "∗ (1)",
+      "line_index": 40
+    },
+    {
+      "page": 11,
+      "heading": "2. Example Re-ranking Results",
+      "line_index": 0
+    }
+  ],
+  "warnings": [],
+  "pdf_metadata": {
+    "title": null,
+    "pages": 24,
+    "page_size": "612 x 792 pts (letter)",
+    "file_size": "16914466 bytes",
+    "pdf_version": "1.6"
+  }
+}

@@ -1,0 +1,372 @@
+{
+  "slug": "neurally-constrained-subspace-learning-of-reach-and-grasp",
+  "title": "Neurally Constrained Subspace Learning of Reach and Grasp",
+  "authors": [],
+  "year": null,
+  "doi": null,
+  "acquisition_source": "manual",
+  "processing_status": "processed",
+  "pdf_file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/paper.pdf",
+  "pdf_public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/paper.pdf",
+  "supplements": [],
+  "extracted_assets": [
+    {
+      "asset_id": "asset-001",
+      "page": 3,
+      "object_id": 31,
+      "generation": 0,
+      "type": "image",
+      "width": 2802,
+      "height": 1600,
+      "color": "cmyk",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1233,
+      "y_ppi": 1234,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-000.jpg",
+      "public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-000.jpg",
+      "source_width": 2802,
+      "source_height": 1600
+    },
+    {
+      "asset_id": "asset-002",
+      "page": 3,
+      "object_id": 30,
+      "generation": 0,
+      "type": "image",
+      "width": 2802,
+      "height": 1600,
+      "color": "cmyk",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1233,
+      "y_ppi": 1234,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-001.jpg",
+      "public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-001.jpg",
+      "source_width": 2802,
+      "source_height": 1600
+    },
+    {
+      "asset_id": "asset-003",
+      "page": 3,
+      "object_id": 29,
+      "generation": 0,
+      "type": "image",
+      "width": 2802,
+      "height": 1600,
+      "color": "cmyk",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1233,
+      "y_ppi": 1234,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-002.jpg",
+      "public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-002.jpg",
+      "source_width": 2802,
+      "source_height": 1600
+    },
+    {
+      "asset_id": "asset-004",
+      "page": 3,
+      "object_id": 37,
+      "generation": 0,
+      "type": "image",
+      "width": 2802,
+      "height": 1600,
+      "color": "cmyk",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1233,
+      "y_ppi": 1234,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-003.jpg",
+      "public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-003.jpg",
+      "source_width": 2802,
+      "source_height": 1600
+    },
+    {
+      "asset_id": "asset-005",
+      "page": 3,
+      "object_id": 36,
+      "generation": 0,
+      "type": "image",
+      "width": 2802,
+      "height": 1600,
+      "color": "cmyk",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1233,
+      "y_ppi": 1234,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-004.jpg",
+      "public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-004.jpg",
+      "source_width": 2802,
+      "source_height": 1600
+    },
+    {
+      "asset_id": "asset-006",
+      "page": 3,
+      "object_id": 35,
+      "generation": 0,
+      "type": "image",
+      "width": 2802,
+      "height": 1600,
+      "color": "cmyk",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 1233,
+      "y_ppi": 1234,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-005.jpg",
+      "public_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-005.jpg",
+      "source_width": 2802,
+      "source_height": 1600
+    }
+  ],
+  "figures": [
+    {
+      "figure_id": "1",
+      "page": 3,
+      "line_index": 2,
+      "caption": "Fig. 1. (a) The first three principal components of posture for a single recorded session. The middle show the posture at the two extremes of the data projected onto the principal component direction. subspace.",
+      "caption_bbox": {
+        "left": 48.96,
+        "top": 261.85,
+        "bottom": 289.78,
+        "side": "left"
+      },
+      "section_heading": "I. I NTRODUCTION II. P REVIOUS W ORK",
+      "body_references": [],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/layout/figure-1-page-3/layout.json",
+      "composite_svg_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/layout/figure-1-page-3/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-000.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-001.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-002.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-003.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-004.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-005.jpg"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-000.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-001.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-002.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-003.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-004.jpg",
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/original/asset-005.jpg"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/layout/figure-1-page-3/reconstruction.svg",
+      "layout_item_count": 6
+    },
+    {
+      "figure_id": "2",
+      "page": 4,
+      "line_index": 61,
+      "caption": "Fig. 2. Percent variance covered in the kinematic data as a function of joint relative to the the number of principal components (basis vectors). Basis vectors ordered in Given the full decreasing order of eignenvalues. Solid blue line indicates mean values and the shaded region covers the range of values over the four recorded sessions. and arm posture The red dots indicate percent cumulative variance accounted for by the learned a linear subspace subspace U for the four sessions. that captures the the full kinematic rates are linearly correlations between the angular degrees-of-freedom in the subspace. The d-dimensional hand and arm introduce unnecessary redundancy in the repre- represented as a sentation of hand and arm posture and the redundant degrees- the number of observations, of-freedom can be removed without loss of information. Of observe the kinematics course in reducing the kinematic posture representation from kinematic space 32-Do F to 6-Do F we are balancing between capturing the subspace U spanned effective degrees of freedom in the kinematics and providing U = [u 1 , . . . , u p a much sparser representation for hand and arm posture. The that p < rank(X) first three of these six principal components for the training c t = [c tj=1 , . . . , c data in one of the four recorded kinematic sessions is shown the subspace defined in Fig. 1a. where C = [c 1 , . From Fig. 1a we see that the first basis vector accounts for Given the subspace most of the variance found in the joints of the hand, whereas linear decoding basis vectors two and three account for the variance found rates Z to the in the forearm rotation and elbow angle respectively. Though firing rates of a applying a dimensionality reduction method, such as PCA, time instances we to the data set of recorded motor activity gives some insight Z = [z(1) T 0 , . . . , into the underlying motor primitives that might be controlled row vector z(i) j",
+      "caption_bbox": {
+        "left": 48.96,
+        "top": 245.6,
+        "bottom": 544.7,
+        "side": "left"
+      },
+      "section_heading": "% Variance",
+      "body_references": [
+        {
+          "page": 3,
+          "snippet": "(basis vectors) is shown in Fig. 2.",
+          "count": 1
+        },
+        {
+          "page": 3,
+          "snippet": "From Fig. 2 constructing a basis consisting of the first six",
+          "count": 1
+        },
+        {
+          "page": 6,
+          "snippet": "is shown as red dots in Fig. 2. From this we can see that the are maximally non-Gaussian, and therefore independent, due",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/rendered/figure-2.png"
+      ],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page. Added rendered fallback crop from the page region above the caption."
+    },
+    {
+      "figure_id": "3",
+      "page": 5,
+      "line_index": 40,
+      "caption": "Fig. 3. RMSE of the Euclidean distance between measured and estimated",
+      "caption_bbox": {
+        "left": 311.97,
+        "top": 196.53,
+        "bottom": 206.53,
+        "side": "right"
+      },
+      "section_heading": "Index1",
+      "body_references": [
+        {
+          "page": 6,
+          "snippet": "in 3D Euclidean space shown in Fig. 3.",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/neurally-constrained-subspace-learning-of-reach-and-grasp/figures/rendered/figure-3.png"
+      ],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page. Added rendered fallback crop from the page region above the caption."
+    }
+  ],
+  "headings": [
+    {
+      "page": 1,
+      "heading": "Neurally Constrained Subspace Learning of Reach and Grasp",
+      "line_index": 0
+    },
+    {
+      "page": 1,
+      "heading": "I. I NTRODUCTION II. P REVIOUS W ORK",
+      "line_index": 39
+    },
+    {
+      "page": 3,
+      "heading": "T T T",
+      "line_index": 11
+    },
+    {
+      "page": 4,
+      "heading": "1.0 ● ● ● ● ● ● ● ● ● ● ● ●",
+      "line_index": 1
+    },
+    {
+      "page": 4,
+      "heading": "● ● ●",
+      "line_index": 5
+    },
+    {
+      "page": 4,
+      "heading": "% Variance",
+      "line_index": 31
+    },
+    {
+      "page": 4,
+      "heading": "V. N EURALLY C OUPLED S UBSPACE L EARNING Z† ,",
+      "line_index": 94
+    },
+    {
+      "page": 4,
+      "heading": "F = UT XZ† (8)",
+      "line_index": 96
+    },
+    {
+      "page": 5,
+      "heading": "Palm",
+      "line_index": 37
+    },
+    {
+      "page": 5,
+      "heading": "Index1",
+      "line_index": 39
+    },
+    {
+      "page": 5,
+      "heading": "Index2",
+      "line_index": 41
+    },
+    {
+      "page": 5,
+      "heading": "Index3 Elbow",
+      "line_index": 43
+    },
+    {
+      "page": 5,
+      "heading": "Middle1",
+      "line_index": 49
+    },
+    {
+      "page": 5,
+      "heading": "Middle2",
+      "line_index": 51
+    },
+    {
+      "page": 5,
+      "heading": "Middle3",
+      "line_index": 53
+    },
+    {
+      "page": 5,
+      "heading": "Ring1",
+      "line_index": 55
+    },
+    {
+      "page": 5,
+      "heading": "Ring2",
+      "line_index": 57
+    },
+    {
+      "page": 5,
+      "heading": "Ring3",
+      "line_index": 59
+    },
+    {
+      "page": 5,
+      "heading": "Pinkie1",
+      "line_index": 61
+    },
+    {
+      "page": 5,
+      "heading": "Pinkie2",
+      "line_index": 63
+    },
+    {
+      "page": 5,
+      "heading": "Pinkie3",
+      "line_index": 65
+    },
+    {
+      "page": 5,
+      "heading": "Thumb2",
+      "line_index": 69
+    },
+    {
+      "page": 5,
+      "heading": "Thumb3 Wrist",
+      "line_index": 71
+    },
+    {
+      "page": 6,
+      "heading": "R EFERENCES",
+      "line_index": 16
+    },
+    {
+      "page": 6,
+      "heading": "(2)−(1)",
+      "line_index": 25
+    },
+    {
+      "page": 6,
+      "heading": "(CCA) and Dynamic Coupled Component Analysis [10]. The",
+      "line_index": 60
+    }
+  ],
+  "warnings": [],
+  "pdf_metadata": {
+    "title": null,
+    "pages": 6,
+    "page_size": "612 x 792 pts (letter)",
+    "file_size": "1684346 bytes",
+    "pdf_version": "1.4"
+  }
+}

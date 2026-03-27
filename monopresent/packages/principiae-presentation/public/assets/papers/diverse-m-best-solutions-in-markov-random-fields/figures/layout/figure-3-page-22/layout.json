@@ -1,0 +1,31 @@
+{
+  "figure_id": "3",
+  "page": 22,
+  "canvas": {
+    "width": 382,
+    "height": 63
+  },
+  "source_region": {
+    "left": 128,
+    "top": 348,
+    "right": 510,
+    "bottom": 411
+  },
+  "items": [
+    {
+      "asset_id": "asset-040",
+      "asset_public_path": "/assets/papers/diverse-m-best-solutions-in-markov-random-fields/figures/original/asset-039.png",
+      "placement_id": "placement-001",
+      "placement_source_name": "page-22-22_1.png",
+      "composite_href": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAACXBIWXMAAAsSAAALEgHS3X78AAAALklEQVQI1zXJMRHAMAwAMYWZoT00QwmUDr1olZBCiaqGZXI2VW8Z/7ZMB/eu5wMknRLDOqisdQAAAABJRU5ErkJggg==",
+      "source_width": 5,
+      "source_height": 5,
+      "x": 0,
+      "y": 0,
+      "width": 382,
+      "height": 63,
+      "page_x": 128,
+      "page_y": 348
+    }
+  ]
+}

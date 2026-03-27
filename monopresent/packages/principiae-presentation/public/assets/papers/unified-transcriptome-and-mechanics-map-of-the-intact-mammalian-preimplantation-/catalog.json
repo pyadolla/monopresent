@@ -1,0 +1,652 @@
+{
+  "slug": "unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-",
+  "title": "Unified Transcriptome and Mechanics Map of the Intact Mammalian Preimplantation Embryo In Situ",
+  "authors": [
+    "Ehsan Habibi",
+    "Anubhav Sinha",
+    "Haiqian Yang",
+    "Payman Yadollahpour",
+    "Yiwei Li",
+    "Lani Lee",
+    "David Wollensak",
+    "Zachary Chiang",
+    "Denny Sakkas",
+    "Edward S Boyden",
+    "Ming Guo",
+    "Aviv Regev",
+    "F. Chen"
+  ],
+  "year": 2026,
+  "doi": "10.64898/2026.02.23.706394",
+  "acquisition_source": "publisher",
+  "processing_status": "processed",
+  "pdf_file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/paper.pdf",
+  "pdf_public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/paper.pdf",
+  "supplements": [],
+  "extracted_assets": [
+    {
+      "asset_id": "asset-001",
+      "page": 28,
+      "object_id": 3580,
+      "generation": 0,
+      "type": "image",
+      "width": 2256,
+      "height": 2279,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 347,
+      "y_ppi": 347,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-000.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-000.jpg",
+      "source_width": 2256,
+      "source_height": 2279
+    },
+    {
+      "asset_id": "asset-002",
+      "page": 29,
+      "object_id": 3585,
+      "generation": 0,
+      "type": "image",
+      "width": 1935,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 298,
+      "y_ppi": 298,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-001.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-001.jpg",
+      "source_width": 1935,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-003",
+      "page": 31,
+      "object_id": 3590,
+      "generation": 0,
+      "type": "image",
+      "width": 1431,
+      "height": 1675,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 220,
+      "y_ppi": 220,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-002.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-002.jpg",
+      "source_width": 1431,
+      "source_height": 1675
+    },
+    {
+      "asset_id": "asset-004",
+      "page": 33,
+      "object_id": 3604,
+      "generation": 0,
+      "type": "image",
+      "width": 1719,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 264,
+      "y_ppi": 264,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-003.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-003.jpg",
+      "source_width": 1719,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-005",
+      "page": 35,
+      "object_id": 3609,
+      "generation": 0,
+      "type": "image",
+      "width": 1429,
+      "height": 1569,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 220,
+      "y_ppi": 220,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-004.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-004.jpg",
+      "source_width": 1429,
+      "source_height": 1569
+    },
+    {
+      "asset_id": "asset-006",
+      "page": 37,
+      "object_id": 3614,
+      "generation": 0,
+      "type": "image",
+      "width": 1959,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 301,
+      "y_ppi": 301,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-005.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-005.jpg",
+      "source_width": 1959,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-007",
+      "page": 40,
+      "object_id": 3634,
+      "generation": 0,
+      "type": "image",
+      "width": 2290,
+      "height": 2402,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 352,
+      "y_ppi": 352,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-006.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-006.jpg",
+      "source_width": 2290,
+      "source_height": 2402
+    },
+    {
+      "asset_id": "asset-008",
+      "page": 41,
+      "object_id": 3646,
+      "generation": 0,
+      "type": "image",
+      "width": 2267,
+      "height": 2197,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 349,
+      "y_ppi": 349,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-007.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-007.jpg",
+      "source_width": 2267,
+      "source_height": 2197
+    },
+    {
+      "asset_id": "asset-009",
+      "page": 42,
+      "object_id": 3649,
+      "generation": 0,
+      "type": "image",
+      "width": 1679,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 258,
+      "y_ppi": 258,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-008.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-008.jpg",
+      "source_width": 1679,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-010",
+      "page": 44,
+      "object_id": 3655,
+      "generation": 0,
+      "type": "image",
+      "width": 2086,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 347,
+      "y_ppi": 347,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-009.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-009.jpg",
+      "source_width": 2086,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-011",
+      "page": 45,
+      "object_id": 3670,
+      "generation": 0,
+      "type": "image",
+      "width": 2177,
+      "height": 1005,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 335,
+      "y_ppi": 335,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-010.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-010.jpg",
+      "source_width": 2177,
+      "source_height": 1005
+    },
+    {
+      "asset_id": "asset-012",
+      "page": 46,
+      "object_id": 3674,
+      "generation": 0,
+      "type": "image",
+      "width": 1883,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 334,
+      "y_ppi": 333,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-011.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-011.jpg",
+      "source_width": 1883,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-013",
+      "page": 47,
+      "object_id": 3689,
+      "generation": 0,
+      "type": "image",
+      "width": 1971,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 303,
+      "y_ppi": 303,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-012.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-012.jpg",
+      "source_width": 1971,
+      "source_height": 2500
+    },
+    {
+      "asset_id": "asset-014",
+      "page": 49,
+      "object_id": 3702,
+      "generation": 0,
+      "type": "image",
+      "width": 1431,
+      "height": 1852,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 220,
+      "y_ppi": 220,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-013.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-013.jpg",
+      "source_width": 1431,
+      "source_height": 1852
+    },
+    {
+      "asset_id": "asset-015",
+      "page": 50,
+      "object_id": 3706,
+      "generation": 0,
+      "type": "image",
+      "width": 1283,
+      "height": 1716,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 220,
+      "y_ppi": 220,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-014.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-014.jpg",
+      "source_width": 1283,
+      "source_height": 1716
+    },
+    {
+      "asset_id": "asset-016",
+      "page": 51,
+      "object_id": 3721,
+      "generation": 0,
+      "type": "image",
+      "width": 1428,
+      "height": 1405,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 220,
+      "y_ppi": 220,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-015.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-015.jpg",
+      "source_width": 1428,
+      "source_height": 1405
+    },
+    {
+      "asset_id": "asset-017",
+      "page": 53,
+      "object_id": 3726,
+      "generation": 0,
+      "type": "image",
+      "width": 2135,
+      "height": 1502,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 328,
+      "y_ppi": 328,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-016.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-016.jpg",
+      "source_width": 2135,
+      "source_height": 1502
+    },
+    {
+      "asset_id": "asset-018",
+      "page": 54,
+      "object_id": 3729,
+      "generation": 0,
+      "type": "image",
+      "width": 1729,
+      "height": 2500,
+      "color": "icc",
+      "bits_per_component": 8,
+      "encoding": "jpeg",
+      "x_ppi": 266,
+      "y_ppi": 266,
+      "detected_format": "jpg",
+      "file_path": "/home/pyadolla/sandbox/monopresent/packages/principiae-presentation/public/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-017.jpg",
+      "public_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-017.jpg",
+      "source_width": 1729,
+      "source_height": 2500
+    }
+  ],
+  "figures": [
+    {
+      "figure_id": "1",
+      "page": 28,
+      "line_index": 7,
+      "caption": "Figure 1. Unified Transcriptome and Mechanics Map (UTMM) 972 Overview of approach and data collection. 973 974 975 976 977 978 979",
+      "caption_bbox": {
+        "left": 72,
+        "top": 563.46,
+        "bottom": 700.42,
+        "side": "left"
+      },
+      "section_heading": "969 FIGURES",
+      "body_references": [
+        {
+          "page": 4,
+          "snippet": "130 multidimensional map for each embryo (Figure. 1, Supplementary Figure. 1). We",
+          "count": 2
+        },
+        {
+          "page": 5,
+          "snippet": "138 (Supplementary Figure. 1, Methods), as well as for optimized multiplex antibody",
+          "count": 1
+        },
+        {
+          "page": 28,
+          "snippet": "971 Figure 1. Unified Transcriptome and Mechanics Map (UTMM) modules.",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/layout/figure-1-page-28/layout.json",
+      "composite_svg_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/layout/figure-1-page-28/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-000.jpg"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-000.jpg"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/layout/figure-1-page-28/reconstruction.svg",
+      "layout_item_count": 1
+    },
+    {
+      "figure_id": "2",
+      "page": 30,
+      "line_index": 4,
+      "caption": "Figure 2. Spatiotemporal transcriptomics mapping in mouse 983 whole mount targeted in situ sequencing. 984 (a) 3D fluorescence microscopy images of 69 embryos captured 985 preimplantation developmental stages. Colors depict antibody 986 and β-catenin (acquired together in the same color channel, 987 colormap). 988 (b) Whole mount in situ workflow. (i) Embryos are fixed, embedded 989 subsequently immunostained (inset of A). (ii) Targeted in situ 990 splinted padlock probes with gene specific barcodes (Methods). 991 situ sequencing rounds from an 8-cell stage embryo's z-section. 992 embryos from antibody staining. (iv) generation of spatial gene 993 each cell within an embryo. 994 (c) Transcripts sequenced within a 3D 16-cell stage embryo. 995 showcase individual RNA molecules (colored dots) from 33 996 genes). 997 (d) Distinct in situ cell profiles in different embryonic stages. 998 approximation and projection (UMAP) embedding of in situ 999 colored by embryo stage (top) or expression levels of marker 1000 (e) Distinct 3D expression patterns of canonical markers in 1001 cell embryos images with cells colored by expression (log1p(count) 1002 genes. Scale bar: (E) 40 μm. 1003",
+      "caption_bbox": {
+        "left": 72,
+        "top": 72.42,
+        "bottom": 415.78,
+        "side": "left"
+      },
+      "section_heading": "969 FIGURES",
+      "body_references": [
+        {
+          "page": 5,
+          "snippet": "140 E-cadherin, β-catenin and p-Ezrin) (Figure. 2b, i and iii and Supplementary Figure. 2,",
+          "count": 1
+        },
+        {
+          "page": 30,
+          "snippet": "982 Figure 2. Spatiotemporal transcriptomics mapping in mouse preimplantation via",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page."
+    },
+    {
+      "figure_id": "3",
+      "page": 32,
+      "line_index": 5,
+      "caption": "Figure 3. 3D in situ sequencing of morula stage embryos 1008 TE lineage divergence. 1009 (a) Overview of non-negative matrix factorization (NMF) analysis. 1010 learned from cell profiles from early morula (9-16 cells, k=164) 1011 32 cells, k=278), and the top 15 genes for each program used 1012 (b-f) In situ gene programs distinguish ICM and TE subsets 1013 distributions. 1014 (b,d) Left: UMAP embedding of in situ cell profiles from early 1015 colored by NMF-based annotation. Right: Mean expression 1016 transcripts count, colorbar) and fraction of expressing cells 1017 (columns) that are differentially expressed between different 1018 (b) or late (d) morula. Purple: E4.5 mouse blastocyst genes 1019 (c,e) Distribution of Euclidean distances from cell center to 1020 cells from each state (x axis) in early (c) or late (e) morula. 1021 and the interquartile ranges (IQRs). Whiskers: lowest datum 1022 quartile and the highest datum within 1.5 IQR of the upper 1023 sum test:, ns, p > 0.05 ; *, p ≤ 0.05 ; **, p ≤ 0.01 ; ***, p ≤ 0.001, 1024 Correlation between expression level and mean radial position 1025 (x-axis; Pearson’s |r| > 0.3) for each gene (dot) differentially and TE cells (y axis). Blue/red: higher expression in TE/ICM 1026 1027 (g-j) Association between distinct expression and morphological 1028 separation between TE-2and TE-1populations across embryos. 1029 aggregated TE-2(blue) and TE-1(red) cells along the cross-embryo coordinate axis (Methods; Kolmogorov-Smirnov test, p < 1 1030 1031 cells from a single mid-late stage morula embryo with cells 1032 surface area (blue), exposed surface area to the outside of 1033 curvature (red). (i) Mid-late morula cell morphological profiles 1034 space of the first two components of Linear Discriminant Analysis 1035 of 64 features colored by the cells’ expression based annotation.Marginal 1036 the density plot on the left shows the separation of TE subsets 1037 statistically significant difference (Wilcoxon test, p<2.0×10⁻⁴) 1038 right depicts two populations within the ICM at mid-late morula showing a significant separation (Wilcoxon test, p<9.0×10 -9 1039 1040 ICM-1 (right panels) NMF scores (y axis) and proportion of 1041 cell flatness (x axes) for cells (dot) from mid-morula stage. 1042 line of linear regression between the variables. Top left: Pearson’s 1043 1044 1045",
+      "caption_bbox": {
+        "left": 72,
+        "top": 88.26,
+        "bottom": 701.62,
+        "side": "left"
+      },
+      "section_heading": "969 FIGURES",
+      "body_references": [
+        {
+          "page": 32,
+          "snippet": "1007 Figure 3. 3D in situ sequencing of morula stage embryos reveals early ICM and",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [
+        "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/rendered/figure-3.png"
+      ],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page. Added rendered fallback crop from the page region above the caption."
+    },
+    {
+      "figure_id": "4",
+      "page": 34,
+      "line_index": 4,
+      "caption": "Figure 4. Spatiotemporal mapping of cytoplasmic mechanics 1048 preimplantation embryos. 1049 (a) Embryo staining and imaging for particle tracking. Left: 1050 co-stained with Mito Tracker™ Red CMXRos (yellow, mitochondria), 1051 Deep Red (red, lysosomes) and endocytosed fluorescent microbeads 1052 confocal z-stack, acquired on a spinning-scanning confocal 1053 Selected fields of view from time-lapse videos (frame rate: 1054 within an embryo. Red circles: mitochondria trajectories. Right: 1055 an individual mitochondrion highlighting both short-term fluctuations 1056 long-term active transport. Scale bar: 10 μm. 1057 (b) Example particle trajectories. Example trajectories for Mitochondria 1058 lysosomes (red) and beads (green) at 4-cell stage (left) and 1059 trajectories were captured at a frame rate of 100 Hz for a total 1060 (1667 frames). 1061 (c) Distinct mechanical regimes at different time scales. Root 1062 displacement (RMSD, y axis, log scale) of fluorescently labeled 1063 with the particle tracking method, and lag time (x axis, log 1064 which the displacement of mitochondria is measured) for 4 1065 Black line: noise level, measured by imaging and tracking 1066 mitochondria in the same embryo after fixation. The logarithmic 1067 is 0.011 for the 4-cell stage and 0.014 for the Morula stage. 1068 1069 (d) High-frequency cytoplasmic motion increases during early 1070 Distribution of RMSD values (y axis) recorded at each stage 1071 (left), beads (middle), or Lyso Tracker (right). Boxplots denote 1072 Whiskers: lowest/highest datum within 1.5 IQR of the lower/upper 1073 ANOVA with Tukey’s multiple comparisons test, ns, p > 0.05 1074 ***, p ≤ 0.001, ****, p ≤ 0.0001. 1075 (e) Correlation of mechanical properties between bead, mitochondrial, 1076 dynamics. Log-transformed Mean RMSD values for beads nearest mitochondria (y axis, top; Spearman’s ρ = 0.58, p = 1077 middle) and their 20 nearest lysosomes (y axis, middle; ρ = 1078 1079 mitochondria (x axis, bottom) and their 20 nearest lysosomes p = 6 ×10 -14 ). Black lines: linear fits. 1080 1081 (f) High-frequency cytoplasmic motion increases along human 1082 development. Distribution of RMSD values (y axis) recorded 1083 and during (N=2, 14-16 cell) the morula stage (x axis) using 1084 denote medians and IQRs. Whiskers: lowest/highest datum 1085 lower/upper quartile. One-way ANOVA with Tukey’s multiple 1086 0.05 ; *, p ≤ 0.05 ; **, p ≤ 0.01 ; ***, p ≤ 0.001, ****, p ≤ 0.0001.",
+      "caption_bbox": {
+        "left": 72,
+        "top": 72.42,
+        "bottom": 701.38,
+        "side": "left"
+      },
+      "section_heading": "969 FIGURES",
+      "body_references": [
+        {
+          "page": 5,
+          "snippet": "150 pseudotime (23–25) (Supplementary Figure. 4), mapped expression changes of gene",
+          "count": 1
+        },
+        {
+          "page": 34,
+          "snippet": "1047 Figure 4. Spatiotemporal mapping of cytoplasmic mechanics in mouse",
+          "count": 1
+        },
+        {
+          "page": 46,
+          "snippet": "1234 URD(25)(as in Supplementary Figure. 4), colored by expression of select ICM (top)",
+          "count": 1
+        },
+        {
+          "page": 50,
+          "snippet": "1255 reconstruction by URD(25)(as in Supplementary Figure. 4), colored by expression of",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page."
+    },
+    {
+      "figure_id": "5",
+      "page": 35,
+      "line_index": 5,
+      "caption": "Figure 5. Workflow for computational mapping of mechanical 1089 measurements. 1090 (a) Left: Volumetric nucleus images from live (for cytoplasmic 1091 (immunofluorescence and RNA in situ sequencing) embryos 1092 3D bridges using volumetric nuclei images, followed by 3D 1093 right: All single frame nuclei (Hoechst) from particle tracking 1094 against volumetric DAPI (reference) to locate corresponding 1095 both expression and RMSD data.",
+      "caption_bbox": {
+        "left": 72,
+        "top": 588.18,
+        "bottom": 709.06,
+        "side": "left"
+      },
+      "section_heading": "969 FIGURES",
+      "body_references": [
+        {
+          "page": 35,
+          "snippet": "1088 Figure 5. Workflow for computational mapping of mechanical and transcriptome",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/layout/figure-5-page-35/layout.json",
+      "composite_svg_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/layout/figure-5-page-35/composite.svg",
+      "page_candidate_asset_paths": [
+        "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-004.jpg"
+      ],
+      "extracted_asset_paths": [
+        "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/original/asset-004.jpg"
+      ],
+      "mapping_note": "Assigned all extracted assets from the figure page because only one caption was detected on that page.",
+      "reconstruction_svg_path": "/assets/papers/unified-transcriptome-and-mechanics-map-of-the-intact-mammalian-preimplantation-/figures/layout/figure-5-page-35/reconstruction.svg",
+      "layout_item_count": 1
+    },
+    {
+      "figure_id": "6",
+      "page": 38,
+      "line_index": 4,
+      "caption": "Figure 6. Volumetric compression causes delay in embryonic 1113 (a) Overview of mechanical perturbation (compression) experiment, 1114 microscopy images of individual embryos. 1115 (b) Mechanical perturbation delays development. Number 1116 at each stage (x axis) from control (blue) and compressed 1117 (c) Time-lapse imaging of compressed embryos starting at 1118 Embryos (control and volumetrically compressed, N=7 each) 1119 Cell Tracker and imaged over a 5-hour period. The volume 1120 point was normalized to its initial volume at the start of the 1121 represent 95% confidence intervals. (d) Passive rheology measurements 1122 Mito Tracker to assess mechanical properties of volumetrically 1123 Distribution of δRMSD (y-axis) in control (blue) and volumetrically 1124 embryos at 2h and 4h post-treatment (x-axis). δRMSD, calculated 1125 RMSD from the 4-cell control reference stage, reflects relative 1126 cytoplasmic softness. Boxplots denote medians and interquartile 1127 whiskers representing the lowest and highest data points within 1128 and upper quartiles. Significance levels: ns (p > 0.05); * (p 1129 0.001); **** (p ≤ 0.0001) based on the Wilcoxon ranked sum 1130 (e,f) Early expression changes associated with compression. 1131 contrast images of control and 2% PEG 300-treated embryo 1132 harvested at specified time points (rows; n=4 per group and 1133 seq of individual embryos. (f) Left: Expression (color bar, scaled 1134 of the top 30 genes (rows) differentially expressed between 1135 embryos (columns) at the initial post-compression period (4, 1136 (dot size, calculated using, Fisher’s exact test followed by 1137 Benjamini-Hochberg method) of enrichment of Gene Ontology 1138 genes differentially induced in control or compressed embryos 1139 1140",
+      "caption_bbox": {
+        "left": 72,
+        "top": 72.42,
+        "bottom": 526.66,
+        "side": "left"
+      },
+      "section_heading": "969 FIGURES",
+      "body_references": [
+        {
+          "page": 38,
+          "snippet": "1112 Figure 6. Volumetric compression causes delay in embryonic development.",
+          "count": 1
+        }
+      ],
+      "rendered_asset_paths": [],
+      "layout_path": null,
+      "composite_svg_path": null,
+      "page_candidate_asset_paths": [],
+      "extracted_asset_paths": [],
+      "mapping_note": "No extractable embedded assets were found on the figure page."
+    }
+  ],
+  "headings": [
+    {
+      "page": 1,
+      "heading": "1 Unified Transcriptome and Mechanics Map of the Intact Mammalian 2 Preimplantation Embryo In Situ",
+      "line_index": 7
+    },
+    {
+      "page": 1,
+      "heading": "9 Current address: The Sprott Centre for Stem Cell Research, Regenerative Medicine",
+      "line_index": 20
+    },
+    {
+      "page": 1,
+      "heading": "18 Current address: Genentech Research and Early Development, South San Francisco,",
+      "line_index": 34
+    },
+    {
+      "page": 1,
+      "heading": "20 The Key Laboratory for Biomedical Photonics of MOE at Wuhan National Laboratory",
+      "line_index": 37
+    },
+    {
+      "page": 1,
+      "heading": "22 Huazhong University of Science and Technology, Wuhan 430074, China",
+      "line_index": 39
+    },
+    {
+      "page": 2,
+      "heading": "36 Abstract",
+      "line_index": 7
+    },
+    {
+      "page": 3,
+      "heading": "61 Introduction",
+      "line_index": 7
+    },
+    {
+      "page": 4,
+      "heading": "116 Results",
+      "line_index": 26
+    },
+    {
+      "page": 15,
+      "heading": "549 Discussion",
+      "line_index": 44
+    },
+    {
+      "page": 19,
+      "heading": "702 References",
+      "line_index": 43
+    },
+    {
+      "page": 25,
+      "heading": "897 Induces Intracellular Crowding to Control Intestinal Organoid Growth via Wnt/β-",
+      "line_index": 13
+    },
+    {
+      "page": 28,
+      "heading": "969 FIGURES",
+      "line_index": 7
+    },
+    {
+      "page": 39,
+      "heading": "1145 was supported by the National Science Foundation Graduate Research Fellowship",
+      "line_index": 11
+    },
+    {
+      "page": 40,
+      "heading": "1180 SUPPLEMENTARY FIGUREURE LEGENDS",
+      "line_index": 9
+    }
+  ],
+  "warnings": [],
+  "pdf_metadata": {
+    "title": "Unified Transcriptome and Mechanics Map of the Intact Mammalian Preimplantation Embryo In Situ",
+    "pages": 55,
+    "page_size": "612 x 792 pts (letter)",
+    "file_size": "6963095 bytes",
+    "pdf_version": "1.4"
+  }
+}

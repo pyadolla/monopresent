@@ -35,3 +35,37 @@ If Playwright browsers are not installed yet:
 ```bash
 yarn playwright install chromium
 ```
+
+## Paper Catalog
+
+The package now includes a paper-ingestion pipeline rooted at `public/assets/papers`.
+
+Initialize the manifest scaffolding:
+
+```bash
+yarn workspace principiae-presentation papers:init
+```
+
+Process papers interactively one-by-one:
+
+```bash
+yarn workspace principiae-presentation papers:interactive
+```
+
+Ingest a single paper non-interactively:
+
+```bash
+yarn workspace principiae-presentation papers:ingest --title "Paper Title" --pdf-path /absolute/path/to/paper.pdf
+```
+
+Rebuild the top-level manifest and Markdown summary from per-paper catalogs:
+
+```bash
+yarn workspace principiae-presentation papers:rebuild
+```
+
+Run the pipeline smoke tests:
+
+```bash
+yarn workspace principiae-presentation papers:test
+```

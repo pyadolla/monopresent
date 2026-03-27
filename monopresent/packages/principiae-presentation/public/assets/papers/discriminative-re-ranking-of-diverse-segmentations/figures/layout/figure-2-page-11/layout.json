@@ -1,0 +1,31 @@
+{
+  "figure_id": "2",
+  "page": 11,
+  "canvas": {
+    "width": 546,
+    "height": 90
+  },
+  "source_region": {
+    "left": 185,
+    "top": 343,
+    "right": 731,
+    "bottom": 433
+  },
+  "items": [
+    {
+      "asset_id": "asset-015",
+      "asset_public_path": "/assets/papers/discriminative-re-ranking-of-diverse-segmentations/figures/original/asset-014.png",
+      "placement_id": "placement-001",
+      "placement_source_name": "page-11-11_1.png",
+      "composite_href": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAACXBIWXMAAAsSAAALEgHS3X78AAAALklEQVQI1zXJMRHAMAwAMYWZoT00QwmUDr1olZBCiaqGZXI2VW8Z/7ZMB/eu5wMknRLDOqisdQAAAABJRU5ErkJggg==",
+      "source_width": 5,
+      "source_height": 5,
+      "x": 0,
+      "y": 0,
+      "width": 546,
+      "height": 90,
+      "page_x": 185,
+      "page_y": 343
+    }
+  ]
+}
