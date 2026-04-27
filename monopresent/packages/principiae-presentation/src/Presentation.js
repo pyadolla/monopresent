@@ -821,7 +821,7 @@ function App() {
           </div>
           <div style={{ fontSize: "1.1rem", opacity: 0.85 }}>Payman Yadollahpour</div>
           <div style={{ fontSize: "1rem", opacity: 0.8 }}>Genentech</div>
-          <div style={{ fontSize: "0.9rem", opacity: 0.75 }}>February 23, 2026</div>
+          <div style={{ fontSize: "0.9rem", opacity: 0.75 }}>April 27, 2026</div>
         </div>
       </Slide>
 
@@ -2968,6 +2968,145 @@ function App() {
             <div>- Downstream impact: internal toolkits and methods that now support gRED discovery programs.</div>
           </div>
         </div>
+      </Slide>
+
+      <Slide header="Fast Structure Models in a Synthesis → Assay → Learn Loop">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              When each round synthesizes 10⁴–10⁶ variants, AlphaFold is too slow to run on all of them.
+              Fast predictors like EquiFold and ESMFold are cheap enough to fold every variant — making structure
+              a filter on the whole library, not just the top few hits.
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div>- Library-scale triage: fold every designed variant; filter by confidence, RMSD-to-target, clash/strain before paying to synthesize.</div>
+            <div>- Geometric features for sequence-function models when the assay depends on geometry (binder affinity, CDR conformation, active-site arrangement) and pure-sequence models plateau.</div>
+            <div>- Differentiable scoring inside generative design: backprop a structural objective through the predictor, instead of generate-then-score-then-discard.</div>
+            <div>- MSA-free matches the regime: designed miniproteins, antibody loops, de novo scaffolds have no meaningful homologs — MSA-dependent models degrade exactly here.</div>
+            <div>- Lightweight enough to fine-tune per round on assay-linked structures, so confidence is calibrated to the platform's design space rather than generic PDB.</div>
+          </div>
+        </div>
+        <Notes>
+          <div style={notesContentStyle}>
+            The framing here is not "EquiFold is the answer." It's that fast, MSA-free, all-atom prediction is the
+            right shape of tool for the inner loop of a programmable-library platform.
+
+            The economics of a Skyhook-style DBTL pipeline only work if each synthesis round is well-chosen.
+            Structure-aware filtering at library scale — every variant, not just the top 100 hits — is one of the
+            cheapest levers for that.
+
+            Three points I want to land:
+            - Speed compounds with library size. Minutes-per-design vs. seconds-per-design is the difference between
+              structure as commentary and structure as prior.
+            - MSA-free matters specifically for designed sequences with no homologs, which is exactly what a
+              programmable-library platform produces.
+            - End-to-end differentiability opens up gradient-based design over a structural objective, not just
+              filtering after the fact.
+
+            I'll be honest on the next slide that EquiFold is one credible option here, not the only one.
+          </div>
+        </Notes>
+      </Slide>
+
+      <Slide header="Stack for a Programmable-Library Platform">
+        <div className="h-full flex flex-col justify-start" style={{ gap: "0.4rem", paddingTop: "0.2rem" }}>
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.25,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.12rem 0.32rem" }}>
+              ESMFold is the default for fast triage; EquiFold-class models earn their keep where MSA-free,
+              lightweight, and retrainable matter; AF3 / Boltz-2 are reserved for the validation shortlist.
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.22,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.18rem",
+            }}
+          >
+            <div>- Fv triage: IgFold2 or ABodyBuilder3.</div>
+            <div>- De novo binders: RFdiffusion → ProteinMPNN → AF2 / Boltz-2; ESMFold or EquiFold for inner-loop scoring.</div>
+            <div>- Miniprotein scaffolds: ESMFold for triage; EquiFold competitive when no homologs exist.</div>
+            <div>- Complexes, enzymes with substrates / cofactors: Boltz-2 or AF3.</div>
+            <div>- Library-scale scoring: ESMFold by default; EquiFold when the niche lines up.</div>
+            <div>- Sequence-function featurizer: ESM2 / ESM3 embeddings.</div>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.25,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.12rem 0.32rem" }}>
+              The platform question is the systems one: calibrating and combining multiple predictors across the
+              funnel, and retraining them on proprietary assay-linked data.
+            </Box>
+          </div>
+        </div>
+        <Notes>
+          <div style={notesContentStyle}>
+            This slide softens the previous one deliberately. EquiFold is one credible option in a niche. ESMFold
+            is the obvious open-source default for library-scale triage; IgFold2 / ABodyBuilder3 dominate Fv;
+            Boltz-2 and AF3 own the accuracy ceiling for complexes and ligands.
+
+            The pitch at a programmable-library platform is not "use EquiFold everywhere." It is that fast, MSA-free
+            structure prediction belongs in the inner loop, and choosing — and combining and calibrating — the right
+            predictor per modality is itself a platform decision the ML team owns.
+
+            What I'd push for, concretely:
+            - A funnel: ESMFold or EquiFold at library scale, IgFold2 for Fv, Boltz-2 / AF3 only on the shortlist
+              going to structural validation.
+            - Per-round fine-tuning of whichever fast predictor we use, on the company's own structures and
+              assay-linked hits, so confidence is calibrated to our design space.
+            - Structure features feeding the sequence-function models when geometry matters; not when it doesn't.
+
+            The interesting work is in the systems — calibration across predictors, retraining cadence, when fast-and-
+            approximate is good enough — not in picking a single model.
+          </div>
+        </Notes>
       </Slide>
 
       <QuestionSlide title="Questions?" />
