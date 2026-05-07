@@ -820,8 +820,8 @@ function App() {
             EquiFold: Fast, Equivariant All-Atom Protein Structure Prediction
           </div>
           <div style={{ fontSize: "1.1rem", opacity: 0.85 }}>Payman Yadollahpour</div>
-          <div style={{ fontSize: "1rem", opacity: 0.8 }}>Genentech</div>
-          <div style={{ fontSize: "0.9rem", opacity: 0.75 }}>April 27, 2026</div>
+          <div style={{ fontSize: "1rem", opacity: 0.8 }}>Adaptive Biotechnologies</div>
+          <div style={{ fontSize: "0.9rem", opacity: 0.75 }}>May 7, 2026</div>
         </div>
       </Slide>
 
@@ -914,40 +914,6 @@ function App() {
         </div>
       </Slide>
 
-      <Slide header="Why Tahoe" steps={[1, 2, 3, 4]}>
-        {(step) => {
-          const pulseStyle = (active) => ({
-            transform: active ? "scale(1.04)" : "scale(1)",
-            transformOrigin: "center center",
-            transition: "transform 220ms ease",
-          });
-          return (
-            <div className="h-full flex flex-col justify-center gap-4" style={{ fontSize: "0.72rem", lineHeight: 1.32 }}>
-              <div style={pulseStyle(step === 1)}>
-                <Box style={{ padding: "0.14rem 0.3rem" }}>
-                  My background spans multiple domains (ML, brain-machine interfaces, CV, clinical imaging, molecular biology)
-                  and modalities: single-cell (ATAC, RNA-seq), spatial transcriptomics (e.g., Slide-seq), tissue analysis
-                  (tumor microenvironments), geometric 3D cell modeling in embryo, and clinical imaging (MRI/CT).
-                </Box>
-              </div>
-              <div style={pulseStyle(step === 2)}>
-                <Box style={{ padding: "0.14rem 0.3rem" }}>
-                  I want to build multimodal foundation models that explicitly incorporate biological context and interventions,
-                  linking chemical structure, protein sequence, and single-cell response.
-                </Box>
-              </div>
-              <div style={pulseStyle(step === 3)}>
-                <Box style={{ padding: "0.14rem 0.3rem" }}>
-                  My experiences across PhD and post-PhD work in deep learning and ML for predicting structured data,
-                  (spatial) transcriptomics, RNA-seq analysis, protein structure prediction (EquiFold), and sequence-structure
-                  co-design provide the background needed to contribute effectively at Tahoe.
-                </Box>
-              </div>
-            </div>
-          );
-        }}
-      </Slide>
-
       <Slide header="Post-PhD Projects: What I Learned" steps={[1, 2, 3, 4]}>
         {(step) => (
           <div className="h-full flex flex-col gap-3" style={{ fontSize: "0.7rem", lineHeight: 1.3 }}>
@@ -978,12 +944,13 @@ function App() {
 
       <Slide header="Outline">
         <div className="h-full flex flex-col justify-center">
-          <List step={6} style={{ lineHeight: 1.7 }}>
+          <List step={7} style={{ lineHeight: 1.7 }}>
             <Item>Motivation and Context</Item>
             <Item>Equiformer Background</Item>
             <Item>EquiFold Method</Item>
             <Item>Experiments and Results</Item>
             <Item>Impact and Outcomes</Item>
+            <Item>Implications for TCR-pMHC</Item>
           </List>
         </div>
       </Slide>
@@ -1011,10 +978,10 @@ function App() {
                   </Show>
                   <div className="ml-3 mt-0.5 flex flex-col gap-1.5">
                     <Show when={step >= 2}>
-                      <div>- Triage of large candidate libraries before synthesis or expression</div>
+                      <div>- Triage of large TCR / antibody repertoires before specificity panels or expression</div>
                     </Show>
                     <Show when={step >= 3}>
-                      <div>- Rapid prioritization of antibody variants during affinity-maturation rounds</div>
+                      <div>- Rapid prioritization of CDR3 variants during TCR or antibody affinity maturation</div>
                     </Show>
                     <Show when={step >= 4}>
                       <div>- Quick structural sanity checks before wet-lab handoff</div>
@@ -1069,8 +1036,8 @@ function App() {
 
                 If sequence-to-structure is slow, it bottlenecks the entire design loop.
 
-                I’ll walk through three concrete places where that matters: triaging large libraries, prioritizing antibody
-                variants, and quick structural checks before wet-lab handoff.
+                I’ll walk through three concrete places where that matters: triaging large repertoires (TCR or antibody),
+                prioritizing CDR3 variants during affinity maturation, and quick structural checks before wet-lab handoff.
 
                 The point is not just better models, but faster experimental iteration.
               </div>
@@ -2829,6 +2796,336 @@ function App() {
         })()}
       </Slide>
 
+      <Slide header="Impact">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              EquiFold established the geometric modeling foundation that directly informed the follow-on portfolio work at
+              Genentech (Prescient Design / gRED sequence-structure co-generation platform).
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div>- Progression: EquiFold (fast SE(3)-equivariant all-atom prediction) → portfolio sequence-structure co-generation stack.</div>
+            <div>- Platform outcome: modular PyTorch framework combining SE(3)-equivariant GNNs with score-based diffusion/SDE modeling for bidirectional inference and conditional generation.</div>
+            <div>- Organizational impact: cross-functional workflow adopted with 20+ ML scientists, structural biologists, and protein engineers.</div>
+            <div>- Downstream impact: internal toolkits and methods that now support gRED discovery programs.</div>
+          </div>
+        </div>
+      </Slide>
+
+      <Slide header="Limitations">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              EquiFold's design choices buy speed and the MSA-free regime at real costs. The
+              honest list:
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div>- <b>Bond geometry and clashes</b>: CG-template merge can produce locally non-physical geometry (overlapping atoms, bond-length drift) more often than AF-style explicit-torsion decoders.</div>
+            <div>- <b>Scale</b>: validated on antibody Fv (~230 residues) and miniproteins (≤100 residues); no claim on full-length single chains in the 500+ residue range.</div>
+            <div>- <b>Out-of-distribution folds</b>: training data is Fv plus designed miniproteins; novel folds far from that distribution have no quality guarantee.</div>
+            <div>- <b>No MSA / PLM input</b>: deliberate trade-off for the MSA-free regime; in domains where MSAs <i>are</i> informative, MSA-using methods will outperform on accuracy.</div>
+            <div>- <b>No native confidence head</b>: unlike AF / ESMFold (pLDDT) or AF3 (PAE / PDE), EquiFold as published outputs no per-residue confidence. Downstream filtering needs an ad-hoc proxy — ensemble disagreement, structure-violation magnitudes, or training a confidence head post-hoc.</div>
+            <div>- <b>No explicit ligand or cofactor handling</b>: protein-only model; complexes with small molecules, nucleic acids, or post-translational modifications are out of scope as published.</div>
+          </div>
+        </div>
+        <Notes>
+          <div style={notesContentStyle}>
+{`I want to land these explicitly rather than get cornered on them in Q&A.
+
+Bond geometry / clashes is what people will probe first — it's the known cost of CG-template merge versus AF-style explicit-torsion decoders.
+
+If asked, the honest answer:
+• Yes, it shows up in some structures.
+• It's mitigated during training with the bond-violation loss term.
+• For downstream uses where geometry-perfect side chains matter, you'd still want a short Amber or Rosetta relax, or route to a slower predictor.
+
+Scale is the second-most-likely probe. EquiFold was validated on Fv and miniproteins; I'm not claiming 500+ residue single chains, and I wouldn't propose to apply it there without re-evaluating.
+
+For TCR-pMHC specifically, the limitations that bite hardest:
+• Bond geometry on CDR3 loops — the most flexible, most binding-relevant region.
+• OOD generalization on novel HLAs.
+
+Both are addressable, but they need re-validation on TCR-specific structures, not assumed from the antibody benchmarks.`}
+          </div>
+        </Notes>
+      </Slide>
+
+      <Slide hideNavigation>
+        <div className="h-full flex items-center justify-center">
+          <div style={{ fontSize: "2rem", opacity: 0.9 }}>Implications for TCR-pMHC</div>
+        </div>
+      </Slide>
+
+      <Slide header="TCR-pMHC: the MSA-Free Regime at Repertoire Scale">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              TCR variable regions are products of V(D)J recombination — like designed proteins, their
+              sequences have no meaningful homologs and MSA-dependent predictors degrade exactly here.
+              This is the regime EquiFold was built for.
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div>- N=1 per individual: V(D)J makes most TCRs unique to one person; cross-individual co-evolutionary signal is essentially absent.</div>
+            <div>- Repertoire scale: ~10⁸ unique TCRs per individual, ~10⁹ across cohorts; AF3 at minutes-per-pair cannot fold the head, let alone the long tail.</div>
+            <div>- Sequence-only specificity predictors achieve ~10 ms/pair — four orders of magnitude faster than AlphaFold-based pipelines.</div>
+            <div>- The architectural choices behind EquiFold — MSA-free, lightweight, retrainable, all-atom on demand — match the inner loop a TCR-pMHC platform needs.</div>
+          </div>
+        </div>
+        <Notes>
+          <div style={notesContentStyle}>
+{`The bridge from EquiFold to TCR-pMHC is the regime, not the molecule.
+
+Antibody CDRs and TCR CDRs share the same problem:
+• V(D)J recombination → no MSA.
+• Fast turnover, flexible loops.
+• No cross-individual homologs.
+
+EquiFold was built for that regime. The design choices transfer.
+
+What's different at TCR scale:
+• Three-body problem: TCR + peptide + MHC.
+• HLA polymorphism makes cross-allele generalization hard.
+• Combinatorics of TCR × peptide × HLA make naïve structure-then-score too expensive at repertoire scale.
+
+With enough labeled data, sequence-only models have been shown to win in this regime. The interesting question — which the next two slides address — is what fast structural prediction adds where the sequence-data scaling story doesn't yet apply.`}
+          </div>
+        </Notes>
+      </Slide>
+
+      <Slide header="Adaptive's TCR-Antigen Mapping Loop">
+        <div className="h-full flex flex-col justify-center gap-4">
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              Adaptive uniquely combines TCR sequencing at scale with high-throughput TCR–antigen
+              labeling and a sequence-based predictor trained on both: immunoSEQ produces TCRs at
+              scale, MIRA pairs them with antigens, and ImmSET turns the pairings into a fast
+              specificity predictor — and the training set keeps growing.
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.34rem",
+            }}
+          >
+            <div>- <b>immunoSEQ</b> — proprietary TCR-β repertoire sequencing at industrial scale; hundreds of millions of TCRs from clinical and research samples.</div>
+            <div>- <b>MIRA</b> — combinatorial multiplex assay that labels which TCRs functionally recognize which peptides; the labeled-pair generation engine.</div>
+            <div>- <b>ImmSET</b> (Garcia Noceda et al., ML4H 2025) — sequence-based encoder trained on MIRA-class data; <b>beats AlphaFold2 / AlphaFold3 pipelines on HLA-A*02:01 specificity</b> at ~10 ms / pair.</div>
+            <div>- Power-law scaling: AUROC ∝ P<sup>α</sup> × T<sup>β</sup>; performance grows faster with peptide diversity than with TCR depth, and is not yet near a ceiling.</div>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.35,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.16rem 0.32rem" }}>
+              With enough labeled data, sequence wins on the head. The interesting question is the long tail.
+            </Box>
+          </div>
+        </div>
+        <Notes>
+          <div style={notesContentStyle}>
+{`I'm acknowledging ImmSET on its own terms. It works, the result is real, and the data position behind it is the actual competitive advantage. I'm not pitching that they should switch to a structure-first approach.
+
+What I want to land:
+• Adaptive owns the labeled-data loop that the rest of the field has to scrape together.
+• ImmSET shows that, given that loop, sequence-based prediction beats structure-based pipelines on the high-data head (HLA-A*02:01, well-represented peptides).
+• The scaling story is real — AUROC keeps improving with peptide diversity and TCR depth, with no early ceiling.
+
+This sets up the next slide: where can structural priors still help, given all of that?
+
+Anticipate the question "isn't structure already obsolete given ImmSET?":
+• Not for the long tail.
+• Not for the cross-allele problem.
+• That's where the head's data abundance doesn't transfer.`}
+          </div>
+        </Notes>
+      </Slide>
+
+      <Slide header="Where Structural Priors Complement ImmSET-Class Models">
+        <div className="h-full flex flex-col justify-start" style={{ gap: "0.4rem", paddingTop: "0.2rem" }}>
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.62rem",
+              lineHeight: 1.25,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.12rem 0.32rem" }}>
+              ImmSET-class sequence models work best where MIRA labels are abundant. Fast, MSA-free
+              structural prediction complements them on the long tail and inside the labeling loop.
+            </Box>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.22,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.18rem",
+            }}
+          >
+            <div>- <b>Long-tail HLAs</b>: rare HLAs lack MIRA depth; structural models are allele-agnostic.</div>
+            <div>- <b>Novel epitopes</b>: cold-start peptides have no labeled neighbors; a structural binder-energy term gives a prior where sequence cannot.</div>
+            <div>- <b>Active learning over MIRA budget</b>: structure-derived uncertainty / diversity scores select which TCR-pMHC pairs to label next.</div>
+            <div>- <b>Auxiliary features</b>: per-residue contacts and pocket-shape descriptors as input channels to ImmSET, not a competing pipeline.</div>
+            <div>- <b>Triage before MIRA</b>: drop obvious non-binders structurally before paying for the assay.</div>
+            <div>- <b>Predictor stack</b>: run ImmSET on everything; bring in a structural predictor (TCRdock, TCRmodel2, EquiFold-class) where ImmSET is uncertain; save AF3 / Boltz-2 for the final candidates going to wet-lab validation.</div>
+          </div>
+
+          <div
+            className="mx-auto"
+            style={{
+              width: "100%",
+              maxWidth: "1040px",
+              fontSize: "0.58rem",
+              lineHeight: 1.25,
+              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
+            }}
+          >
+            <Box style={{ padding: "0.12rem 0.32rem" }}>
+              Sequence does the heavy lifting; structure plays a supporting role.
+            </Box>
+          </div>
+        </div>
+        <Notes>
+          <div style={notesContentStyle}>
+{`The pitch is deliberately humble. ImmSET works on what it was trained for. I'm not arguing to replace it.
+
+The argument: fast, MSA-free structural prediction can sit alongside ImmSET, doing things the sequence-only model has weaker signal on.
+
+Where structure plausibly helps:
+• Novel HLA / novel peptide regimes — cross-allele and cold-start.
+• Active-learning label-budget allocation — which ~10⁴ pairs to push to MIRA next round.
+• Pre-MIRA library triage — drop hopeless candidates structurally before paying assay cost.
+• Auxiliary geometric features feeding the sequence-based model.
+
+What I'd want to do at Adaptive:
+• Build the calibration layer between sequence-based and structure-based predictors.
+• Drive retraining cadence from MIRA's labeled output.
+• The systems work — calibration, retraining, label-budget allocation — is where the leverage is.
+
+If asked "would you build a TCR-EquiFold from scratch?":
+• No — not first.
+• First, integrate an existing fast TCR-pMHC structural predictor (TCRdock, TCRmodel2) as an auxiliary channel.
+• Quantify what it adds where ImmSET's confidence is uncertain.
+• If the channel provides real signal, then there's an argument for a domain-specific model.
+• Earn it on data first.`}
+          </div>
+        </Notes>
+      </Slide>
+
+      <QuestionSlide title="Questions?" />
+
+      {/* ----------------------------- Backup slides ----------------------------- */}
+      {/* Reachable past the Questions slide; show only if the audience asks      */}
+      {/* about EquiFold's architectural choices vs AF-Multimer / IgFold.         */}
+      <Slide hideNavigation>
+        <div className="h-full flex items-center justify-center">
+          <div style={{ fontSize: "2rem", opacity: 0.85 }}>Backup slides</div>
+        </div>
+      </Slide>
+
       <Slide header="EquiFold vs AF-Multimer/IgFold">
         <div className="h-full flex flex-col justify-center gap-5">
           <div
@@ -2931,7 +3228,7 @@ function App() {
         </div>
       </Slide>
 
-      <Slide header="Impact">
+      <Slide header="Would you build a TCR-EquiFold from scratch?">
         <div className="h-full flex flex-col justify-center gap-4">
           <div
             className="mx-auto"
@@ -2944,8 +3241,9 @@ function App() {
             }}
           >
             <Box style={{ padding: "0.16rem 0.32rem" }}>
-              EquiFold established the geometric modeling foundation that directly informed the follow-on portfolio work at
-              Genentech (Prescient Design / gRED sequence-structure co-generation platform).
+              Not first. The question is what structural prediction adds on top of ImmSET, and
+              the cheapest way to find out is to integrate an existing fast TCR-pMHC structural
+              predictor as an auxiliary channel and measure.
             </Box>
           </div>
 
@@ -2962,154 +3260,32 @@ function App() {
               gap: "0.34rem",
             }}
           >
-            <div>- Progression: EquiFold (fast SE(3)-equivariant all-atom prediction) → portfolio sequence-structure co-generation stack.</div>
-            <div>- Platform outcome: modular PyTorch framework combining SE(3)-equivariant GNNs with score-based diffusion/SDE modeling for bidirectional inference and conditional generation.</div>
-            <div>- Organizational impact: cross-functional workflow adopted with 20+ ML scientists, structural biologists, and protein engineers.</div>
-            <div>- Downstream impact: internal toolkits and methods that now support gRED discovery programs.</div>
-          </div>
-        </div>
-      </Slide>
-
-      <Slide header="Fast Structure Models in a Synthesis → Assay → Learn Loop">
-        <div className="h-full flex flex-col justify-center gap-4">
-          <div
-            className="mx-auto"
-            style={{
-              width: "100%",
-              maxWidth: "1040px",
-              fontSize: "0.62rem",
-              lineHeight: 1.35,
-              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
-            }}
-          >
-            <Box style={{ padding: "0.16rem 0.32rem" }}>
-              When each round synthesizes 10⁴–10⁶ variants, AlphaFold is too slow to run on all of them.
-              Fast predictors like EquiFold and ESMFold are cheap enough to fold every variant — making structure
-              a filter on the whole library, not just the top few hits.
-            </Box>
-          </div>
-
-          <div
-            className="mx-auto"
-            style={{
-              width: "100%",
-              maxWidth: "1040px",
-              fontSize: "0.58rem",
-              lineHeight: 1.35,
-              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.34rem",
-            }}
-          >
-            <div>- Library-scale triage: fold every designed variant; filter by confidence, RMSD-to-target, clash/strain before paying to synthesize.</div>
-            <div>- Geometric features for sequence-function models when the assay depends on geometry (binder affinity, CDR conformation, active-site arrangement) and pure-sequence models plateau.</div>
-            <div>- Differentiable scoring inside generative design: backprop a structural objective through the predictor, instead of generate-then-score-then-discard.</div>
-            <div>- MSA-free matches the regime: designed miniproteins, antibody loops, de novo scaffolds have no meaningful homologs — MSA-dependent models degrade exactly here.</div>
-            <div>- Lightweight enough to fine-tune per round on assay-linked structures, so confidence is calibrated to the platform's design space rather than generic PDB.</div>
+            <div>- <b>Step 1</b>: integrate TCRdock or TCRmodel2 as an auxiliary channel into the ImmSET pipeline; measure where structure-derived features change ImmSET's calibration or accuracy.</div>
+            <div>- <b>Step 2</b>: characterize the gap. Is it concentrated on long-tail HLAs? Cold-start peptides? Specific CDR3-length regimes? That's where a domain-specific structural model could earn its place.</div>
+            <div>- <b>Step 3</b>: only if (2) shows a real, scoped gap, build a TCR-specific structural predictor — using EquiFold-style design choices (MSA-free, lightweight, retrainable on Adaptive's labeled structures) but trained for the three-body TCR-pMHC problem.</div>
+            <div>- <b>Why not jump straight to step 3</b>: building a new structural model is ~6–12 months of work; integrating an existing one is ~1–2 months. Earn the model on data, not on architectural enthusiasm.</div>
           </div>
         </div>
         <Notes>
           <div style={notesContentStyle}>
-            The framing here is not "EquiFold is the answer." It's that fast, MSA-free, all-atom prediction is the
-            right shape of tool for the inner loop of a programmable-library platform.
+{`This is the answer for "would you build a TCR-EquiFold?" or "what's your day-1 plan?" — same answer, different framing.
 
-            The economics of a Skyhook-style DBTL pipeline only work if each synthesis round is well-chosen.
-            Structure-aware filtering at library scale — every variant, not just the top 100 hits — is one of the
-            cheapest levers for that.
+The discipline: don't propose what you can't justify with measurement. ImmSET is published, working, and improving.
 
-            Three points I want to land:
-            - Speed compounds with library size. Minutes-per-design vs. seconds-per-design is the difference between
-              structure as commentary and structure as prior.
-            - MSA-free matters specifically for designed sequences with no homologs, which is exactly what a
-              programmable-library platform produces.
-            - End-to-end differentiability opens up gradient-based design over a structural objective, not just
-              filtering after the fact.
+The 3-step plan:
+• Step 1 — integrate-and-measure with an existing structural predictor.
+• Step 2 — characterize the gap (long-tail HLAs? cold-start peptides? specific CDR3-length regimes?).
+• Step 3 — build a domain-specific model only if the gap is real and bounded.
 
-            I'll be honest on the next slide that EquiFold is one credible option here, not the only one.
+If pushed harder — "but if you got hired tomorrow, what would you actually do week 1?":
+• Reproduce the ImmSET evaluation harness.
+• Drop a TCRdock or TCRmodel2 score in as an additional feature.
+• Run the same evaluation.
+
+That gives you the first measurement of "does structure help on the long tail" within two weeks.`}
           </div>
         </Notes>
       </Slide>
-
-      <Slide header="Stack for a Programmable-Library Platform">
-        <div className="h-full flex flex-col justify-start" style={{ gap: "0.4rem", paddingTop: "0.2rem" }}>
-          <div
-            className="mx-auto"
-            style={{
-              width: "100%",
-              maxWidth: "1040px",
-              fontSize: "0.62rem",
-              lineHeight: 1.25,
-              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
-            }}
-          >
-            <Box style={{ padding: "0.12rem 0.32rem" }}>
-              ESMFold is the default for fast triage; EquiFold-class models earn their keep where MSA-free,
-              lightweight, and retrainable matter; AF3 / Boltz-2 are reserved for the validation shortlist.
-            </Box>
-          </div>
-
-          <div
-            className="mx-auto"
-            style={{
-              width: "100%",
-              maxWidth: "1040px",
-              fontSize: "0.58rem",
-              lineHeight: 1.22,
-              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.18rem",
-            }}
-          >
-            <div>- Fv triage: IgFold2 or ABodyBuilder3.</div>
-            <div>- De novo binders: RFdiffusion → ProteinMPNN → AF2 / Boltz-2; ESMFold or EquiFold for inner-loop scoring.</div>
-            <div>- Miniprotein scaffolds: ESMFold for triage; EquiFold competitive when no homologs exist.</div>
-            <div>- Complexes, enzymes with substrates / cofactors: Boltz-2 or AF3.</div>
-            <div>- Library-scale scoring: ESMFold by default; EquiFold when the niche lines up.</div>
-            <div>- Sequence-function featurizer: ESM2 / ESM3 embeddings.</div>
-          </div>
-
-          <div
-            className="mx-auto"
-            style={{
-              width: "100%",
-              maxWidth: "1040px",
-              fontSize: "0.58rem",
-              lineHeight: 1.25,
-              fontFamily: "Spallet, Computer Modern Sans, sans-serif",
-            }}
-          >
-            <Box style={{ padding: "0.12rem 0.32rem" }}>
-              The platform question is the systems one: calibrating and combining multiple predictors across the
-              funnel, and retraining them on proprietary assay-linked data.
-            </Box>
-          </div>
-        </div>
-        <Notes>
-          <div style={notesContentStyle}>
-            This slide softens the previous one deliberately. EquiFold is one credible option in a niche. ESMFold
-            is the obvious open-source default for library-scale triage; IgFold2 / ABodyBuilder3 dominate Fv;
-            Boltz-2 and AF3 own the accuracy ceiling for complexes and ligands.
-
-            The pitch at a programmable-library platform is not "use EquiFold everywhere." It is that fast, MSA-free
-            structure prediction belongs in the inner loop, and choosing — and combining and calibrating — the right
-            predictor per modality is itself a platform decision the ML team owns.
-
-            What I'd push for, concretely:
-            - A funnel: ESMFold or EquiFold at library scale, IgFold2 for Fv, Boltz-2 / AF3 only on the shortlist
-              going to structural validation.
-            - Per-round fine-tuning of whichever fast predictor we use, on the company's own structures and
-              assay-linked hits, so confidence is calibrated to our design space.
-            - Structure features feeding the sequence-function models when geometry matters; not when it doesn't.
-
-            The interesting work is in the systems — calibration across predictors, retraining cadence, when fast-and-
-            approximate is good enough — not in picking a single model.
-          </div>
-        </Notes>
-      </Slide>
-
-      <QuestionSlide title="Questions?" />
     </Presentation>
   );
 }

@@ -29,7 +29,7 @@ const queryParameters = (obj: { [key: string]: string }): string => {
     .join('&')
 }
 
-const cacheBust = '8'
+const cacheBust = '13'
 const LATEX_FETCH_MAX_RETRIES = 1
 const LATEX_FETCH_RETRY_BASE_MS = 200
 const LATEX_FETCH_RETRY_JITTER_MS = 150
