@@ -2935,7 +2935,7 @@ Both are addressable, but they need re-validation on TCR-specific structures, no
             }}
           >
             <div>- N=1 per individual: V(D)J makes most TCRs unique to one person; cross-individual co-evolutionary signal is essentially absent.</div>
-            <div>- Repertoire scale: ~10⁸ unique TCRs per individual, ~10⁹ across cohorts; AF3 at minutes-per-pair cannot fold the head, let alone the long tail.</div>
+            <div>- Repertoire scale: ~10⁸ unique TCRs per individual, ~10⁹ across cohorts. AF3 takes minutes per pair, so it can't be run at repertoire scale — not even on a single individual, let alone across HLAs and epitopes.</div>
             <div>- Sequence-only specificity predictors achieve ~10 ms/pair — four orders of magnitude faster than AlphaFold-based pipelines.</div>
             <div>- The architectural choices behind EquiFold — MSA-free, lightweight, retrainable, all-atom on demand — match the inner loop a TCR-pMHC platform needs.</div>
           </div>
@@ -3011,7 +3011,7 @@ With enough labeled data, sequence-only models have been shown to win in this re
             }}
           >
             <Box style={{ padding: "0.16rem 0.32rem" }}>
-              With enough labeled data, sequence wins on the head. The interesting question is the long tail.
+              Where labeled data is abundant — common HLAs, well-studied peptides — sequence-only models already win. The interesting question is what happens for rarer HLAs and novel epitopes, where the labels run out.
             </Box>
           </div>
         </div>
@@ -3048,7 +3048,8 @@ Anticipate the question "isn't structure already obsolete given ImmSET?":
           >
             <Box style={{ padding: "0.12rem 0.32rem" }}>
               ImmSET-class sequence models work best where MIRA labels are abundant. Fast, MSA-free
-              structural prediction complements them on the long tail and inside the labeling loop.
+              structural prediction can complement them where labels are sparse — rarer HLAs, novel
+              epitopes — and inside the labeling loop itself.
             </Box>
           </div>
 
