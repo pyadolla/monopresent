@@ -2993,7 +2993,7 @@ With enough labeled data, sequence-only models have been shown to win in this re
             }}
           >
             <div>- <b>immunoSEQ</b> — proprietary TCR-β repertoire sequencing at industrial scale; hundreds of millions of TCRs from clinical and research samples.</div>
-            <div>- <b>MIRA</b> — combinatorial multiplex assay that labels which TCRs functionally recognize which peptides; the labeled-pair generation engine.</div>
+            <div>- <b>MIRA</b> — combinatorial multiplex assay that labels which TCRs functionally recognize which peptides.</div>
             <div>- <b>ImmSET</b> (Garcia Noceda et al., ML4H 2025) — sequence-based encoder trained on MIRA-class data; <b>beats AlphaFold2 / AlphaFold3 pipelines on HLA-A*02:01 specificity</b> at ~10 ms / pair.</div>
             <div>- Power-law scaling: AUROC ∝ P<sup>α</sup> × T<sup>β</sup>; performance grows faster with peptide diversity than with TCR depth, and is not yet near a ceiling.</div>
           </div>
