@@ -2975,9 +2975,7 @@ With enough labeled data, sequence-only models have been shown to win in this re
           >
             <Box style={{ padding: "0.16rem 0.32rem" }}>
               Adaptive uniquely combines TCR sequencing at scale with high-throughput TCR–antigen
-              labeling and a sequence-based predictor trained on both: immunoSEQ produces TCRs at
-              scale, MIRA pairs them with antigens, and ImmSET turns the pairings into a fast
-              specificity predictor — and the training set keeps growing.
+              labeling and a sequence-based predictor trained on both.
             </Box>
           </div>
 
