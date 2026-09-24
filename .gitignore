@@ -1,3 +1,16 @@
 node_modules/
-.vscode/chrome-user-data/
-.env
+build/
+dist/
+*.log
+
+# dvisvgm / puppeteer scratch produced by running the servers
+latex-server/font-*.cid
+latex-server/tmp/
+latex-server/cache/
+latex-server/output/
+monopresent/packages/immersion-presentation/make-pdf/output.pdf
+monopresent/packages/immersion-presentation/make-pdf/user-data-dir/
+
+# runtime copies of decks (each lives in its own presentation repo)
+monopresent/packages/genbio-presentation/
+monopresent/packages/genentech-presentation/

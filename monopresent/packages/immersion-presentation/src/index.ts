@@ -21,6 +21,7 @@ export { default as Notes } from './PresenterNotes'
 export {
   range,
   setLaTeXBaselineMetadataMode,
+  clearPersistedLaTeXCache,
   getLaTeXBaselineMetadataMode
 } from './utils'
 export { timeline, _internalTimeline } from './timeline'

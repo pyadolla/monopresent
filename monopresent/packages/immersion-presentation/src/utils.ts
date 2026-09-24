@@ -40,16 +40,127 @@ const sleep = (ms: number): Promise<void> =>
 const retryDelayMs = (attempt: number): number =>
   LATEX_FETCH_RETRY_BASE_MS * Math.max(1, attempt) +
   Math.floor(Math.random() * LATEX_FETCH_RETRY_JITTER_MS)
+
+/**
+ * A failure that retrying cannot fix: a LaTeX compilation error, or any HTTP
+ * error response that is not a queue timeout. Previously these were thrown from
+ * inside the same `try` as the fetch, so the outer `catch` retried them like a
+ * transient failure -- doubling the compile load of every broken expression.
+ */
+class NonRetryableLaTeXError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'NonRetryableLaTeXError'
+  }
+}
 type LaTeXFetchPayload = {
   svg: string
   inlineBaselineMetrics?: InlineBaselineMetrics
 }
 
+/* ------------------------------------------------------------------ *
+ * Client-side request batching
+ *
+ * Every <Morph> fetches independently, so a slide fired N parallel GETs and the
+ * browser's ~6-connections-per-host limit capped how much the server could
+ * batch. Expressions requested within BATCH_WINDOW_MS of each other are sent as
+ * a single POST /latex/batch instead, which removes that ceiling: the server
+ * compiles the whole slide in one LaTeX run.
+ *
+ * Servers without /latex/batch (the original server-concmath.ts) are detected on
+ * first use and the client permanently reverts to per-expression GETs, so this
+ * is safe to ship against either server.
+ * ------------------------------------------------------------------ */
+
+const BATCH_WINDOW_MS = 12
+const BATCH_MAX_ITEMS = 48
+
+type BatchWaiter = {
+  tex: string
+  resolve: (p: LaTeXFetchPayload) => void
+  reject: (e: any) => void
+}
+
+/** null = not probed yet, true/false = server's answer, sticky for the session. */
+let batchSupported: boolean | null = null
+let batchQueue: BatchWaiter[] = []
+let batchTimer: ReturnType<typeof setTimeout> | null = null
+
+const scheduleBatchFlush = (): void => {
+  if (batchTimer) return
+  batchTimer = setTimeout(() => {
+    batchTimer = null
+    void flushBatch()
+  }, BATCH_WINDOW_MS)
+}
+
+const flushBatch = async (): Promise<void> => {
+  if (batchQueue.length === 0) return
+  const group = batchQueue.splice(0, BATCH_MAX_ITEMS)
+  if (batchQueue.length > 0) scheduleBatchFlush()
+
+  // A single expression is not worth a POST.
+  if (group.length === 1) {
+    void singleFetchInto(group[0])
+    return
+  }
+
+  const meta = LaTeX.getUseBaselineMetadataEnvelope() ? '1' : '0'
+  try {
+    const result = await fetch(`${LaTeX.getHost()}/latex/batch`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        tex: group.map((g) => g.tex),
+        preamble: LaTeX.getPreamble(),
+        meta
+      })
+    })
+    if (!result.ok) throw new Error(`batch endpoint returned ${result.status}`)
+    const payload = await result.json()
+    if (!payload || !Array.isArray(payload.results) || payload.results.length !== group.length) {
+      throw new Error('batch endpoint returned an unexpected payload')
+    }
+    batchSupported = true
+    group.forEach((g, i) => {
+      const r = payload.results[i]
+      if (r && typeof r.svg === 'string') {
+        g.resolve({ svg: r.svg, inlineBaselineMetrics: r.metrics || undefined })
+      } else {
+        g.reject(new Error(r?.error || `Could not compile '${g.tex}'`))
+      }
+    })
+  } catch (e) {
+    // Either the server has no /latex/batch, or the batch itself failed.
+    // Stop using it and serve this group the old way so nothing is lost.
+    if (batchSupported === null) {
+      batchSupported = false
+      console.info(
+        '%cLaTeX: server has no /latex/batch, using per-expression requests',
+        'color: #6A6A6A'
+      )
+    }
+    group.forEach((g) => void singleFetchInto(g))
+  }
+}
+
+const singleFetchInto = (w: BatchWaiter): Promise<void> =>
+  LaTeX.fetchSVGPayloadSingle(w.tex).then(w.resolve, w.reject)
+
 export const LaTeX = {
   _preamble: ``,
   _host: `http://${typeof window !== 'undefined' ? window.location.hostname : 'example.com'
     }:3001`,
-  _useBaselineMetadataEnvelope: false,
+  // Default ON. The decks enable this from a mount effect, which runs *after*
+  // the first render, so the earliest <Morph> fetches could go out at meta=0 and
+  // then be re-fetched at meta=1 once the flag flipped (the flip bumps
+  // _cacheGeneration, invalidating the client memo). The old server also keyed
+  // its cache on `meta`, so those first expressions were compiled twice.
+  // Defaulting to true removes the race structurally: no request is ever
+  // issued at meta=0, and the decks' setLaTeXBaselineMetadataMode(true) becomes
+  // a no-op that cannot bump the cache generation.
+  _useBaselineMetadataEnvelope: true,
   _cacheGeneration: 0,
   getHost: (): string => LaTeX._host,
   setHost: (h: string): void => {
@@ -66,7 +177,8 @@ export const LaTeX = {
   setPreamble: (p: string): void => {
     LaTeX._preamble = normalizeLaTeXPreamble(p)
   },
-  fetchSVGPayload: async (tex: string): Promise<LaTeXFetchPayload> => {
+  /** The original per-expression GET. Still the fallback path. */
+  fetchSVGPayloadSingle: async (tex: string): Promise<LaTeXFetchPayload> => {
     let lastError: Error | null = null
     for (let attempt = 0; attempt <= LATEX_FETCH_MAX_RETRIES; attempt++) {
       try {
@@ -112,14 +224,21 @@ export const LaTeX = {
         }
 
         if (error?.name === 'CompilationError') {
-          throw new Error(
+          throw new NonRetryableLaTeXError(
             `Could not compile '${error.tex}': ${error.latexErrors.join('\n')}`
           )
         }
-        throw new Error(error?.message || `LaTeX request failed (${result.status})`)
+        throw new NonRetryableLaTeXError(
+          error?.message || `LaTeX request failed (${result.status})`
+        )
       } catch (e) {
         const message = e instanceof Error ? e.message : String(e)
-        lastError = new Error(message)
+        lastError = e instanceof NonRetryableLaTeXError ? e : new Error(message)
+        // Only transport-level failures are worth another attempt; a compile
+        // error will fail identically no matter how many times we ask.
+        if (e instanceof NonRetryableLaTeXError) {
+          break
+        }
         if (attempt < LATEX_FETCH_MAX_RETRIES) {
           await sleep(retryDelayMs(attempt + 1))
           continue
@@ -129,6 +248,25 @@ export const LaTeX = {
     }
 
     throw lastError || new Error('LaTeX request failed.')
+  },
+  /**
+   * Front door. Coalesces concurrent callers into one POST /latex/batch when the
+   * server supports it, otherwise behaves exactly like the original GET path.
+   */
+  fetchSVGPayload: (tex: string): Promise<LaTeXFetchPayload> => {
+    if (batchSupported === false) return LaTeX.fetchSVGPayloadSingle(tex)
+    return new Promise<LaTeXFetchPayload>((resolve, reject) => {
+      batchQueue.push({ tex, resolve, reject })
+      if (batchQueue.length >= BATCH_MAX_ITEMS) {
+        if (batchTimer) {
+          clearTimeout(batchTimer)
+          batchTimer = null
+        }
+        void flushBatch()
+      } else {
+        scheduleBatchFlush()
+      }
+    })
   },
   fetchSVG: async (tex: string): Promise<string> => {
     const payload = await LaTeX.fetchSVGPayload(tex)
@@ -256,24 +394,143 @@ function colorHash(str: string): string {
   return colour
 }
 
-export const fetchLaTeXSvg = memoize(
-  async (tex: string): Promise<LaTeXSVGData | null> => {
+/* ------------------------------------------------------------------ *
+ * Persistent SVG cache (IndexedDB)
+ *
+ * The in-memory memo dies with the page, so every reload recompiled the whole
+ * deck. This stores the *parsed* result so a reload costs neither a network
+ * round trip nor a re-parse.
+ *
+ * Every operation degrades to a no-op: IndexedDB is unavailable in some private
+ * windows and can throw on open, so a failure here must never stop a slide from
+ * rendering. Entries carry a schema tag and an age limit, and the key includes
+ * the host and preamble, so changing server or profile cannot serve stale
+ * geometry.
+ * ------------------------------------------------------------------ */
+
+const IDB_NAME = 'immersion-latex'
+const IDB_STORE = 'svg'
+/** Bump to invalidate every persisted entry (e.g. if LaTeXSVGData changes). */
+const IDB_SCHEMA = 'v1'
+const IDB_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000
+
+type PersistedEntry = { schema: string; storedAt: number; data: LaTeXSVGData }
+
+let idbPromise: Promise<IDBDatabase | null> | null = null
+
+const openIdb = (): Promise<IDBDatabase | null> => {
+  if (idbPromise) return idbPromise
+  idbPromise = new Promise((resolve) => {
+    try {
+      if (typeof indexedDB === 'undefined') return resolve(null)
+      const req = indexedDB.open(IDB_NAME, 1)
+      req.onupgradeneeded = () => {
+        const db = req.result
+        if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE)
+      }
+      req.onsuccess = () => resolve(req.result)
+      req.onerror = () => resolve(null)
+      req.onblocked = () => resolve(null)
+    } catch {
+      resolve(null)
+    }
+  })
+  return idbPromise
+}
+
+/** Stable across reloads: deliberately excludes the in-session cache generation. */
+const persistKey = (tex: string): string =>
+  `${IDB_SCHEMA}|${LaTeX.getHost()}|${LaTeX.getPreamble()}|${
+    LaTeX.getUseBaselineMetadataEnvelope() ? 'm1' : 'm0'
+  }|${tex}`
+
+const idbGet = async (key: string): Promise<LaTeXSVGData | null> => {
+  try {
+    const db = await openIdb()
+    if (!db) return null
+    return await new Promise((resolve) => {
+      try {
+        const tx = db.transaction(IDB_STORE, 'readonly')
+        const req = tx.objectStore(IDB_STORE).get(key)
+        req.onsuccess = () => {
+          const v = req.result as PersistedEntry | undefined
+          if (!v || v.schema !== IDB_SCHEMA) return resolve(null)
+          if (Date.now() - v.storedAt > IDB_MAX_AGE_MS) return resolve(null)
+          resolve(v.data)
+        }
+        req.onerror = () => resolve(null)
+      } catch {
+        resolve(null)
+      }
+    })
+  } catch {
+    return null
+  }
+}
+
+const idbPut = async (key: string, data: LaTeXSVGData): Promise<void> => {
+  try {
+    const db = await openIdb()
+    if (!db) return
+    await new Promise<void>((resolve) => {
+      try {
+        const tx = db.transaction(IDB_STORE, 'readwrite')
+        const entry: PersistedEntry = { schema: IDB_SCHEMA, storedAt: Date.now(), data }
+        tx.objectStore(IDB_STORE).put(entry, key)
+        tx.oncomplete = () => resolve()
+        tx.onerror = () => resolve()
+        tx.onabort = () => resolve()
+      } catch {
+        resolve()
+      }
+    })
+  } catch {
+    /* persistence is best-effort */
+  }
+}
+
+/** Drop everything persisted. Exposed for debugging and for rollback. */
+export const clearPersistedLaTeXCache = async (): Promise<void> => {
+  try {
+    const db = await openIdb()
+    if (!db) return
+    await new Promise<void>((resolve) => {
+      const tx = db.transaction(IDB_STORE, 'readwrite')
+      tx.objectStore(IDB_STORE).clear()
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => resolve()
+      tx.onabort = () => resolve()
+    })
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Cached compile. This rejects on failure rather than resolving to `null`, and
+ * is memoized with `promise: true` so memoizee evicts the entry when the
+ * promise rejects. Previously a failure resolved to `null`, which memoizee
+ * cached *permanently*: one aborted or failed request meant that expression
+ * stayed blank for the lifetime of the page, even after the server recovered.
+ * `fetchLaTeXSvg` below restores the `null`-on-failure contract for callers.
+ */
+const fetchLaTeXSvgUncached = memoize(
+  async (tex: string): Promise<LaTeXSVGData> => {
     /* console.log('compiling', tex) */
     tex = tex.replace(/\\g(\d)/g, (_, p1) => `\\g{${colorHash(p1)}}`)
     tex = tex.replace(/\\g\{(.*?)\}/g, (_, p1) => `\\g{${colorHash(p1)}}`)
 
     // console.log('COMPILING', tex)
+    // A previous session may already have this expression parsed.
+    const persistedKey = persistKey(tex)
+    const persisted = await idbGet(persistedKey)
+    if (persisted) return persisted
+
     let text: string
     let inlineBaselineMetrics: InlineBaselineMetrics | undefined
-    try {
-      const payload = await LaTeX.fetchSVGPayload(tex)
-      text = payload.svg
-      inlineBaselineMetrics = payload.inlineBaselineMetrics
-    } catch (e) {
-      const message = e instanceof Error ? e.message : String(e)
-      console.error(`%cLaTeXError: ${message}`, 'color: #AD1457')
-      return null
-    }
+    const payload = await LaTeX.fetchSVGPayload(tex)
+    text = payload.svg
+    inlineBaselineMetrics = payload.inlineBaselineMetrics
 
     const ele = document.createElement('div')
     ele.innerHTML = text
@@ -292,19 +549,43 @@ export const fetchLaTeXSvg = memoize(
     if (!width || !height || !viewBox) {
       throw new Error('Compiled LaTeX SVG has no height or width or viewBox')
     }
-    return {
+    const parsed: LaTeXSVGData = {
       groups,
       width: parseFloat(width.replace('pt', '')),
       height: parseFloat(height.replace('pt', '')),
       viewBox: viewBox.split(' ').map((s) => parseFloat(s)),
       inlineBaselineMetrics
     }
+    // Fire-and-forget: never make rendering wait on persistence.
+    void idbPut(persistedKey, parsed)
+    return parsed
   },
   {
+    // `promise: true` makes memoizee drop the cache entry if the promise
+    // rejects, so a transient failure is retried on the next render instead of
+    // being remembered forever.
+    promise: true,
     normalizer: (args) =>
       `${LaTeX._cacheGeneration}|${LaTeX.getHost()}|${LaTeX.getPreamble()}|${LaTeX.getUseBaselineMetadataEnvelope() ? 'm1' : 'm0'}|${args[0]}`
   }
 )
+
+/**
+ * Public API, unchanged for callers: resolves to `null` when an expression
+ * cannot be produced, so `lib/morph.ts` renders nothing rather than throwing.
+ * The difference from before is that the failure is no longer cached.
+ */
+export const fetchLaTeXSvg = async (
+  tex: string
+): Promise<LaTeXSVGData | null> => {
+  try {
+    return await fetchLaTeXSvgUncached(tex)
+  } catch (e) {
+    const message = e instanceof Error ? e.message : String(e)
+    console.error(`%cLaTeXError: ${message}`, 'color: #AD1457')
+    return null
+  }
+}
 
 export function usePrevious<T>(value: T): T | undefined {
   const ref = useRef<T>()
