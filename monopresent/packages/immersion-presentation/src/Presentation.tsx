@@ -335,6 +335,82 @@ function usePresenterTimer() {
   }
 }
 
+/* ------------------------------------------------------------------ *
+ * Per-window zoom
+ *
+ * The presentation renders at a fixed 1200x900 and has no scaling of its own,
+ * so the only way to resize it was the browser's own zoom. Chrome stores that
+ * per *origin*, not per window, so zooming one window silently re-zoomed every
+ * other window on the same origin -- which looked like the websocket syncing
+ * scale, even though the socket only ever carries {slideIndex, stepIndex}.
+ *
+ * This is an in-app zoom instead. It is deliberately window-local:
+ *   - it lives in component state and is never sent over the websocket,
+ *   - it is persisted in sessionStorage, which is per browser tab/window, so a
+ *     reload keeps this window's zoom without ever pushing it onto the peer
+ *     (localStorage would be shared across windows and would re-couple them).
+ *
+ * Ctrl/Cmd +  zoom in,  Ctrl/Cmd -  zoom out,  Ctrl/Cmd 0  reset.
+ * preventDefault() suppresses the browser's own per-origin zoom, which is the
+ * behaviour being replaced.
+ * ------------------------------------------------------------------ */
+
+const ZOOM_STORAGE_KEY = 'immersion:presentation:zoom'
+const ZOOM_MIN = 0.25
+const ZOOM_MAX = 4
+const ZOOM_FACTOR = 1.1
+
+const clampZoom = (z: number): number =>
+  Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z))
+
+const readStoredZoom = (): number => {
+  if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+    return 1
+  }
+  try {
+    const raw = sessionStorage.getItem(ZOOM_STORAGE_KEY)
+    if (!raw) return 1
+    const parsed = parseFloat(raw)
+    return Number.isFinite(parsed) && parsed > 0 ? clampZoom(parsed) : 1
+  } catch {
+    return 1
+  }
+}
+
+function useWindowLocalZoom(enabled: boolean): number {
+  const [zoom, setZoom] = useState<number>(readStoredZoom)
+
+  useEffect(() => {
+    if (typeof sessionStorage === 'undefined') return
+    try {
+      sessionStorage.setItem(ZOOM_STORAGE_KEY, String(zoom))
+    } catch {
+      /* private windows can refuse storage; zoom still works in-memory */
+    }
+  }, [zoom])
+
+  useEffect(() => {
+    if (!enabled) return
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey) || e.altKey) return
+      if (e.key === '=' || e.key === '+') {
+        e.preventDefault()
+        setZoom((z) => clampZoom(z * ZOOM_FACTOR))
+      } else if (e.key === '-' || e.key === '_') {
+        e.preventDefault()
+        setZoom((z) => clampZoom(z / ZOOM_FACTOR))
+      } else if (e.key === '0') {
+        e.preventDefault()
+        setZoom(1)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [enabled])
+
+  return zoom
+}
+
 function PresentationUI({
   children,
   render,
@@ -413,6 +489,9 @@ function PresentationUI({
     },
     [slideIndex, stepIndex, setSlideAndStep]
   )
+
+  // Window-local: never sent over the websocket, never shared between windows.
+  const zoom = useWindowLocalZoom(mode === 'fullscreen')
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -570,12 +649,20 @@ function PresentationUI({
     return (
       <div className='flex justify-center items-center bg-white h-screen'>
         <CitationProvider citationMap={citationMap} bibUrl={bibUrl}>
-          {render({
-            slideIndex,
-            stepIndex,
-            slidesInfo,
-            slides: threeSlides
-          })}
+          <div
+            style={{
+              transform: `scale(${zoom})`,
+              transformOrigin: 'center center',
+              transition: 'transform 0.12s ease-out'
+            }}
+          >
+            {render({
+              slideIndex,
+              stepIndex,
+              slidesInfo,
+              slides: threeSlides
+            })}
+          </div>
         </CitationProvider>
       </div>
     )
