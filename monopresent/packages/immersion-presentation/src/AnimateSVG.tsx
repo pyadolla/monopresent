@@ -101,6 +101,9 @@ function update(
   step: any,
   replaceImediately: boolean
 ) {
+  // Text morphs are async. Collect them so the caller can wait before making
+  // the SVG visible - otherwise text can pop in after the fade-in has started.
+  const pending: Promise<unknown>[] = []
   for (const key in step) {
     if (step[key] === null || step[key] === undefined) {
       continue
@@ -114,14 +117,16 @@ function update(
           textGroup.innerHTML = ''
         }
         // TODO: use that animation groups database!
-        animate(
-          textGroup,
-          step[key] || '',
-          replaceImediately,
-          0.3,
-          () => undefined,
-          () => centerLatexGroup(textGroup)
-        ).then(() => centerLatexGroup(textGroup))
+        pending.push(
+          animate(
+            textGroup,
+            step[key] || '',
+            replaceImediately,
+            0.3,
+            () => undefined,
+            () => centerLatexGroup(textGroup)
+          ).then(() => centerLatexGroup(textGroup))
+        )
       }
     } else {
       const ele = wrapper.querySelector(`#${key}`) as SVGElement
@@ -143,6 +148,7 @@ function update(
       }
     }
   }
+  return Promise.all(pending)
 }
 
 // Cache the images
@@ -174,6 +180,16 @@ function AnimateSVG({
   className = ''
 }: AnimateSVGProps): React.ReactElement {
   const element = useRef<HTMLDivElement | null>(null)
+  // The SVG is injected asynchronously (fetch + LaTeX replacement). Until that
+  // finishes, the step effect below must not run: it would animate elements
+  // *from* the raw SVG's natural visible state towards their hidden state,
+  // which shows a flash of artwork that should never have been on screen.
+  // The mount path applies the initial state instantly instead.
+  const loaded = useRef(false)
+  // Always hold the newest step, so the mount path applies the step the
+  // presenter is actually on, even if they advanced while the SVG loaded.
+  const latestStep = useRef(step)
+  latestStep.current = step
   useEffect(() => {
     ; (async () => {
       // Load the svg
@@ -205,18 +221,32 @@ function AnimateSVG({
 
       // Set the correct opacity, ... of the elements
       if (element.current) {
-        update(element.current, step, true)
+        await update(element.current, latestStep.current, true)
+        loaded.current = true
       }
 
-      // Fade in the picture
-      div.querySelector('svg')!.style.transition = '0.3s opacity'
-      div.querySelector('svg')!.style.opacity = '1'
+      // Fade in the picture, but only once the per-step state above has been
+      // committed to a painted frame. Otherwise the browser can show the raw
+      // artwork for a frame or two before the hidden elements are hidden -
+      // which is invisible when the SVG loads slowly and very visible when it
+      // comes straight from cache.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const el = div.querySelector('svg')
+          if (!el) return
+          el.style.transition = '0.3s opacity'
+          el.style.opacity = '1'
+        })
+      })
     })()
   }, [element.current])
 
   // When the step changes, animate the new opacities
   useEffect(() => {
     if (!element.current) return
+    // Before the SVG has been injected and initialised there is nothing to
+    // animate, and animating would flash the un-initialised artwork.
+    if (!loaded.current) return
 
     update(element.current, step, false)
   }, [step, element])
