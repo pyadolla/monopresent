@@ -8,10 +8,14 @@ server.on('connection', (ws) => {
   clients.add(ws);
 
   ws.on('message', (message) => {
-    // Broadcast the received message to all other connected clients
+    // Rebroadcast as a TEXT frame. Sending the raw Buffer makes it a binary
+    // frame, which reaches the browser as a Blob, and the client then has to
+    // await blob.text() on every message. That async hop is pure latency, and
+    // pointer updates arrive ~60 times a second.
+    const text = typeof message === 'string' ? message : message.toString();
     for (const client of clients) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
+        client.send(text);
       }
     }
   });

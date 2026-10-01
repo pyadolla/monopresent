@@ -3,7 +3,8 @@ import React, {
   useState,
   useContext,
   useCallback,
-  useMemo
+  useMemo,
+  useRef
 } from 'react'
 
 import { getSlidesInfo, SlidesInfo } from './staticAnalysis'
@@ -118,11 +119,205 @@ function PresentationEmbedWrapper({
   )
 }
 
+// ---------------------------------------------------------------------------
+// Shared pointer.
+//
+// Presenter mode shows the live slide in a pane that is smaller than the window
+// and sits beside the notes and the clock, while the audience window shows the
+// same slide at a different size - and possibly at a different zoom. So nothing
+// useful can be sent in pixels. What travels over the socket is the position as
+// a FRACTION of the slide box (0..1 on each axis), measured against the .slide
+// element. The receiving window multiplies by its own .slide rect, which makes
+// it correct at any pane size, window size or zoom level.
+//
+// Only the presenter broadcasts; the audience window keeps an ordinary pointer.
+// ---------------------------------------------------------------------------
+
+type PointerPos = { x: number; y: number }
+
+// The socket lives in PresentationRouteWrapper but the dot is drawn in
+// PresentationUI, so instead of threading a prop through the render function
+// the two talk through this tiny store.
+let pointerSubscribers: Array<(p: PointerPos | null) => void> = []
+const publishPointer = (p: PointerPos | null) =>
+  pointerSubscribers.forEach((f) => f(p))
+function useSharedPointer(): PointerPos | null {
+  const [pos, setPos] = useState<PointerPos | null>(null)
+  useEffect(() => {
+    pointerSubscribers.push(setPos)
+    return () => {
+      pointerSubscribers = pointerSubscribers.filter((f) => f !== setPos)
+    }
+  }, [])
+  return pos
+}
+
+// The live slide, which is not simply the first .slide in the DOM:
+//   fullscreen renders three (previous, current, next) and the first is the
+//     outgoing transition ghost - scaled up and at opacity 0;
+//   presenter renders two (the live pane and the half-size next-step preview)
+//     and there the first one IS the live pane.
+// Picking the most visible, earliest element satisfies both.
+const liveSlideEl = (): HTMLElement | null => {
+  const all = Array.from(document.querySelectorAll('.slide')) as HTMLElement[]
+  if (!all.length) return null
+  let best = all[0]
+  let bestOpacity = -1
+  for (const el of all) {
+    const o = parseFloat(getComputedStyle(el).opacity || '1')
+    if (o > bestOpacity + 1e-3) {
+      best = el
+      bestOpacity = o
+    }
+  }
+  return best
+}
+
+function useBroadcastPointer(ws: WebSocket, enabled: boolean) {
+  useEffect(() => {
+    if (!enabled) return
+    let frame = 0
+    let last: PointerPos | null = null
+
+    const send = (payload: object) => {
+      try {
+        if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(payload))
+      } catch (e) {
+        /* socket not up; nothing to do */
+      }
+    }
+
+    const flush = () => {
+      frame = 0
+      if (last) send({ type: 'pointer', x: last.x, y: last.y })
+    }
+
+    const onMove = (e: MouseEvent) => {
+      const el = liveSlideEl()
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      if (!r.width || !r.height) return
+      const x = (e.clientX - r.left) / r.width
+      const y = (e.clientY - r.top) / r.height
+      if (x < 0 || x > 1 || y < 0 || y > 1) {
+        // Outside the slide: hide it rather than clamping to an edge.
+        if (last) {
+          last = null
+          send({ type: 'pointer', hidden: true })
+        }
+        return
+      }
+      last = { x, y }
+      if (!frame) frame = requestAnimationFrame(flush)
+    }
+
+    const onLeave = () => {
+      last = null
+      send({ type: 'pointer', hidden: true })
+    }
+
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mouseout', onLeave)
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseout', onLeave)
+      onLeave()
+    }
+  }, [ws, enabled])
+}
+
+function RemotePointer(): React.ReactElement | null {
+  const dot = useRef<HTMLDivElement | null>(null)
+  const rect = useRef<DOMRect | null>(null)
+  const latest = useRef<PointerPos | null>(null)
+  const frame = useRef(0)
+  const [visible, setVisible] = useState(false)
+
+  // Measuring the slide on every pointer message forces a layout each time,
+  // which is most of what made this stutter. The slide box only moves on a
+  // resize or a zoom, so cache it and refresh it rarely.
+  const measure = () => {
+    const el = liveSlideEl()
+    rect.current = el ? el.getBoundingClientRect() : null
+  }
+
+  const paint = () => {
+    frame.current = 0
+    const r = rect.current
+    const p = latest.current
+    const node = dot.current
+    if (!node || !r || !p) return
+    // translate3d is composited on the GPU: no layout, no paint of anything
+    // else on the page. Writing left/top instead would relayout every frame.
+    node.style.transform =
+      `translate3d(${r.left + p.x * r.width}px, ${r.top + p.y * r.height}px, 0)`
+  }
+
+  useEffect(() => {
+    measure()
+    const onResize = () => measure()
+    window.addEventListener('resize', onResize)
+    // Cheap safety net for zoom changes and layout shifts we do not observe.
+    const id = window.setInterval(measure, 1000)
+
+    const onPointer = (p: PointerPos | null) => {
+      if (!p) {
+        latest.current = null
+        setVisible(false)
+        return
+      }
+      if (!latest.current) measure()
+      latest.current = p
+      setVisible(true)
+      // Coalesce to one write per frame; the sender can outrun the display.
+      if (!frame.current) frame.current = requestAnimationFrame(paint)
+    }
+    pointerSubscribers.push(onPointer)
+    return () => {
+      pointerSubscribers = pointerSubscribers.filter((f) => f !== onPointer)
+      window.removeEventListener('resize', onResize)
+      window.clearInterval(id)
+      if (frame.current) cancelAnimationFrame(frame.current)
+    }
+  }, [])
+
+  // Position the first frame as soon as the node exists, so it does not
+  // appear at the origin before the first paint.
+  useEffect(() => {
+    if (visible) paint()
+  }, [visible])
+
+  if (!visible) return null
+  return (
+    <div
+      ref={dot}
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        width: 10,
+        height: 10,
+        marginLeft: -5,
+        marginTop: -5,
+        borderRadius: '50%',
+        background: 'rgba(220, 38, 38, 0.9)',
+        boxShadow: '0 0 8px 3px rgba(220, 38, 38, 0.3)',
+        pointerEvents: 'none',
+        zIndex: 9999,
+        willChange: 'transform'
+      }}
+    />
+  )
+}
+
+
 function PresentationRouteWrapper({
   ...props
 }: PresentationProps & RenderFunc & Mode): React.ReactElement {
   const match = useRouteMatch()
   const history = useHistory()
+
 
   const setSlideAndStep = (
     slideIndex: number,
@@ -148,6 +343,9 @@ function PresentationRouteWrapper({
     },
     []
   )
+
+  // Mirror the presenter's pointer to the other windows.
+  useBroadcastPointer(ws, props.mode === 'presenter')
   /* const bc = useMemo(() => new BroadcastChannel('presentation'), []) */
 
   /* bc.onmessage = useCallback((event) => { */
@@ -172,7 +370,16 @@ function PresentationRouteWrapper({
       }
 
       // Now parse as JSON
-      const { slideIndex, stepIndex } = JSON.parse(data);
+      const msg = JSON.parse(data);
+
+      // Pointer updates are not navigation. Without this branch they would
+      // call setSlideAndStep(undefined, undefined) and break the sync.
+      if (msg && msg.type === 'pointer') {
+        publishPointer(msg.hidden ? null : { x: msg.x, y: msg.y });
+        return;
+      }
+
+      const { slideIndex, stepIndex } = msg;
       setSlideAndStep(slideIndex, stepIndex, false);
     } catch (e) {
       console.error("Could not parse!", event.data, e);
@@ -585,6 +792,7 @@ function PresentationUI({
 
     return (
       <div className='flex'>
+        <RemotePointer />
         <CitationProvider citationMap={citationMap} bibUrl={bibUrl}>
           <div className='flex justify-around'>
             <div className='flex flex-col'>
@@ -648,6 +856,7 @@ function PresentationUI({
   if (mode === 'fullscreen') {
     return (
       <div className='flex justify-center items-center bg-white h-screen'>
+        <RemotePointer />
         <CitationProvider citationMap={citationMap} bibUrl={bibUrl}>
           <div
             style={{
