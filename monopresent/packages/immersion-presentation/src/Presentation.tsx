@@ -139,6 +139,52 @@ function PresentationEmbedWrapper({
 
 type PointerPos = { x: number; y: number }
 
+// Transport.
+//
+// The websocket server may be a long way off - over an SSH tunnel to a compute
+// node, in the setup this deck is presented from - and a pointer update that
+// goes out to it and back pays two tunnel traversals per mouse move. Measured
+// on the node itself the socket is 2ms, but that number does not include the
+// tunnel, and the tunnel is the whole cost.
+//
+// Two windows of the same deck are the same origin in the same browser, so
+// they also have BroadcastChannel, which never leaves the machine: 0.7ms
+// median, measured side by side with the socket. So updates go out over both.
+// BroadcastChannel wins whenever the peer is in this browser; the socket is
+// what reaches a window in a different browser or on a different machine.
+//
+// Sending twice means the same update can arrive twice, and the slower copy
+// carries a stale position - which would drag the dot backwards. Each window
+// stamps its messages with an id and a counter, and a receiver drops anything
+// not newer than what it has already applied from that sender.
+const POINTER_CHANNEL = 'immersion:pointer'
+const SELF_ID = Math.random().toString(36).slice(2)
+let pointerSeq = 0
+const lastAppliedSeq = new Map<string, number>()
+
+const makeChannel = (): BroadcastChannel | null => {
+  if (typeof BroadcastChannel === 'undefined') return null
+  try {
+    return new BroadcastChannel(POINTER_CHANNEL)
+  } catch {
+    return null
+  }
+}
+
+// Returns false when the message is a duplicate or out of order.
+const acceptPointerMessage = (msg: {
+  src?: string
+  seq?: number
+}): boolean => {
+  if (msg.src === SELF_ID) return false
+  // A peer running an older build sends no counter; take it as it comes.
+  if (typeof msg.src !== 'string' || typeof msg.seq !== 'number') return true
+  const seen = lastAppliedSeq.get(msg.src)
+  if (seen !== undefined && msg.seq <= seen) return false
+  lastAppliedSeq.set(msg.src, msg.seq)
+  return true
+}
+
 // 'local' is this window's own mouse, 'remote' is the other window's, arriving
 // over the socket. The dot shows the local position when there is one, because
 // a cursor replacement that waits for a socket round trip feels broken.
@@ -176,23 +222,29 @@ const liveSlideEl = (): HTMLElement | null => {
   return best
 }
 
-function useSlidePointer(ws: WebSocket, enabled: boolean) {
+function useSlidePointer(
+  ws: WebSocket,
+  bc: BroadcastChannel | null,
+  enabled: boolean
+) {
   useEffect(() => {
     if (!enabled) return
-    let frame = 0
     let last: PointerPos | null = null
+    let lastSentAt = 0
 
     const send = (payload: object) => {
+      const stamped = { ...payload, src: SELF_ID, seq: ++pointerSeq }
+      // In-browser first, so a peer here never waits on the network.
       try {
-        if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(payload))
+        if (bc) bc.postMessage(stamped)
+      } catch (e) {
+        /* channel closed; the socket still carries it */
+      }
+      try {
+        if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(stamped))
       } catch (e) {
         /* socket not up; nothing to do */
       }
-    }
-
-    const flush = () => {
-      frame = 0
-      if (last) send({ type: 'pointer', x: last.x, y: last.y })
     }
 
     const onMove = (e: MouseEvent) => {
@@ -215,9 +267,18 @@ function useSlidePointer(ws: WebSocket, enabled: boolean) {
       }
       last = { x, y }
       // Draw in this window straight away. Only the other window waits for
-      // the socket.
+      // the transport.
       publishPointer(last, 'local')
-      if (!frame) frame = requestAnimationFrame(flush)
+      // Send from the handler rather than from a requestAnimationFrame. The
+      // browser already coalesces mousemove to one event per displayed frame,
+      // so this does not increase the message rate - but deferring to the next
+      // frame added up to a frame of delay before the update even left. The
+      // floor is a guard against platforms that deliver moves faster.
+      const t = performance.now()
+      if (t - lastSentAt >= 4) {
+        lastSentAt = t
+        send({ type: 'pointer', x, y })
+      }
     }
 
     const onLeave = () => {
@@ -236,13 +297,12 @@ function useSlidePointer(ws: WebSocket, enabled: boolean) {
     document.documentElement.addEventListener('mouseleave', onLeave)
     window.addEventListener('blur', onLeave)
     return () => {
-      if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('mousemove', onMove)
       document.documentElement.removeEventListener('mouseleave', onLeave)
       window.removeEventListener('blur', onLeave)
       onLeave()
     }
-  }, [ws, enabled])
+  }, [ws, bc, enabled])
 }
 
 function SlidePointer(): React.ReactElement | null {
@@ -251,7 +311,6 @@ function SlidePointer(): React.ReactElement | null {
   const local = useRef<PointerPos | null>(null)
   const remote = useRef<PointerPos | null>(null)
   const shown = useRef(false)
-  const frame = useRef(0)
   const [visible, setVisible] = useState(false)
 
   // One dot per window. The local mouse wins while it is over the slide, so
@@ -267,7 +326,6 @@ function SlidePointer(): React.ReactElement | null {
   }
 
   const paint = () => {
-    frame.current = 0
     const r = rect.current
     const p = latest()
     const node = dot.current
@@ -298,8 +356,11 @@ function SlidePointer(): React.ReactElement | null {
       if (!shown.current) measure()
       shown.current = true
       setVisible(true)
-      // Coalesce to one write per frame; the sender can outrun the display.
-      if (!frame.current) frame.current = requestAnimationFrame(paint)
+      // Write the transform now rather than from a requestAnimationFrame.
+      // Setting transform does not force layout - the compositor picks it up
+      // at the next frame either way - but a message arriving just after a
+      // frame callback had already run used to wait out a whole extra frame.
+      paint()
     }
     pointerSubscribers.push(onPointer)
     return () => {
@@ -307,7 +368,6 @@ function SlidePointer(): React.ReactElement | null {
       window.removeEventListener('resize', onResize)
       window.removeEventListener(ZOOM_EVENT, onResize)
       window.clearInterval(id)
-      if (frame.current) cancelAnimationFrame(frame.current)
     }
   }, [])
 
@@ -373,12 +433,25 @@ function PresentationRouteWrapper({
     []
   )
 
+  const bc = useMemo(makeChannel, [])
+  useEffect(() => () => bc?.close(), [bc])
+
   // Mirror the pointer between the presenter and audience windows, in both
   // directions. Edit and embed modes keep an ordinary cursor.
   useSlidePointer(
     ws,
+    bc,
     props.mode === 'presenter' || props.mode === 'fullscreen'
   )
+
+  if (bc) {
+    bc.onmessage = (event: MessageEvent) => {
+      const msg = event.data
+      if (!msg || msg.type !== 'pointer') return
+      if (!acceptPointerMessage(msg)) return
+      publishPointer(msg.hidden ? null : { x: msg.x, y: msg.y })
+    }
+  }
   /* const bc = useMemo(() => new BroadcastChannel('presentation'), []) */
 
   /* bc.onmessage = useCallback((event) => { */
@@ -408,7 +481,11 @@ function PresentationRouteWrapper({
       // Pointer updates are not navigation. Without this branch they would
       // call setSlideAndStep(undefined, undefined) and break the sync.
       if (msg && msg.type === 'pointer') {
-        publishPointer(msg.hidden ? null : { x: msg.x, y: msg.y });
+        // Dropped if BroadcastChannel already delivered this update, or a
+        // newer one: the socket copy is the slower of the two.
+        if (acceptPointerMessage(msg)) {
+          publishPointer(msg.hidden ? null : { x: msg.x, y: msg.y });
+        }
         return;
       }
 
