@@ -175,6 +175,12 @@ a second as a safety net. The zoom event matters: a zoom moves the slide box
 without firing a resize, and without the signal the dot measured against the old
 rect for up to a second afterwards — landing 15 px off in testing.
 
+`immersion:zoom` is a plain DOM event inside one document, despite sitting next
+to the `BroadcastChannel` code. **Zoom is never transmitted at all** — not over
+the channel, not over the socket. It is held in `sessionStorage`, which is per
+window, and applied as a local CSS transform. That is what makes it per-window:
+there is no sync path to remove.
+
 ---
 
 ## 5. Changing it
@@ -184,6 +190,8 @@ rect for up to a second afterwards — landing 15 px off in testing.
 | Size, colour, glow | the inline style in `SlidePointer` — currently a 10 px circle at `rgba(220,38,38,0.9)` with an 8 px glow |
 | Keep the native cursor as well as the dot | remove `cursor: 'none'` from the presenter and fullscreen slide boxes |
 | Which modes point | the `useSlidePointer(ws, bc, ...)` enable expression |
+| How coarse the keyboard zoom is | `ZOOM_FACTOR`, currently 1.1 a press |
+| How fine the wheel and pinch zoom are | `WHEEL_STEP` (1.02 a notch), `PINCH_RATE` (0.0004 per delta unit), and `PINCH_DELTA_MAX` (25), the threshold that tells a trackpad gesture from a mouse notch |
 | Show the dot in another mode | add `<SlidePointer />` to that branch's return; it takes no props, but keep it out of any transformed ancestor |
 | Disable entirely | remove the `useSlidePointer(...)` call — receivers then never get a message |
 
