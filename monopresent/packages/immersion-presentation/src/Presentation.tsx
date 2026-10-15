@@ -675,7 +675,16 @@ function usePresenterTimer() {
 const ZOOM_STORAGE_KEY = 'immersion:presentation:zoom'
 const ZOOM_MIN = 0.25
 const ZOOM_MAX = 4
+// Keyboard: coarse, one press is a visible step.
 const ZOOM_FACTOR = 1.1
+// Wheel and pinch: fine, for nudging. A mouse notch is 2%, where the keyboard
+// is 10% and Chrome's own zoom is 10%; a pinch moves about 8% over a full
+// gesture, so it can be held and eased into place.
+const WHEEL_STEP = 1.02
+const WHEEL_NOTCH = 120
+const PINCH_RATE = 0.0004
+// Below this a wheel event is a trackpad gesture, above it a mouse notch.
+const PINCH_DELTA_MAX = 25
 
 const clampZoom = (z: number): number =>
   Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z))
@@ -714,6 +723,8 @@ function useWindowLocalZoom(enabled: boolean): number {
 
   useEffect(() => {
     if (!enabled) return
+    let pendingFactor = 1
+    let zoomFrame = 0
     const onKey = (e: KeyboardEvent) => {
       if (!(e.ctrlKey || e.metaKey) || e.altKey) return
       if (e.key === '=' || e.key === '+') {
@@ -731,24 +742,45 @@ function useWindowLocalZoom(enabled: boolean): number {
     // wheel event with ctrlKey set. These were the gestures that still reached
     // the browser's own per-origin zoom and so moved both windows at once.
     // The listener must be non-passive or preventDefault is ignored.
+    //
+    // Wheel and pinch are the FINE control, for nudging a slide into place;
+    // the keyboard shortcuts above stay coarse at 1.1x a press. The two inputs
+    // need separate scaling because their deltas are nothing alike: a mouse
+    // notch is a single event of about 120 units, while a pinch is a stream of
+    // events of a few units each. One coefficient for both leaves one of them
+    // either unusable or uncontrollable.
     const onWheel = (e: WheelEvent) => {
       if (!(e.ctrlKey || e.metaKey)) return
       e.preventDefault()
-      // Scale by distance rather than per notch: a trackpad pinch arrives as
-      // many small deltas and stepping by a fixed factor each time overshoots.
-      // The coefficient puts one mouse notch (deltaY about 120) near the 1.1x
-      // the browser itself uses, and the clamp stops a single coarse event -
-      // some mice send 240 or more - from jumping most of the zoom range.
-      const factor = Math.min(
-        1.25,
-        Math.max(0.8, Math.exp(-e.deltaY * 0.0008))
-      )
-      setZoom((z) => clampZoom(z * factor))
+
+      // Firefox reports notches in lines rather than pixels, which would read
+      // as a pinch. Normalise before deciding which this is.
+      let d = e.deltaY
+      if (e.deltaMode === 1) d *= 40
+      else if (e.deltaMode === 2) d *= 400
+
+      const factor =
+        Math.abs(d) < PINCH_DELTA_MAX
+          ? Math.exp(-d * PINCH_RATE)
+          : Math.pow(WHEEL_STEP, -d / WHEEL_NOTCH)
+
+      // Accumulate and apply once per frame. A pinch delivers events faster
+      // than the deck can re-render, and every setZoom re-renders every slide.
+      pendingFactor *= Math.min(1.25, Math.max(0.8, factor))
+      if (!zoomFrame) {
+        zoomFrame = requestAnimationFrame(() => {
+          zoomFrame = 0
+          const f = pendingFactor
+          pendingFactor = 1
+          if (f !== 1) setZoom((z) => clampZoom(z * f))
+        })
+      }
     }
 
     window.addEventListener('keydown', onKey)
     window.addEventListener('wheel', onWheel, { passive: false })
     return () => {
+      if (zoomFrame) cancelAnimationFrame(zoomFrame)
       window.removeEventListener('keydown', onKey)
       window.removeEventListener('wheel', onWheel)
     }
