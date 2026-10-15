@@ -218,7 +218,7 @@ On the `genbio-latex-speedup` branch:
 | `4d148df` | the original one-directional pointer |
 | `9a8bb7e` | two-way, and the dot replaces the cursor |
 | `83d8bb4` | per-window zoom widened to both windows and to the wheel |
-| `f872635` | BroadcastChannel transport, and both rAF hops removed |
+| `038e19b` | BroadcastChannel transport, and both rAF hops removed |
 
 To drop a single step, `git revert <commit>`. To drop the pointer entirely while
 keeping the rest of the branch, revert all three and then
