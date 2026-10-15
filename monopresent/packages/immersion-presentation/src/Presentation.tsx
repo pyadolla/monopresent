@@ -130,27 +130,30 @@ function PresentationEmbedWrapper({
 // element. The receiving window multiplies by its own .slide rect, which makes
 // it correct at any pane size, window size or zoom level.
 //
-// Only the presenter broadcasts; the audience window keeps an ordinary pointer.
+// Both presenter and fullscreen broadcast, and both draw the dot, so pointing
+// works in whichever window the mouse happens to be in. Over the slide the dot
+// REPLACES the native cursor (cursor: none on the slide box), so there is one
+// pointer on screen rather than two. Edit mode is excluded: it needs a real
+// cursor for the animation editor beside the slide.
 // ---------------------------------------------------------------------------
 
 type PointerPos = { x: number; y: number }
 
+// 'local' is this window's own mouse, 'remote' is the other window's, arriving
+// over the socket. The dot shows the local position when there is one, because
+// a cursor replacement that waits for a socket round trip feels broken.
+type PointerSource = 'local' | 'remote'
+
 // The socket lives in PresentationRouteWrapper but the dot is drawn in
 // PresentationUI, so instead of threading a prop through the render function
 // the two talk through this tiny store.
-let pointerSubscribers: Array<(p: PointerPos | null) => void> = []
-const publishPointer = (p: PointerPos | null) =>
-  pointerSubscribers.forEach((f) => f(p))
-function useSharedPointer(): PointerPos | null {
-  const [pos, setPos] = useState<PointerPos | null>(null)
-  useEffect(() => {
-    pointerSubscribers.push(setPos)
-    return () => {
-      pointerSubscribers = pointerSubscribers.filter((f) => f !== setPos)
-    }
-  }, [])
-  return pos
-}
+let pointerSubscribers: Array<
+  (p: PointerPos | null, source: PointerSource) => void
+> = []
+const publishPointer = (
+  p: PointerPos | null,
+  source: PointerSource = 'remote'
+) => pointerSubscribers.forEach((f) => f(p, source))
 
 // The live slide, which is not simply the first .slide in the DOM:
 //   fullscreen renders three (previous, current, next) and the first is the
@@ -173,7 +176,7 @@ const liveSlideEl = (): HTMLElement | null => {
   return best
 }
 
-function useBroadcastPointer(ws: WebSocket, enabled: boolean) {
+function useSlidePointer(ws: WebSocket, enabled: boolean) {
   useEffect(() => {
     if (!enabled) return
     let frame = 0
@@ -200,39 +203,60 @@ function useBroadcastPointer(ws: WebSocket, enabled: boolean) {
       const x = (e.clientX - r.left) / r.width
       const y = (e.clientY - r.top) / r.height
       if (x < 0 || x > 1 || y < 0 || y > 1) {
-        // Outside the slide: hide it rather than clamping to an edge.
+        // Outside the slide: hide it rather than clamping to an edge. The
+        // native cursor is only hidden over the slide box, so leaving the
+        // slide hands the pointer back to the browser.
         if (last) {
           last = null
+          publishPointer(null, 'local')
           send({ type: 'pointer', hidden: true })
         }
         return
       }
       last = { x, y }
+      // Draw in this window straight away. Only the other window waits for
+      // the socket.
+      publishPointer(last, 'local')
       if (!frame) frame = requestAnimationFrame(flush)
     }
 
     const onLeave = () => {
+      if (!last) return
       last = null
+      publishPointer(null, 'local')
       send({ type: 'pointer', hidden: true })
     }
 
     window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseout', onLeave)
+    // mouseleave on the document fires when the cursor leaves the viewport.
+    // mouseout on the window would also fire on every element boundary inside
+    // the slide - over each SVG path - blinking the dot off for a frame.
+    // blur covers leaving by alt-tab, where no mouse event fires at all and
+    // the dot would otherwise stay painted in the other window.
+    document.documentElement.addEventListener('mouseleave', onLeave)
+    window.addEventListener('blur', onLeave)
     return () => {
       if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseout', onLeave)
+      document.documentElement.removeEventListener('mouseleave', onLeave)
+      window.removeEventListener('blur', onLeave)
       onLeave()
     }
   }, [ws, enabled])
 }
 
-function RemotePointer(): React.ReactElement | null {
+function SlidePointer(): React.ReactElement | null {
   const dot = useRef<HTMLDivElement | null>(null)
   const rect = useRef<DOMRect | null>(null)
-  const latest = useRef<PointerPos | null>(null)
+  const local = useRef<PointerPos | null>(null)
+  const remote = useRef<PointerPos | null>(null)
+  const shown = useRef(false)
   const frame = useRef(0)
   const [visible, setVisible] = useState(false)
+
+  // One dot per window. The local mouse wins while it is over the slide, so
+  // moving the mouse here never shows two dots or lags behind itself.
+  const latest = () => local.current || remote.current
 
   // Measuring the slide on every pointer message forces a layout each time,
   // which is most of what made this stutter. The slide box only moves on a
@@ -245,7 +269,7 @@ function RemotePointer(): React.ReactElement | null {
   const paint = () => {
     frame.current = 0
     const r = rect.current
-    const p = latest.current
+    const p = latest()
     const node = dot.current
     if (!node || !r || !p) return
     // translate3d is composited on the GPU: no layout, no paint of anything
@@ -261,14 +285,16 @@ function RemotePointer(): React.ReactElement | null {
     // Cheap safety net for zoom changes and layout shifts we do not observe.
     const id = window.setInterval(measure, 1000)
 
-    const onPointer = (p: PointerPos | null) => {
-      if (!p) {
-        latest.current = null
+    const onPointer = (p: PointerPos | null, source: PointerSource) => {
+      if (source === 'local') local.current = p
+      else remote.current = p
+      if (!latest()) {
+        shown.current = false
         setVisible(false)
         return
       }
-      if (!latest.current) measure()
-      latest.current = p
+      if (!shown.current) measure()
+      shown.current = true
       setVisible(true)
       // Coalesce to one write per frame; the sender can outrun the display.
       if (!frame.current) frame.current = requestAnimationFrame(paint)
@@ -344,8 +370,12 @@ function PresentationRouteWrapper({
     []
   )
 
-  // Mirror the presenter's pointer to the other windows.
-  useBroadcastPointer(ws, props.mode === 'presenter')
+  // Mirror the pointer between the presenter and audience windows, in both
+  // directions. Edit and embed modes keep an ordinary cursor.
+  useSlidePointer(
+    ws,
+    props.mode === 'presenter' || props.mode === 'fullscreen'
+  )
   /* const bc = useMemo(() => new BroadcastChannel('presentation'), []) */
 
   /* bc.onmessage = useCallback((event) => { */
@@ -792,11 +822,13 @@ function PresentationUI({
 
     return (
       <div className='flex'>
-        <RemotePointer />
+        <SlidePointer />
         <CitationProvider citationMap={citationMap} bibUrl={bibUrl}>
           <div className='flex justify-around'>
             <div className='flex flex-col'>
-              <div>{slides[0]}</div>
+              {/* The dot stands in for the cursor over the live pane only;
+                  the next-step preview and the notes keep a real one. */}
+              <div style={{ cursor: 'none' }}>{slides[0]}</div>
               <div className='text-lg'>
                 <Clock
                   wallClockLabel={presenterTimer.wallClockLabel}
@@ -856,13 +888,16 @@ function PresentationUI({
   if (mode === 'fullscreen') {
     return (
       <div className='flex justify-center items-center bg-white h-screen'>
-        <RemotePointer />
+        <SlidePointer />
         <CitationProvider citationMap={citationMap} bibUrl={bibUrl}>
           <div
             style={{
               transform: `scale(${zoom})`,
               transformOrigin: 'center center',
-              transition: 'transform 0.12s ease-out'
+              transition: 'transform 0.12s ease-out',
+              // The dot stands in for the cursor over the slide box; the
+              // letterbox margins around it keep a real one.
+              cursor: 'none'
             }}
           >
             {render({
