@@ -282,6 +282,8 @@ function SlidePointer(): React.ReactElement | null {
     measure()
     const onResize = () => measure()
     window.addEventListener('resize', onResize)
+    // A zoom moves and resizes the slide box without firing a resize.
+    window.addEventListener(ZOOM_EVENT, onResize)
     // Cheap safety net for zoom changes and layout shifts we do not observe.
     const id = window.setInterval(measure, 1000)
 
@@ -303,6 +305,7 @@ function SlidePointer(): React.ReactElement | null {
     return () => {
       pointerSubscribers = pointerSubscribers.filter((f) => f !== onPointer)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener(ZOOM_EVENT, onResize)
       window.clearInterval(id)
       if (frame.current) cancelAnimationFrame(frame.current)
     }
@@ -600,6 +603,11 @@ const ZOOM_FACTOR = 1.1
 const clampZoom = (z: number): number =>
   Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z))
 
+// The pointer caches the slide's rect, so it has to be told when the zoom
+// moves it. A zoom change fires no resize event, and waiting for the dot's
+// one-second safety net leaves it measuring against the old box.
+const ZOOM_EVENT = 'immersion:zoom'
+
 const readStoredZoom = (): number => {
   if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
     return 1
@@ -624,6 +632,7 @@ function useWindowLocalZoom(enabled: boolean): number {
     } catch {
       /* private windows can refuse storage; zoom still works in-memory */
     }
+    window.dispatchEvent(new Event(ZOOM_EVENT))
   }, [zoom])
 
   useEffect(() => {
@@ -641,8 +650,31 @@ function useWindowLocalZoom(enabled: boolean): number {
         setZoom(1)
       }
     }
+    // Ctrl/Cmd + wheel, and trackpad pinch, which Chrome also delivers as a
+    // wheel event with ctrlKey set. These were the gestures that still reached
+    // the browser's own per-origin zoom and so moved both windows at once.
+    // The listener must be non-passive or preventDefault is ignored.
+    const onWheel = (e: WheelEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return
+      e.preventDefault()
+      // Scale by distance rather than per notch: a trackpad pinch arrives as
+      // many small deltas and stepping by a fixed factor each time overshoots.
+      // The coefficient puts one mouse notch (deltaY about 120) near the 1.1x
+      // the browser itself uses, and the clamp stops a single coarse event -
+      // some mice send 240 or more - from jumping most of the zoom range.
+      const factor = Math.min(
+        1.25,
+        Math.max(0.8, Math.exp(-e.deltaY * 0.0008))
+      )
+      setZoom((z) => clampZoom(z * factor))
+    }
+
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    window.addEventListener('wheel', onWheel, { passive: false })
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('wheel', onWheel)
+    }
   }, [enabled])
 
   return zoom
@@ -728,7 +760,9 @@ function PresentationUI({
   )
 
   // Window-local: never sent over the websocket, never shared between windows.
-  const zoom = useWindowLocalZoom(mode === 'fullscreen')
+  const zoom = useWindowLocalZoom(
+    mode === 'fullscreen' || mode === 'presenter'
+  )
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -824,7 +858,18 @@ function PresentationUI({
       <div className='flex'>
         <SlidePointer />
         <CitationProvider citationMap={citationMap} bibUrl={bibUrl}>
-          <div className='flex justify-around'>
+          {/* The zoom transform must stay off the ancestor that holds
+              <SlidePointer />: a transformed element becomes the containing
+              block for position: fixed descendants, which would rescale the
+              dot and measure it against the wrong box. */}
+          <div
+            className='flex justify-around'
+            style={{
+              transform: `scale(${zoom})`,
+              transformOrigin: 'top left',
+              transition: 'transform 0.12s ease-out'
+            }}
+          >
             <div className='flex flex-col'>
               {/* The dot stands in for the cursor over the live pane only;
                   the next-step preview and the notes keep a real one. */}
